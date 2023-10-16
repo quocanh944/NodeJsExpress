@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+
 const { SECRET_SESSION, PORT, DB_URI } = process.env
 
 const config = {

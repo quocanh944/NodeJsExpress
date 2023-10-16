@@ -1,9 +1,14 @@
-const Mongoose = require('mongoose');
+// product.js
+import mongoose from 'mongoose';
 
-const ProductSchema = new Mongoose.Schema({
-    name: {
-        type: String,
-    }
-});
+const productSchema = new mongoose.Schema({
+    barcode: String,
+    productName: String,
+    importPrice: Number,
+    retailPrice: Number,
+    category: String,
+    creationDate: { type: Date, default: Date.now },
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }]
+}, { timestamps: true });
 
-module.exports = Mongoose.model('Product', ProductSchema);
+export default mongoose.model('Product', productSchema);

@@ -1,7 +1,7 @@
 // Import model to get data
 
 
-const getAllUser = async () => {
+const getAllUser = async (req, res) => {
   return [];
 }
 

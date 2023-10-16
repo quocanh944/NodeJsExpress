@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
 import logger from 'morgan';
 import dotenv from 'dotenv';
-import setupDB from './config/db.js';
+import { setupDB } from './config/db.js';
 import rootRouter from './routes/rootRouter.js';
 import configureViewEngine from './config/configureViewEngine.js';
 
@@ -14,13 +14,18 @@ const app = express();
 // Setup database
 setupDB();
 
+import user from './models/user.js';
+import customer from './models/customer.js';
+import product from './models/product.js';
+import transaction from './models/transaction.js';
+
 // Setup View Engine
 configureViewEngine(app);
 
 dotenv.config();
 
 app.use(logger('dev'));
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.SECRET_SESSION));
