@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import { setupDB } from './config/db.js';
 import rootRouter from './routes/rootRouter.js';
 import configureViewEngine from './config/configureViewEngine.js';
+import config from './config/config.js';
 
 const app = express();
 
@@ -48,7 +49,13 @@ app.use((err, req, res, next) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('pages/error');
 });
+
+app.listen(config.port, () => console.log(`
+    Express started on http://localhost:${config.port}
+    press Ctrl-C to terminate. `)
+)
+
 
 export default app;
