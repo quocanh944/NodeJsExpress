@@ -17,7 +17,8 @@ setupDB();
 import user from './models/user.js';
 import customer from './models/customer.js';
 import product from './models/product.js';
-import transaction from './models/transaction.js';
+import productCount from './models/productCount.js';
+import order from './models/order.js';
 
 // Setup View Engine
 configureViewEngine(app);
@@ -38,6 +39,7 @@ app.use('/', rootRouter);
 app.use((req, res, next) => {
   next(createError(404));
 });
+
 
 // error handler
 app.use((err, req, res, next) => {
