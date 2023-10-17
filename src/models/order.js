@@ -1,4 +1,4 @@
-// transaction.js
+// order.js
 import mongoose from 'mongoose';
 
 const transactionSchema = new mongoose.Schema({
