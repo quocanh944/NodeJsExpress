@@ -5,6 +5,9 @@ import userRouter from './userRouter.js';
 
 const rootRouter = express.Router();
 
+rootRouter.get('/', function (req, res) { 
+    res.render('pages/index')
+})
 rootRouter.use("/user", userRouter);
 
 
