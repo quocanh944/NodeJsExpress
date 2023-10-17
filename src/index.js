@@ -17,7 +17,8 @@ setupDB();
 import user from './models/user.js';
 import customer from './models/customer.js';
 import product from './models/product.js';
-import transaction from './models/transaction.js';
+import order from './models/order.js';
+import productCount from './models/productCount.js';
 
 // Setup View Engine
 configureViewEngine(app);
