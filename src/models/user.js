@@ -2,17 +2,17 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  email: String,
   password: String,
-  role: { type: String, enum: ['admin', 'salesperson'] },
+  role: { type: String, enum: ['ADMIN', 'SALE'] },
   fullName: String,
-  gmail: String,
+  gender: String,
   avatar: String,
   phoneNumber: String,
-  isActive: { type: Boolean, default: true },
+  birthday: String,
+  isActive: { type: Boolean, default: false },
   isLocked: { type: Boolean, default: false },
-  tempLinkExpiration: Date,
-  sales: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }]
+  salesHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
 }, { timestamps: true });
 
 export default mongoose.model('User', userSchema);
