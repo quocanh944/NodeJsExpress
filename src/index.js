@@ -9,6 +9,7 @@ import { setupDB } from './config/db.js';
 import rootRouter from './routes/rootRouter.js';
 import configureViewEngine from './config/configureViewEngine.js';
 import config from './config/config.js';
+import session from 'express-session';
 
 const app = express();
 
@@ -30,9 +31,14 @@ app.use(logger('dev'));
 // app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser(process.env.SECRET_SESSION));
-app.use(expressSession());
-app.use(express.static(path.join(import.meta.url, 'public')));
+app.use(cookieParser(config.secret_session));
+app.use(session({
+  secret: config.secret_key,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(express.static("."))
 
 app.use('/', rootRouter);
 

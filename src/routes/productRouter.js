@@ -4,6 +4,12 @@ import * as productController from '../controller/productController.js';
 const productRouter = express.Router();
 
 
+productRouter.get('/', async (req, res) => {
+  // Giả sử bạn có một service để lấy dữ liệu sản phẩm từ database
+  const products = await productController.getAll();
+  res.render('partials/product', { title: "Quản lý sản phẩm", products });
+});
+
 productRouter.post("/add", productController.add)
 productRouter.get("/getAllproduct", productController.getAll)
 productRouter.get("/:id", productController.getById)

@@ -15,19 +15,17 @@ export const add = async (req, res) => {
   }
 };
 
-export const getAll = async (req, res) => {
-    try {
-      const product = await Product.find()
-      if (!product) {
-        return res.status(404).json({ error: 'Không tìm thấy sản phẩm nào' });
-      }
-  
-      res.status(200).json(product);
-    } catch (error) {
-      console.error('Lỗi khi đọc thông tin sản phẩm:', error);
-      res.status(500).json({ error: 'Lỗi khi đọc thông tin sản phẩm' });
+export const getAll = async () => {
+  try {
+    const product = await Product.find()
+    if (!product) {
+      return []
     }
-  };
+    return product
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const getById = async (req, res) => {
   try {
@@ -63,17 +61,17 @@ export const editById = async (req, res) => {
 };
 
 export const deleteById = async (req, res) => {
-    try {
-      const productId = req.params.id;
-      const deletedProduct = await Product.findByIdAndRemove(productId);
-  
-      if (!deletedProduct) {
-        return res.status(404).json({ error: 'Không tìm thấy sản phẩm' });
-      }
+  try {
+    const productId = req.params.id;
+    const deletedProduct = await Product.findByIdAndRemove(productId);
 
-      res.status(204).send();
-    } catch (error) {
-      console.error('Lỗi khi xóa sản phẩm:', error);
-      res.status(500).json({ error: 'Lỗi khi xóa sản phẩm' });
+    if (!deletedProduct) {
+      return res.status(404).json({ error: 'Không tìm thấy sản phẩm' });
     }
-  };
+
+    res.status(204).send();
+  } catch (error) {
+    console.error('Lỗi khi xóa sản phẩm:', error);
+    res.status(500).json({ error: 'Lỗi khi xóa sản phẩm' });
+  }
+};
