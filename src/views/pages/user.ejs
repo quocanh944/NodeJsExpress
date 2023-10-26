@@ -7,10 +7,71 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  <!-- FontAwesome 6.2.0 CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <!-- Bootstrap CSS v5.2.1 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 
+  <style>
+    /* Điều chỉnh thanh bên để có độ rộng cố định */
+    #sidebar {
+      width: 250px;
+      min-height: 100vh;
+      /* Đảm bảo sidebar chiếm đủ chiều cao của viewport */
+    }
+
+    /* Đảm bảo nội dung chính không bị sidebar che khuất */
+    #main-content {
+      flex-grow: 1;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -700px;
+      width: 700px;
+      height: 100%;
+      background-color: #FFFFFF;
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.3);
+      transition: right 0.3s;
+    }
+
+    body.drawer-open .drawer {
+      right: 0;
+    }
+
+    .drawer-header {
+      position: relative;
+      /* Để absolute positioning của button hoạt động */
+      padding: 20px 10px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .btn-close-icon {
+      position: absolute;
+      /* Đặt button ở góc phải trên cùng */
+      top: 15px;
+      /* Điều chỉnh vị trí nếu cần */
+      right: 10px;
+      background: none;
+      /* Loại bỏ màu nền mặc định */
+      border: none;
+      /* Loại bỏ viền mặc định */
+      cursor: pointer;
+      /* Hiển thị con trỏ như một tay chỉ */
+    }
+
+    .btn-close-icon:hover {
+      opacity: 0.7;
+      /* Hiệu ứng khi hover */
+    }
+  </style>
 </head>
 
 <body>
@@ -19,11 +80,115 @@
       <div id="main" class="flex-grow-1 d-flex flex-column">
         <% include ../partials/header.ejs %>
           <div class="main-content">
+            <button class="btn btn-success m-3" onclick="openDrawer()">Create New User</button>
             <div class="flex-grow-1 p-3 text-dark">
-              <% include ../partials/home.ejs %>
+              <!-- Render table here -->
+              <table class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Full Name</th>
+                    <th>Role</th>
+                    <th>Gender</th>
+                    <th>Avatar</th>
+                    <th>Phone Number</th>
+                    <th>Birthday</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% users.forEach(user=> { %>
+                    <tr>
+                      <td>
+                        <%= user.email %>
+                      </td>
+                      <td>
+                        <%= user.fullName %>
+                      </td>
+                      <td>
+                        <%= user.role %>
+                      </td>
+                      <td>
+                        <%= user.gender %>
+                      </td>
+                      <td>
+                        <% if(user.avatar) { %>
+                          <img src="<%= user.avatar %>" alt="Avatar" width="50">
+                          <% } else { %>
+
+                            <% } %>
+                      </td>
+                      <td>
+                        <%= user.phoneNumber || '' %>
+                      </td>
+                      <td>
+                        <%= user.birthday || '' %>
+                      </td>
+                      <td>
+                        <span class="badge <%= user.isActive ? 'bg-success' : 'bg-secondary' %>">
+                          <%= user.isActive ? 'Active' : 'Inactive' %>
+                        </span>
+                        <% if(user.isLocked) { %>
+                          <span class="badge bg-danger">Locked</span>
+                          <% } %>
+                      </td>
+                      <td>
+                        <a href="/users/edit/<%= user._id %>" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="/users/delete/<%= user._id %>" class="btn btn-sm btn-danger"
+                          onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                      </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+              </table>
             </div>
           </div>
       </div>
+  </div>
+
+  <!-- The Drawer -->
+  <div id="userDrawer" class="drawer">
+    <!-- Drawer Header -->
+    <div class="drawer-header">
+      <h5 class="">Register New User</h5>
+      <!-- Close button icon -->
+      <button onclick="closeDrawer()" class="btn-close-icon">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Registration Form -->
+    <form id="registrationForm" action="/user/register" method="post">
+      <!-- Full Name Field -->
+      <div class="mb-3">
+        <label for="fullName" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="fullName" name="fullName" required>
+      </div>
+
+      <!-- Email Field -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+
+      <!-- Password Field -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+
+      <!-- Role Selection Field -->
+      <div class="mb-3">
+        <label for="role" class="form-label">Role</label>
+        <select class="form-select" id="role" name="role" required>
+          <option value="ADMIN">Admin</option>
+          <option value="SALE">Sale</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
   </div>
   <!-- Bootstrap JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -33,6 +198,17 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
     integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
     </script>
+
+  <script>
+    function openDrawer() {
+      document.body.classList.add('drawer-open');
+    }
+
+    function closeDrawer() {
+      document.body.classList.remove('drawer-open');
+    }
+
+  </script>
 </body>
 
 </html>

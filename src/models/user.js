@@ -15,11 +15,11 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   role: { type: String, enum: ['ADMIN', 'SALE'] },
-  fullName: String,
-  gender: String,
-  avatar: String,
-  phoneNumber: String,
-  birthday: String,
+  fullName: { type: String, default: "" },
+  gender: { type: String, default: "" },
+  avatar: { type: String, default: "" },
+  phoneNumber: { type: String, default: "" },
+  birthday: { type: String, default: "" },
   isActive: { type: Boolean, default: false },
   isLocked: { type: Boolean, default: false },
   salesHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]

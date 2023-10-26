@@ -1,12 +1,19 @@
 import express from 'express';
-import sendActivationEmail from '../utils/sendActivationEmail.js';
-import { getListUsers } from '../controller/userController.js'
+import { getListUsers, getSetPasswordView, setUserPassword, userRegister } from '../controller/userController.js'
 
 const userRouter = express.Router();
 
 userRouter.get('/', getListUsers)
 
-// userRouter.post('/signup', signUp);
+userRouter.post('/register', userRegister);
+
+userRouter.get('/set-password', getSetPasswordView);
+
+userRouter.post('/set-password', setUserPassword);
+
+
+
+
 // userRouter.get("/:id", getById)
 // userRouter.put("/:id", editById)
 // userRouter.delete("/:id", deleteById)

@@ -10,6 +10,8 @@ import rootRouter from './routes/rootRouter.js';
 import configureViewEngine from './config/configureViewEngine.js';
 import config from './config/config.js';
 import session from 'express-session';
+import flash from 'connect-flash';
+
 
 const app = express();
 
@@ -28,7 +30,7 @@ configureViewEngine(app);
 dotenv.config();
 
 app.use(logger('dev'));
-// app.use(cors());
+app.use(express.static("."))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(config.secret_session));
@@ -38,9 +40,17 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.use(express.static("."))
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
+
 
 app.use('/', rootRouter);
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

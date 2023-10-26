@@ -1,49 +1,92 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <title>Title</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS v5.2.1 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
-  <link rel="stylesheet" href="./public/stylesheets/login.css">
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css    ">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    p.item {
+      padding: 16px;
+      text-align: center;
+      border-radius: 8px;
+      color: white;
+      background-color: green;
+    }
+  </style>
 </head>
 
-<body>
+<body class="bg-secondary">
 
-  <form action="/login" method="post">
-    <div class="container">
-      <label for="username"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="username" required>
+  <h3 class="text-center my-5 text-light">User Login</h3>
 
-      <label for="password"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="password" required>
+  <!-- buộc toàn bộ dòng và cột phải bỏ trong class container -->
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-5">
+        <div class="border p-3 rounded bg-light">
+          <form method="post" action="/login">
+            <div class="form-group">
+              <label for="user">Username</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-user"></i>
+                  </span>
+                </div>
+                <input id="username" name="username" type="text" class="form-control" placeholder="Username">
+              </div>
 
-      <button type="submit">Login</button>
-      <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
-      </label>
+            </div>
+            <div class="form-group">
+              <label for="pass">Password</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </div>
+                <input name="password" type="password" class="form-control" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                <label class="custom-control-label" for="customCheck">Remember</label>
+              </div>
+            </div>
+            <!-- <div class="form-group">
+              {{#if error_msg}}
+              <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{error_msg}}
+              </div>
+              {{/if}}
+              {{#if success_msg}}
+              <div class="alert alert-success alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{success_msg}}
+              </div>
+              {{/if}}
+            </div> -->
+            <div class="form-group">
+              <button class="btn btn-success px-5" type="submit">Login</button>
+            </div>
+            <div class="form-group">
+              <p>Don't have any account? <a href="/register">Register now!</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="container" style="background-color:#f1f1f1">
-      <button type="submit" class="cancelbtn">Cancel</button>
-      <span class="password">Forgot <a href="#">password?</a></span>
-    </div>
-  </form>
 
-  <!-- Bootstrap JavaScript Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-    </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-    </script>
 </body>
 
 </html>

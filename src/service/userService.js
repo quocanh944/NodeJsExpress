@@ -1,5 +1,6 @@
 import User from '../models/user.js';
 import sendActivationEmail from '../utils/sendActivationEmail.js';
+import bcrypt from 'bcrypt';
 
 const add = async (newUser) => {
   const user = new User(newUser);
@@ -58,22 +59,30 @@ const deleteById = async (id) => {
   }
 };
 
-const signUp = async (userData, sendActivationEmail) => {
+const signUp = async (userData) => {
   try {
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(userData.password, salt);
+
+    userData.password = hashedPassword
+
     const user = new User(userData);
+
     const newUser = await user.save();
 
+    let username = newUser.email.replace("@gmail.com", "")
+
     if (newUser) {
-      // Gọi hàm sendActivationEmail từ bên ngoài
-      const emailSent = await sendActivationEmail(newUser.email); // Sửa đổi tùy thuộc vào cấu trúc của userData
+      const emailSent = await sendActivationEmail(newUser.email);
 
       if (emailSent) {
-        return { message: 'User created and activation email sent successfully.' };
+        return { valid: true, message: `User ${username} created and activation email sent successfully.` };
       } else {
-        throw new Error('User created but failed to send activation email.');
+        return { valid: false, message: 'User created but failed to send activation email.' };
       }
     } else {
-      throw new Error('Error creating user.');
+      return { valid: false, message: 'Error creating user.' };
     }
   } catch (error) {
     console.error(error);
@@ -81,9 +90,30 @@ const signUp = async (userData, sendActivationEmail) => {
   }
 };
 
-const activateUser = async () => {
-  return
-}
+const activateUserByEmail = async (email) => {
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    throw new Error('User not found.');
+  }
+
+  user.isActive = true;
+  await user.save();
+
+  return user;
+};
+
+const updatePassword = async (email, newPassword) => {
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  // Cập nhật mật khẩu mới cho người dùng
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    throw new Error('User not found.');
+  }
+  user.password = hashedPassword;
+
+  await user.save();
+};
 
 
-export { add, getAllUsers, getById, deleteById, editById, signUp, activateUser }
+export { add, getAllUsers, getById, deleteById, editById, signUp, activateUserByEmail, updatePassword }

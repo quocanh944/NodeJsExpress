@@ -1,12 +1,9 @@
 const isAuthenticated = (req, res, next) => {
-  try {
-    if (req.session && req.session.user) {
-      return next();
-    }
-    res.redirect('/login');
-  } catch (error) {
-    res.status(401).send('You are not authenticated');
+  if (req.session && req.session.user) {
+    return next();
   }
+  req.flash("error_msg", "You are not authenticated")
+  res.redirect('/login');
 }
 
 const checkUserActivation = (req, res, next) => {

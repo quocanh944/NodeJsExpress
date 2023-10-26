@@ -5,7 +5,6 @@ const productRouter = express.Router();
 
 
 productRouter.get('/', async (req, res) => {
-  // Giả sử bạn có một service để lấy dữ liệu sản phẩm từ database
   const products = await productController.getAll();
   res.render('partials/product', { title: "Quản lý sản phẩm", products });
 });
