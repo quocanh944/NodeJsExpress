@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
   birthday: { type: String, default: "" },
   isActive: { type: Boolean, default: false },
   isLocked: { type: Boolean, default: false },
+  isFirstLogin: { type: Boolean, default: true },
   salesHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
 }, { timestamps: true });
 
@@ -33,6 +34,10 @@ userSchema.pre('save', async function (next) {
 
   try {
     const salt = await bcrypt.genSalt(10);
+    if (!salt) {
+      throw new Error('Failed to generate salt');
+    }
+
     user.password = await bcrypt.hash(user.password, salt);
     next();
   } catch (error) {
@@ -41,7 +46,6 @@ userSchema.pre('save', async function (next) {
 });
 
 
-// Phương thức để kiểm tra mật khẩu hợp lệ
 userSchema.methods.isValidPassword = async function (password) {
   try {
     return await bcrypt.compare(password, this.password);
@@ -49,6 +53,5 @@ userSchema.methods.isValidPassword = async function (password) {
     throw error;
   }
 };
-
 
 export default mongoose.model('User', userSchema);

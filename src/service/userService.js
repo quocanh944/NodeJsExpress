@@ -1,6 +1,6 @@
 import User from '../models/user.js';
 import sendActivationEmail from '../utils/sendActivationEmail.js';
-import bcrypt from 'bcrypt';
+
 
 const add = async (newUser) => {
   const user = new User(newUser);
@@ -61,12 +61,6 @@ const deleteById = async (id) => {
 
 const signUp = async (userData) => {
   try {
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(userData.password, salt);
-
-    userData.password = hashedPassword
-
     const user = new User(userData);
 
     const newUser = await user.save();
@@ -103,17 +97,26 @@ const activateUserByEmail = async (email) => {
 };
 
 const updatePassword = async (email, newPassword) => {
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-
   // Cập nhật mật khẩu mới cho người dùng
   const user = await User.findOne({ email: email });
   if (!user) {
     throw new Error('User not found.');
   }
-  user.password = hashedPassword;
+  user.password = newPassword;
+
+  await user.save();
+};
+
+const setLoginStatus = async (email) => {
+  // Cập nhật mật khẩu mới cho người dùng
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    throw new Error('User not found.');
+  }
+  user.isFirstLogin = !user.isFirstLogin;
 
   await user.save();
 };
 
 
-export { add, getAllUsers, getById, deleteById, editById, signUp, activateUserByEmail, updatePassword }
+export { add, getAllUsers, getById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus }

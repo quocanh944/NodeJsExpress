@@ -4,9 +4,9 @@ import config from '../config/config.js';
 
 const sendActivationEmail = async (email) => {
   try {
-    const token = jwt.sign({ email }, config.secret_key, { expiresIn: '1m' }); 
+    const token = jwt.sign({ email }, config.secret_key, { expiresIn: '30m' }); 
 
-    const activationLink = `${config.host}login/${token}`;
+    const activationLink = `${config.host}activate/${token}`;
 
     let transporter = nodemailer.createTransport({
       service: 'gmail',
