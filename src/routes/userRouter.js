@@ -1,5 +1,5 @@
 import express from 'express';
-import { getListUsers, getSetPasswordView, setUserPassword, userRegister } from '../controller/userController.js'
+import { getListUsers, getSetPasswordView, setUserPassword, userRegister, userRemove } from '../controller/userController.js'
 
 const userRouter = express.Router();
 
@@ -7,16 +7,6 @@ userRouter.get('/', getListUsers)
 
 userRouter.post('/register', userRegister);
 
-userRouter.get('/set-password', getSetPasswordView);
-
-userRouter.post('/set-password', setUserPassword);
-
-
-
-
-// userRouter.get("/:id", getById)
-// userRouter.put("/:id", editById)
-// userRouter.delete("/:id", deleteById)
-
+userRouter.delete('/delete/:id', userRemove)
 
 export default userRouter;

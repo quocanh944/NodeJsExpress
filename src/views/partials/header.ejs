@@ -11,15 +11,17 @@
       <div class="dropdown text-end">
         <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser"
           data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="path-to-your-avatar-image.png" alt="avatar" width="32" height="32" class="rounded-circle me-2">
-          <strong>Tên User</strong>
+          <img src="https://i.pravatar.cc/300" alt="avatar" width="32" height="32" class="rounded-circle me-2">
+          <strong>
+            <%= user.username %>
+          </strong>
         </a>
         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
           <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
           <li>
             <hr class="dropdown-divider">
           </li>
-          <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+          <li><button class="dropdown-item" id="logoutButton">Đăng xuất</button></li>
         </ul>
       </div>
     </div>

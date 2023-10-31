@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  role: { type: String, enum: ['ADMIN', 'SALE'] },
+  role: { type: String, enum: ['ADMIN', 'SALE'], default: 'SALE' },
   fullName: { type: String, default: "" },
   gender: { type: String, default: "" },
   avatar: { type: String, default: "" },
@@ -30,7 +30,10 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', async function (next) {
   const user = this;
 
-  if (!user.isModified('password')) return next();
+  if (!user.isModified('password')) {
+    console.log('hello')
+    return next();
+  };
 
   try {
     const salt = await bcrypt.genSalt(10);

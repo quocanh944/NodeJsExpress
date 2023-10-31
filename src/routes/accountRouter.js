@@ -1,11 +1,17 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import { activateUser } from '../controller/userController.js';
+import { activateUser, getSetPasswordView, setUserPassword } from '../controller/userController.js';
 import User from '../models/user.js';
+import { checkFirstLogin, checkUserActivation, isAuthenticated, isFirstLogined } from '../middleware/authMiddleware.js';
 
 const accountRouter = express.Router();
 
-// accountRouter.get('/activate/:token', activateUser);
+accountRouter.get('/logout', (req, res) => {
+  req.session.destroy();
+
+  res.status(200).send({ success: true, message: 'Đăng xuất thành công' });
+});
+
+
 accountRouter.get('/activate/:token', (req, res) => {
   if (req.params.token) {
     res.render('pages/activate', { token: req.params.token, messages: req.flash() })
@@ -37,12 +43,14 @@ accountRouter.post('/login', async (req, res, next) => {
   }
 
   if (username === 'admin' && password === 'admin') {
-    req.session.user = { username: 'admin', role: 'ADMIN' };
+    req.session.user = { username: 'admin', role: 'ADMIN', isActive: true, isFirstLogin: false, isBlocked: false };
     return res.redirect('/');
   }
 
   try {
     const user = await User.findOne({ email: username.trim() + '@gmail.com' });
+
+    console.log(await user.isValidPassword(password))
 
     if (!user || !user.isActive || !(await user.isValidPassword(password))) {
       return res.redirect('/login');
@@ -62,6 +70,9 @@ accountRouter.post('/login', async (req, res, next) => {
   }
 });
 
+accountRouter.get('/user/set-password', checkUserActivation, checkFirstLogin, getSetPasswordView);
+
+accountRouter.post('/user/set-password', checkUserActivation, checkFirstLogin, setUserPassword);
 
 
 

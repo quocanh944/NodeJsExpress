@@ -12,7 +12,7 @@ const getAllUsers = async () => {
   try {
     const users = await User.find();
     if (!users || users.length === 0) {
-      throw new Error('Không tìm thấy người dùng nào');
+      return []
     }
     return users;
   } catch (error) {
@@ -62,6 +62,8 @@ const deleteById = async (id) => {
 const signUp = async (userData) => {
   try {
     const user = new User(userData);
+
+    user.password = user.email.replace("@gmail.com", "").trim()
 
     const newUser = await user.save();
 
@@ -119,4 +121,20 @@ const setLoginStatus = async (email) => {
 };
 
 
-export { add, getAllUsers, getById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus }
+const removeUser = async (id) => {
+  try {
+    // Tìm người dùng dựa trên ID và xóa
+    const user = await User.findByIdAndRemove(id);
+
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  } catch (error) {
+    throw error; // Trả về lỗi nếu có lỗi xảy ra
+  }
+};
+
+export { add, getAllUsers, getById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser }

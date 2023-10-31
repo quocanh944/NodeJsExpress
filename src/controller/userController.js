@@ -1,7 +1,7 @@
 import config from '../config/config.js';
 import user from '../models/user.js';
 import jwt from 'jsonwebtoken';
-import { add, getAllUsers, getById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus } from '../service/userService.js'
+import { add, getAllUsers, getById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser } from '../service/userService.js'
 
 const getListUsers = async (req, res) => {
   let users = await getAllUsers();
@@ -39,6 +39,8 @@ const activateUser = async (req, res) => {
 
     const result = await activateUserByEmail(email);
 
+    console.log(result)
+
     if (result) {
       req.flash('success_msg', 'Activation successful.');
       return res.redirect(`/login`);
@@ -64,19 +66,21 @@ const setUserPassword = async (req, res) => {
   try {
     const { email, password, confirmPassword } = req.body;
 
+    console.log(req.body)
+
     if (password !== confirmPassword) {
       req.flash('error_msg', 'Passwords do not match.');
       return res.redirect(`/user/set-password`);
     }
 
-    console.log(email)
-
     await updatePassword(email, password);
 
     await setLoginStatus(email)
 
+    req.session.user = null;
+
     req.flash('success_msg', 'Password has been set successfully.');
-    return res.redirect('/');
+    return res.redirect('/login');
   } catch (error) {
     console.error('Error setting password:', error);
     req.flash('error_msg', 'Lỗi báo BE');
@@ -84,4 +88,25 @@ const setUserPassword = async (req, res) => {
   }
 }
 
-export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword }
+const userRemove = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ success: false, message: 'ID is invalid' });
+    }
+
+    const result = await removeUser(id);
+
+    if (result) {
+      return res.status(200).json({ success: true, message: 'User removed successfully' });
+    } else {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error remove user:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+}
+
+
+export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove }
