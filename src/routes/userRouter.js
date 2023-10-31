@@ -1,13 +1,12 @@
 import express from 'express';
-import * as userController from '../controller/userController.js';
+import { getListUsers, getSetPasswordView, setUserPassword, userRegister, userRemove } from '../controller/userController.js'
 
 const userRouter = express.Router();
 
+userRouter.get('/', getListUsers)
 
-userRouter.post("/add", userController.add)
-userRouter.get("/getAlluser", userController.getAll)
-userRouter.get("/:id", userController.getById)
-userRouter.put("/:id", userController.editById)
-userRouter.delete("/:id", userController.deleteById)
+userRouter.post('/register', userRegister);
+
+userRouter.delete('/delete/:id', userRemove)
 
 export default userRouter;
