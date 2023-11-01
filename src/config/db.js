@@ -6,7 +6,6 @@ const { db_uri } = config;
 
 const setupDB = async () => {
   try {
-    // Connect to MongoDB
     mongoose
       .connect(db_uri)
       .then(() =>
