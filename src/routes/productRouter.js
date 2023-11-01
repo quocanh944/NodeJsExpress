@@ -3,11 +3,6 @@ import * as productController from '../controller/productController.js';
 
 const productRouter = express.Router();
 
-
-productRouter.post("/add", productController.add)
-productRouter.get("/getAllproduct", productController.getAll)
-productRouter.get("/:id", productController.getById)
-productRouter.put("/:id", productController.editById)
-productRouter.delete("/:id", productController.deleteById)
+productRouter.get("/search", productController.search)
 
 export default productRouter;

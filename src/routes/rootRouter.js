@@ -3,18 +3,20 @@ import userRouter from './userRouter.js';
 import customerRouter from './customerRouter.js';
 import orderRouter from './orderRouter.js';
 import productRouter from './productRouter.js';
+import cartRouter from './cartRouter.js';
 
 // Import the others router here (ex: userRouter, productRouter,...)
 
 const rootRouter = express.Router();
 
 rootRouter.get('/', function (req, res) { 
-    res.render('pages/index')
+    res.render('pages/home')
 })
 rootRouter.use("/product", productRouter)
 rootRouter.use("/customer", customerRouter)
 rootRouter.use("/order", orderRouter);
 rootRouter.use("/user", userRouter);
+rootRouter.use("/cart", cartRouter);
 
 
 export default rootRouter;

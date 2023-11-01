@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
   birthday: String,
   isActive: { type: Boolean, default: false },
   isLocked: { type: Boolean, default: false },
-  salesHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
 }, { timestamps: true });
 
 export default mongoose.model('User', userSchema);
