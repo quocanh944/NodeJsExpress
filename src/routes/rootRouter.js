@@ -1,21 +1,37 @@
-import express from 'express'
+// rootRouter.js
+import express from 'express';
 import userRouter from './userRouter.js';
 import customerRouter from './customerRouter.js';
 import orderRouter from './orderRouter.js';
 import productRouter from './productRouter.js';
-
-// Import the others router here (ex: userRouter, productRouter,...)
+import { authorization, checkUserActivation, isAuthenticated, isFirstLogined } from '../middleware/authMiddleware.js';
+import accountRouter from './accountRouter.js';
 
 const rootRouter = express.Router();
 
-rootRouter.get('/', function (req, res) {
-    res.render('pages/index')
-})
-rootRouter.use("/product", productRouter)
-rootRouter.use("/customer", customerRouter)
-rootRouter.use("/order", orderRouter);
-rootRouter.use("/user", userRouter);
+rootRouter.use('/', accountRouter);
 
+rootRouter.get('/contact-admin', (req, res) => {
+    res.send('Your account is not activated. Please contact the administrator for the activation link.');
+});
+
+rootRouter.get('/', isAuthenticated, authorization, checkUserActivation, isFirstLogined, (req, res) => {
+    const { user } = req.session;
+
+    if (user) {
+        if (user.role === 'sale') {
+            res.render('pages/sales', { user });
+        } else {
+            res.render('pages/index', { user });
+        }
+    }
+});
+
+
+
+rootRouter.use("/user", isAuthenticated, authorization, checkUserActivation, isFirstLogined, userRouter);
+rootRouter.use("/product", isAuthenticated, checkUserActivation, isFirstLogined, productRouter);
+rootRouter.use("/customer", isAuthenticated, checkUserActivation, isFirstLogined, customerRouter);
+rootRouter.use("/order", isAuthenticated, checkUserActivation, isFirstLogined, orderRouter);
 
 export default rootRouter;
-
