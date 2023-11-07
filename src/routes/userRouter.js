@@ -5,6 +5,8 @@ const userRouter = express.Router();
 
 userRouter.get('/', getListUsers)
 
+userRouter.post('/register', userRegister);
+
 userRouter.get('/edit/:id', getUserDetail);
 
 userRouter.post('/update/:id', updateUser);
