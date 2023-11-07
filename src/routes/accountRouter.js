@@ -50,8 +50,6 @@ accountRouter.post('/login', async (req, res, next) => {
   try {
     const user = await User.findOne({ email: username.trim() + '@gmail.com' });
 
-    console.log(await user.isValidPassword(password))
-
     if (!user || !user.isActive || !(await user.isValidPassword(password))) {
       return res.redirect('/login');
     }

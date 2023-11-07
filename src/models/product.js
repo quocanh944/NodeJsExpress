@@ -6,7 +6,8 @@ const productSchema = new mongoose.Schema({
     productName: String,
     importPrice: Number,
     retailPrice: Number,
-    category: String
+    category: String,
+    inventory: Number
 }, { timestamps: true });
 
 export default mongoose.model('Product', productSchema);
