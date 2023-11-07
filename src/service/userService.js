@@ -8,19 +8,27 @@ const add = async (newUser) => {
 };
 
 
-const getAllUsers = async () => {
+const getAllUsers = async (page = 1, limit = 10) => {
   try {
-    const users = await User.find();
-    if (!users || users.length === 0) {
-      return []
-    }
-    return users;
+    const users = await User.find()
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const total = await User.countDocuments();
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      users,
+      currentPage: page,
+      totalPages,
+      total
+    };
   } catch (error) {
     throw error;
   }
 };
 
-const getById = async (id) => {
+
+const getUserById = async (id) => {
   try {
     const user = await User.findById(id);
 
@@ -37,9 +45,9 @@ const editById = async (id, updateData) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true });
     if (!updatedUser) {
-      throw new Error('Không tìm thấy người dùng');
+      return { success: false, message: "User not found !!" }
     }
-    return updatedUser;
+    return { success: true, message: "Update successfully", updatedUser };
   } catch (error) {
     console.error('Lỗi khi cập nhật người dùng:', error);
     throw error;
@@ -137,4 +145,18 @@ const removeUser = async (id) => {
   }
 };
 
-export { add, getAllUsers, getById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser }
+const setActivate = async (userId) => {
+  const user = await User.findById(userId);
+  user.isActive = !user.isActive;
+  await user.save();
+  return user;
+};
+
+const setBlock = async (userId) => {
+  const user = await User.findById(userId);
+  user.isLocked = !user.isLocked;
+  await user.save();
+  return user;
+};
+
+export { add, getAllUsers, getUserById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock }

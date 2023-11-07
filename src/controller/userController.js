@@ -1,12 +1,32 @@
 import config from '../config/config.js';
 import user from '../models/user.js';
 import jwt from 'jsonwebtoken';
-import { add, getAllUsers, getById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser } from '../service/userService.js'
+import { add, getAllUsers, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, getUserById } from '../service/userService.js'
 
 const getListUsers = async (req, res) => {
-  let users = await getAllUsers();
-  res.render('pages/user', { title: "Quản lý người dùng", users })
-}
+  let page = parseInt(req.query.page) || 1; // Nếu không có trang được cung cấp, mặc định là 1
+
+  let limit = 5; // Đặt số lượng người dùng trên mỗi trang là 10
+
+  try {
+    const { users, currentPage, totalPages, total } = await getAllUsers(page, limit);
+    res.render('pages/user', {
+      title: "Quản lý người dùng",
+      users,
+      pagination: {
+        page: currentPage,
+        limit,
+        total,
+        totalPages
+      },
+      user: req.session.user
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 
 const getSetPasswordView = (req, res) => {
   res.render('pages/set-password', { email: req.session.user.email, messages: req.flash() });
@@ -109,4 +129,34 @@ const userRemove = async (req, res) => {
 }
 
 
-export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove }
+const getUserDetail = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User was not found' });
+    }
+    return res.status(200).json({ success: true, message: 'Get user successfully', user });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}
+
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const updatedData = req.body;
+    const { success } = await editById(userId, updatedData);
+    if (!success) {
+      req.flash("error_msg", "Cập nhật user không thành công !!!")
+      return;
+    }
+    req.flash("success_msg", "Cập nhật user thành công !!!")
+    return res.redirect('/user');
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}
+
+
+export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove, getUserDetail, updateUser }

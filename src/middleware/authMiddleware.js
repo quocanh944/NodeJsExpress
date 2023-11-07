@@ -29,11 +29,24 @@ const checkFirstLogin = (req, res, next) => {
   if (req.session.user && req.session.user.isFirstLogin) {
     return next(); // Cho phép tiếp tục xử lý yêu cầu
   }
-  // Nếu không thỏa mãn điều kiện, có thể xử lý chuyển hướng hoặc xử lý khác ở đây
-  return res.redirect('/'); // Ví dụ: Chuyển hướng về trang chính
+  return res.redirect('/');
 }
 
-export { isAuthenticated, checkUserActivation, isFirstLogined, checkFirstLogin }
+const authorization = (req, res, next) => {
+  const { user } = req.session;
+
+  if (user && user.role) {
+    if (user.role === "ADMIN") {
+      return next();
+    }
+    return res.redirect('/');
+  }
+}
+
+
+
+
+export { isAuthenticated, checkUserActivation, isFirstLogined, checkFirstLogin, authorization }
 
 
 

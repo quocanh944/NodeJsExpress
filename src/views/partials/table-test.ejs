@@ -1,0 +1,48 @@
+<div id="toolbar">
+  <div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-light btn-lg ">Excel Upload</button>
+    <div class="dropdown-container">
+      <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false"><i class="fa fa-sliders"></i> Advance Search</button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <div class="dropdown-list">
+          <input id="search_input" type="search" placeholder="Search states" class="dropdown-search" />
+          <ul></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<table id="table" data-locale="en-US" data-toolbar="#toolbar" data-search="true" data-show-refresh="false"
+  data-show-toggle="false" data-show-fullscreen="false" data-show-columns="true" data-detail-view="false"
+  data-show-export="false" data-click-to-select="true" data-detail-formatter="detailFormatter"
+  data-minimum-count-columns="2" data-show-pagination-switch="false" data-pagination="true" data-id-field="id"
+  data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-page-list="[10, 25, 50, 100, all]"
+  data-show-footer="false">
+  <thead>
+    <tr>
+      <th data-field="fname" data-sortable="true">First Name</th>
+      <th data-field="lname" data-sortable="true">Last Name</th>
+      <th data-field="type" data-sortable="true">Type</th>
+      <th data-field="phone" data-sortable="true">Phone</th>
+      <th data-field="unit" data-sortable="true">Unit</th>
+      <th data-field="community" data-sortable="true">Community</th>
+      <th data-field="address" data-sortable="true">Address</th>
+      <th data-field="city" data-sortable="true">City</th>
+      <th data-field="state" data-sortable="true">State</th>
+      <th data-field="zip" data-sortable="true">Zip</th>
+      <th data-field="zip" data-sortable="true" data-visible="false">Lease
+        Start Date</th>
+      <th data-field="zip" data-sortable="true" data-visible="false">Lease End
+        Date</th>
+      <th data-field="zip" data-sortable="true" data-visible="false">Date
+        Purchased</th>
+      <th data-formatter="operateFormatter" data-events="operateEvents">
+        Actions
+      </th>
+    </tr>
+  </thead>
+</table>
