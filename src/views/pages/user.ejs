@@ -16,19 +16,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 
+  <link rel="stylesheet" href="./public/stylesheets/style.css">
+
+
   <style>
-    /* Điều chỉnh thanh bên để có độ rộng cố định */
-    #sidebar {
-      width: 250px;
-      min-height: 100vh;
-      /* Đảm bảo sidebar chiếm đủ chiều cao của viewport */
-    }
-
-    /* Đảm bảo nội dung chính không bị sidebar che khuất */
-    #main-content {
-      flex-grow: 1;
-    }
-
     .drawer {
       position: fixed;
       top: 0;
@@ -38,6 +29,7 @@
       background-color: #FFFFFF;
       overflow-y: auto;
       padding: 20px;
+      z-index: 1000;
       box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.3);
       transition: right 0.3s;
     }
@@ -71,6 +63,101 @@
       opacity: 0.7;
       /* Hiệu ứng khi hover */
     }
+
+    /* Main Content Styles */
+    .main-content {
+      height: 100%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Table Styles */
+    .table-bordered tbody tr:hover {
+      background-color: #f9fafb;
+    }
+
+    .table {
+      background-color: #fff;
+    }
+
+    /* Pagination container */
+    .nav-pagination {
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px;
+    }
+
+    /* Pagination list */
+    .pagination {
+      display: flex;
+      list-style: none;
+      padding: 0;
+    }
+
+    /* Pagination items */
+    .page-item {
+      margin: 0 5px;
+    }
+
+    .page-item a {
+      color: #007bff;
+      text-decoration: none;
+      padding: 8px 16px;
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+      display: block;
+    }
+
+    /* Active page */
+    .page-item.active a {
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    /* Disabled page */
+    .page-item.disabled a {
+      color: #6c757d;
+      pointer-events: none;
+      background-color: #fff;
+      border-color: #dee2e6;
+    }
+
+    /* Hover state for links */
+    .page-item a:hover {
+      color: #0056b3;
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+    }
+
+    /* Focus state for links */
+    .page-item a:focus {
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 576px) {
+      .page-item a {
+        padding: 5px 10px;
+        font-size: 0.875rem;
+      }
+    }
+
+    /* Form Styles */
+    .form-control {
+      border-radius: 0.25rem;
+      border: 1px solid #ced4da;
+    }
+
+    .form-control:focus {
+      border-color: #80bdff;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
   </style>
 </head>
 
@@ -80,67 +167,42 @@
       <div id="main" class="flex-grow-1 d-flex flex-column">
         <% include ../partials/header.ejs %>
           <div class="main-content">
-            <button class="btn btn-success m-3" onclick="openDrawer()">Create New User</button>
+            <button class="btn btn-success m-3" onclick="openDrawerForCreate()">Create New User</button>
             <div class="flex-grow-1 p-3 text-dark">
               <!-- Render table here -->
-              <table class="table table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th>Email</th>
-                    <th>Full Name</th>
-                    <th>Role</th>
-                    <th>Gender</th>
-                    <th>Avatar</th>
-                    <th>Phone Number</th>
-                    <th>Birthday</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% users.forEach(user=> { %>
-                    <tr>
-                      <td>
-                        <%= user.email %>
-                      </td>
-                      <td>
-                        <%= user.fullName %>
-                      </td>
-                      <td>
-                        <%= user.role %>
-                      </td>
-                      <td>
-                        <%= user.gender %>
-                      </td>
-                      <td>
-                        <% if(user.avatar) { %>
-                          <img src="<%= user.avatar %>" alt="Avatar" width="50">
-                          <% } else { %>
+              <% include ../partials/userTable.ejs %>
+                <nav aria-label="Page navigation" class="nav-pagination">
+                  <ul class="pagination">
+                    <% if (pagination.page> 1) { %>
+                      <li class="page-item">
+                        <a class="page-link" href="?page=<%= pagination.page - 1 %>" tabindex="-1">Previous</a>
+                      </li>
+                      <% } else { %>
+                        <li class="page-item disabled">
+                          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <% } %>
 
+                          <% for(let i=1; i <=pagination.totalPages; i++) { %>
+                            <li class="page-item <%= i === pagination.page ? 'active' : '' %>">
+                              <a class="page-link" href="?page=<%= i %>">
+                                <%= i %>
+                              </a>
+                            </li>
                             <% } %>
-                      </td>
-                      <td>
-                        <%= user.phoneNumber || '' %>
-                      </td>
-                      <td>
-                        <%= user.birthday || '' %>
-                      </td>
-                      <td>
-                        <span class="badge <%= user.isActive ? 'bg-success' : 'bg-secondary' %>">
-                          <%= user.isActive ? 'Active' : 'Inactive' %>
-                        </span>
-                        <% if(user.isLocked) { %>
-                          <span class="badge bg-danger">Locked</span>
-                          <% } %>
-                      </td>
-                      <td>
-                        <button class="btn btn-success" id="btnEdit">Edit</button>
-                        <button class="btn btn-danger" onclick="deleteUser('<%= user._id %>')">Delete</button>
-                      </td>
-                    </tr>
-                    <% }) %>
-                </tbody>
-              </table>
+
+                              <% if (pagination.page < pagination.totalPages) { %>
+                                <li class="page-item">
+                                  <a class="page-link" href="?page=<%= pagination.page + 1 %>">Next</a>
+                                </li>
+                                <% } else { %>
+                                  <li class="page-item disabled">
+                                    <a class="page-link" href="#">Next</a>
+                                  </li>
+                                  <% } %>
+                  </ul>
+                </nav>
+
             </div>
           </div>
       </div>
@@ -158,21 +220,21 @@
     </div>
 
     <!-- Registration Form -->
-    <form id="registrationForm" action="/user/register" method="post">
-      <!-- Full Name Field -->
-      <div class="mb-3">
-        <label for="fullName" class="form-label">Full Name</label>
-        <input type="text" class="form-control" id="fullName" name="fullName" required>
-      </div>
+    <div class="drawer-content">
+      <form id="registrationForm" action="/user/register" method="post">
+        <div class="mb-3">
+          <label for="fullName" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="fullName" name="fullName" required>
+        </div>
 
-      <!-- Email Field -->
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-      </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
 
-      <button type="submit" class="btn btn-primary">Register</button>
-    </form>
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+    </div>
   </div>
   <!-- Bootstrap JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -189,7 +251,34 @@
   <script src="./public/js/main.js"></script>
 
   <script>
-    function openDrawer() {
+    function openDrawerForCreate() {
+      // Đặt tiêu đề form và nhãn nút
+      document.querySelector('.drawer-header h5').textContent = 'Register New User';
+      document.querySelector('#registrationForm button[type="submit"]').textContent = 'Register';
+
+      // Xóa trường thông tin cũ nếu có
+      document.querySelector('.drawer-content').innerHTML = `
+        <form id="registrationForm" action="/user/register" method="post">
+          <!-- Full Name Field -->
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullName" name="fullName" required>
+          </div>
+
+          <!-- Email Field -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+      `;
+
+      document.querySelector('#registrationForm #fullName').value = '';
+      document.querySelector('#registrationForm #email').value = '';
+
+      // Mở drawer
       document.body.classList.add('drawer-open');
     }
 
@@ -214,6 +303,97 @@
         });
     }
 
+
+    function openEditDrawer(userId) {
+      axios.get(`/user/edit/${userId}`)
+        .then(response => {
+          const user = response.data.user;
+          document.querySelector('.drawer-content').innerHTML = `
+        <form id="editUserForm" data-user-id="${userId}">
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="editEmail" name="email" value="${user.email || ''}" required>
+          </div>
+          <div class="mb-3">
+            <label for="editFullName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="editFullName" name="fullName" value="${user.fullName || ''}" required>
+          </div>
+          <div class="mb-3">
+            <label for="editGender" class="form-label">Gender</label>
+            <select class="form-select" id="editGender" name="gender">
+              <option value="" ${!user.gender ? 'selected' : ''}>Select Gender</option>
+              <option value="male" ${user.gender === 'male' ? 'selected' : ''}>Male</option>
+              <option value="female" ${user.gender === 'female' ? 'selected' : ''}>Female</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="editPhoneNumber" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="editPhoneNumber" name="phoneNumber" value="${user.phoneNumber || ''}">
+          </div>
+          <div class="mb-3">
+            <label for="editBirthday" class="form-label">Birthday</label>
+            <input type="date" class="form-control" id="editBirthday" name="birthday" value="${user.birthday || ''}">
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="editIsActive" name="isActive" ${user.isActive ? 'checked' : ''}>
+            <label class="form-check-label" for="editIsActive">Is Active</label>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="editIsLocked" name="isLocked" ${user.isLocked ? 'checked' : ''}>
+            <label class="form-check-label" for="editIsLocked">Is Locked</label>
+          </div>
+          <div class="mb-3">
+            <label for="editRole" class="form-label">Role</label>
+            <select class="form-select" id="editRole" name="role">
+              <option value="ADMIN" ${user.role === 'ADMIN' ? 'selected' : ''}>Admin</option>
+              <option value="SALE" ${user.role === 'SALE' ? 'selected' : ''}>Sale</option>
+            </select>
+          </div>
+          <button type="submit" id="btnUpdateUser" class="btn btn-primary">Update User</button>
+        </form>
+      `;
+
+          document.querySelector('.drawer-header h5').textContent = 'Edit User';
+          document.body.classList.add('drawer-open');
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const editForm = document.querySelector('#editUserForm');
+
+      // Bắt sự kiện submit
+      editForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Ngăn không cho form submit theo cách thông thường
+
+        const userId = this.getAttribute('data-user-id'); // Lấy ID người dùng
+        const formData = new FormData(this); // Lấy dữ liệu form
+
+        // Bây giờ bạn có thể sử dụng `userId` và `formData` để gửi dữ liệu lên server
+        axios.post(`/user/update/${userId}`, formData)
+          .then(response => {
+            // Xử lý phản hồi sau khi thành công
+            console.log('User updated:', response.data);
+            // Có thể đóng drawer và thông báo cho người dùng tại đây
+          })
+          .catch(error => {
+            console.error('Error updating user:', error);
+          });
+      });
+    });
+
+    function toggleActivate(userId) {
+      const isChecked = document.getElementById('activateSwitch' + userId).checked;
+      // Gửi yêu cầu cập nhật trạng thái active
+    }
+
+    function toggleBlocked(userId) {
+      const isChecked = document.getElementById('blockedSwitch' + userId).checked;
+      // Gửi yêu cầu cập nhật trạng thái blocked
+    }
 
   </script>
 </body>

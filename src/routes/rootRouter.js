@@ -4,8 +4,9 @@ import userRouter from './userRouter.js';
 import customerRouter from './customerRouter.js';
 import orderRouter from './orderRouter.js';
 import productRouter from './productRouter.js';
-import { checkUserActivation, isAuthenticated, isFirstLogined } from '../middleware/authMiddleware.js';
+import { authorization, checkUserActivation, isAuthenticated, isFirstLogined } from '../middleware/authMiddleware.js';
 import accountRouter from './accountRouter.js';
+import cartRouter from './cartRouter.js';
 
 const rootRouter = express.Router();
 
@@ -19,9 +20,8 @@ rootRouter.get('/', isAuthenticated, checkUserActivation, isFirstLogined, (req, 
     const { user } = req.session;
 
     if (user) {
-        if (user.role === 'sale') {
+        if (user.role === 'SALE') {
             res.render('pages/sales', { user });
-
         } else {
             res.render('pages/index', { user });
         }
@@ -34,5 +34,6 @@ rootRouter.use("/user", isAuthenticated, checkUserActivation, isFirstLogined, us
 rootRouter.use("/product", isAuthenticated, checkUserActivation, isFirstLogined, productRouter);
 rootRouter.use("/customer", isAuthenticated, checkUserActivation, isFirstLogined, customerRouter);
 rootRouter.use("/order", isAuthenticated, checkUserActivation, isFirstLogined, orderRouter);
+rootRouter.use("/cart", isAuthenticated, checkUserActivation, isFirstLogined, cartRouter);
 
 export default rootRouter;
