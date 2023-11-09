@@ -21,19 +21,19 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Storage and get a reference to the service
 const storage = getStorage(app);
 
-const uploadFirebase = async (req) => {
+const uploadFirebase = async (file) => {
     try {
         const dateTime = giveCurrentDateTime();
 
-        const storageRef = ref(storage, `files/${req.file.originalname + "_" + dateTime}`);
+        const storageRef = ref(storage, `files/${file.originalname + "_" + dateTime}`);
 
         // Create file metadata including the content type
         const metadata = {
-            contentType: req.file.mimetype,
+            contentType: file.mimetype,
         };
 
         // Upload the file in the bucket storage
-        const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata);
+        const snapshot = await uploadBytesResumable(storageRef, file.buffer, metadata);
         //by using uploadBytesResumable we can control the progress of uploading like pause, resume, cancel
 
         // Grab the public url
@@ -41,13 +41,14 @@ const uploadFirebase = async (req) => {
 
         console.log('File successfully uploaded.');
         return {
+            success: true,
             message: 'file uploaded to firebase storage',
-            name: req.file.originalname,
-            type: req.file.mimetype,
+            name: file.originalname,
+            type: file.mimetype,
             downloadURL: downloadURL
         }
     } catch (error) {
-        return error.message
+        return {success: false, message: error.message}
     }
 };
 
