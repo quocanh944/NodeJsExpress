@@ -2,8 +2,13 @@
 import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
-    barcode: String,
+    barcode: {
+        type: String,
+        index: true,
+        unique: true
+    },
     productName: String,
+    thumbnailUrl: String,
     importPrice: Number,
     retailPrice: Number,
     category: String,
