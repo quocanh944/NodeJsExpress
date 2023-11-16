@@ -159,4 +159,22 @@ const setBlock = async (userId) => {
   return user;
 };
 
+const resendActivationEmail = async (userId) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  if (user.isActive) {
+    throw new Error('User already activated');
+  }
+
+  // Gọi hàm sendActivationEmail
+  const emailSent = await sendActivationEmail(user.email);
+  if (!emailSent) {
+    throw new Error('Failed to send activation email');
+  }
+
+  return { message: 'Activation email resent successfully' };
+}
+
 export { add, getAllUsers, getUserById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock }

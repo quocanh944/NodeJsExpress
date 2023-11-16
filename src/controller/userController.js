@@ -158,5 +158,15 @@ const updateUser = async (req, res) => {
   }
 }
 
+const resendActivationEmail = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const result = await UserService.resendActivationEmail(userId);
+    res.send(result.message);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
 
-export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove, getUserDetail, updateUser }
+
+export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove, getUserDetail, updateUser, resendActivationEmail }
