@@ -8,6 +8,23 @@
       <!-- Loại bỏ danh sách menu -->
     </div>
     <div class="d-flex align-items-center">
+
+      <!-- Thêm phần thông báo ở đây -->
+      <div class="dropdown me-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationDropdown"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Thông báo
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="notificationDropdown">
+          <% notifications.forEach(notification=> { %>
+            <li><a class="dropdown-item" href="#">
+                <%= notification.content %>
+              </a></li>
+            <% }) %>
+        </ul>
+      </div>
+
+      <!-- Phần thông tin người dùng và đăng xuất -->
       <div class="dropdown text-end">
         <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser"
           data-bs-toggle="dropdown" aria-expanded="false">

@@ -6,9 +6,8 @@
       <th>Email</th>
       <th>Full Name</th>
       <th>Role</th>
-      <th>Status</th> <!-- Cột trạng thái hiện tại -->
-      <th>Activate</th> <!-- Thêm cột Activate -->
-      <th>Blocked</th> <!-- Thêm cột Blocked -->
+      <th>Status</th>
+      <th>Blocked</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -34,14 +33,6 @@
               <% } else { %>
                 <span class="badge bg-danger">Not Active</span>
                 <% } %>
-          </td>
-          <!-- Thêm nội dung cho cột Activate với switch toggle -->
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="activateSwitch<%= user._id %>" <%=user.isActive
-                ? 'checked' : '' %>
-              onchange="toggleActivate('<%= user._id %>')">
-            </div>
           </td>
           <!-- Thêm nội dung cho cột Blocked với switch toggle -->
           <td>

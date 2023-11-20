@@ -1,18 +1,22 @@
 import express from 'express';
+import multer from "multer";
 import * as productController from '../controller/productController.js';
 
 const productRouter = express.Router();
 
+const upload = multer({ storage: multer.memoryStorage() });
+const singleUpload = upload.single("image");
 
-productRouter.get('/', async (req, res) => {
-  const products = await productController.getAll();
-  res.render('partials/product', { title: "Quản lý sản phẩm", products });
-});
+productRouter.get("/search", productController.search)
 
-productRouter.post("/add", productController.add)
-productRouter.get("/getAllproduct", productController.getAll)
-productRouter.get("/:id", productController.getById)
-productRouter.put("/:id", productController.editById)
-productRouter.delete("/:id", productController.deleteById)
+productRouter.post('/', function(req, res, next) {
+    singleUpload(req, res, function (err) {
+        if (err) {
+            return res.status(500).json({ error: true, message: err.message });
+        } else {
+            next();
+        }
+    });
+}, productController.create);
 
 export default productRouter;
