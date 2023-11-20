@@ -177,4 +177,10 @@ const resendActivationEmail = async (userId) => {
   return { message: 'Activation email resent successfully' };
 }
 
-export { add, getAllUsers, getUserById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock }
+const createUserNotification = async (userId, content) => {
+  const newNotification = new Notification({ userId, content });
+  await newNotification.save();
+};
+
+
+export { add, getAllUsers, getUserById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock, resendActivationEmail, createUserNotification }

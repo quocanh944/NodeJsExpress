@@ -1,6 +1,6 @@
 // userRouter.js
 import express from 'express';
-import { getListUsers, getUserDetail, resendActivationEmail, updateUser, userRegister, userRemove } from '../controller/userController.js'
+import { getListUsers, getUserDetail, getUserProfile, resendEmail, updateUser, userRegister, userRemove } from '../controller/userController.js'
 
 const userRouter = express.Router();
 
@@ -14,6 +14,8 @@ userRouter.post('/update/:id', updateUser);
 
 userRouter.delete('/delete/:id', userRemove)
 
-userRouter.post('/resend-activation/:userId', resendActivationEmail);
+userRouter.get('/profile/:id', getUserProfile);
+
+userRouter.post('/resend-activation/:userId', resendEmail);
 
 export default userRouter;

@@ -1,5 +1,4 @@
 import config from '../config/config.js';
-import user from '../models/user.js';
 import jwt from 'jsonwebtoken';
 import { add, getAllUsers, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, getUserById } from '../service/userService.js'
 
@@ -158,15 +157,39 @@ const updateUser = async (req, res) => {
   }
 }
 
-const resendActivationEmail = async (req, res) => {
+const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await getUserById(userId);
+    if (!user) {
+      res.status(404).send('User not found');
+    } else {
+      res.render('pages/profile', { user });
+    }
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
+
+const resendEmail = async (req, res) => {
   try {
     const { userId } = req.params;
-    const result = await UserService.resendActivationEmail(userId);
+    const result = await resendActivationEmail(userId);
     res.send(result.message);
   } catch (error) {
     res.status(400).send(error.message);
   }
 };
 
+const notifyAdmin = async (req, res) => {
+  try {
+    const { userId, content } = req.body;
+    await userService.createUserNotification(userId, content);
+    res.status(200).send('Notification sent to admin');
+  } catch (error) {
+    res.status(500).send('Error sending notification');
+  }
+};
 
-export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove, getUserDetail, updateUser, resendActivationEmail }
+
+export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove, getUserDetail, updateUser, resendEmail, getUserProfile, notifyAdmin }
