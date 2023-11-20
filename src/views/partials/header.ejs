@@ -10,19 +10,23 @@
     <div class="d-flex align-items-center">
 
       <!-- Thêm phần thông báo ở đây -->
-      <div class="dropdown me-3">
+      <!-- <div class="dropdown me-3">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationDropdown"
           data-bs-toggle="dropdown" aria-expanded="false">
-          Thông báo
+          <i class="fa-solid fa-bell"></i> Thông báo
         </button>
-        <ul class="dropdown-menu" aria-labelledby="notificationDropdown">
-          <% notifications.forEach(notification=> { %>
-            <li><a class="dropdown-item" href="#">
-                <%= notification.content %>
-              </a></li>
-            <% }) %>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+          <% if (notifications && notifications.length> 0) { %>
+            <% notifications.forEach(notification=> { %>
+              <li><a class="dropdown-item" href="#">
+                  <%= notification.content %>
+                </a></li>
+              <% }) %>
+                <% } else { %>
+                  <li><a class="dropdown-item" href="#">Không có thông báo mới</a></li>
+                  <% } %>
         </ul>
-      </div>
+      </div> -->
 
       <!-- Phần thông tin người dùng và đăng xuất -->
       <div class="dropdown text-end">
