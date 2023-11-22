@@ -4,7 +4,7 @@ import config from '../config/config.js';
 
 const sendActivationEmail = async (email) => {
   try {
-    const token = jwt.sign({ email }, config.secret_key, { expiresIn: '30m' }); 
+    const token = jwt.sign({ email }, config.secret_key, { expiresIn: '1m' }); 
 
     const activationLink = `${config.host}activate/${token}`;
 

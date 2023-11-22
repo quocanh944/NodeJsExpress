@@ -8,6 +8,47 @@
       <!-- Loại bỏ danh sách menu -->
     </div>
     <div class="d-flex align-items-center">
+
+      <div class="dropdown me-3 position-relative">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationDropdown"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-bell"></i>
+          <span class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-notification">
+            <%= notifications.length %>
+          </span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+          <div class="notification-list">
+            <% if (notifications && notifications.length> 0) { %>
+              <% notifications.forEach(notification=> { %>
+                <li>
+                  <div class="notification-item">
+                    <div class="avatar">
+                      <img src="<%= notification.userId.avatar %>" alt="Avatar" width="40" height="40"
+                        class="rounded-circle">
+                    </div>
+                    <div class="notification-content">
+                      <a class="dropdown-item" href="#">
+                        <strong>
+                          <%= notification.userId.fullName %>
+                        </strong>
+                        <%= notification.content %>
+                      </a>
+                    </div>
+                  </div>
+                </li>
+                <% }) %>
+                  <% } else { %>
+                    <li><a class="dropdown-item" href="#">Không có thông báo mới</a></li>
+                    <% } %>
+          </div>
+        </ul>
+      </div>
+
+
+
+
+      <!-- Phần thông tin người dùng và đăng xuất -->
       <div class="dropdown text-end">
         <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser"
           data-bs-toggle="dropdown" aria-expanded="false">

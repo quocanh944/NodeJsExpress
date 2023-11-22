@@ -1,31 +1,28 @@
 import config from '../config/config.js';
-import user from '../models/user.js';
 import jwt from 'jsonwebtoken';
-import { add, getAllUsers, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, getUserById } from '../service/userService.js'
+import { add, getAllUsers, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, getUserById, resendActivationEmail } from '../service/userService.js'
+import { sanitizeAndValidateUserData, userHasPermissionToUpdate } from '../utils/userUtil.js';
+import { createResendRequestNotification } from '../service/notificationService.js';
+
+const getUserView = (req, res) => {
+  res.render('pages/user', {
+    title: "Quản lý người dùng",
+    user: req.session.user
+  });
+}
 
 const getListUsers = async (req, res) => {
-  let page = parseInt(req.query.page) || 1; // Nếu không có trang được cung cấp, mặc định là 1
-
-  let limit = 5; // Đặt số lượng người dùng trên mỗi trang là 10
+  let page = parseInt(req.query.page) || 1; // Lấy trang từ query string hoặc mặc định là 1
+  let limit = parseInt(req.query.limit) || 5; // Lấy số lượng mục trên mỗi trang từ query string hoặc mặc định là 5
 
   try {
-    const { users, currentPage, totalPages, total } = await getAllUsers(page, limit);
-    res.render('pages/user', {
-      title: "Quản lý người dùng",
-      users,
-      pagination: {
-        page: currentPage,
-        limit,
-        total,
-        totalPages
-      },
-      user: req.session.user
-    });
+    const { users, ...otherData } = await getAllUsers(page, limit);
+    res.status(200).json({ users, ...otherData });
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 
 const getSetPasswordView = (req, res) => {
@@ -59,8 +56,6 @@ const activateUser = async (req, res) => {
 
     const result = await activateUserByEmail(email);
 
-    console.log(result)
-
     if (result) {
       req.flash('success_msg', 'Activation successful.');
       return res.redirect(`/login`);
@@ -70,16 +65,49 @@ const activateUser = async (req, res) => {
 
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
-      req.flash('error_msg', 'Activation link has expired.');
+      // Token hết hạn, redirect đến /resend-request
+      console.log("Activation link has expired. Please request a new one.")
+      req.flash('error_msg', 'Activation link has expired. Please request a new one.');
+      return res.redirect(`/resend-request`); // Thay đổi ở đây
     } else if (error instanceof jwt.JsonWebTokenError) {
       req.flash('error_msg', 'Invalid activation link.');
+      return res.redirect(`/activate/${req.body.token}`);
     } else {
       console.error('Activation error', error);
-      req.flash('error_msg', 'Lỗi báo BE');
+      req.flash('error_msg', 'An error occurred.');
+      return res.redirect(`/activate/${req.body.token}`);
     }
-    return res.redirect(`/activate/${req.body.token}`);
+  }
+};
+
+const blockUser = async (req, res) => {
+  console.log("block")
+  try {
+    const userId = req.params.userId;
+    const { isLocked } = req.body;
+
+    let user = await getUserById(userId);
+
+    console.log(user)
+
+    if (user) {
+      const result = await editById({ ...user, isLocked })
+
+      console.log(result)
+
+      if (!result.success) {
+        return res.status(400).send(result);
+      }
+
+      return res.status(200).send(result);
+    }
+
+  } catch (error) {
+    console.error('Error updating user status:', error);
+    res.status(500).json({ success: false, message: 'Lỗi BE' });
   }
 }
+
 
 
 const setUserPassword = async (req, res) => {
@@ -145,18 +173,68 @@ const getUserDetail = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    const updatedData = req.body;
-    const { success } = await editById(userId, updatedData);
-    if (!success) {
-      req.flash("error_msg", "Cập nhật user không thành công !!!")
-      return;
+
+    const updatedData = sanitizeAndValidateUserData(req.body);
+
+    if (!userHasPermissionToUpdate(req.session.user)) {
+      return res.status(403).send("Bạn không có quyền cập nhật thông tin người dùng này.");
     }
-    req.flash("success_msg", "Cập nhật user thành công !!!")
-    return res.redirect('/user');
+
+    const result = await editById(userId, updatedData);
+
+    if (!result.success) {
+      return res.status(400).send(result);
+    }
+
+    return res.status(200).send(result);
   } catch (error) {
-    res.status(500).send(error.message);
+    console.error('Error:', error);
+    return res.status(500).send("Lỗi BE");
   }
 }
 
+const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await getUserById(userId);
+    if (!user) {
+      res.status(404).send('User not found');
+    } else {
+      res.render('pages/profile', { user });
+    }
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
 
-export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove, getUserDetail, updateUser }
+const resendEmail = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    let user = await getUserById(userId)
+
+    if (!user.isActive) {
+      const result = await resendActivationEmail(userId);
+      res.status(200).json({ success: true, message: result.message });
+    } else {
+      res.status(200).json({ success: false, message: "User has been active" });
+    }
+
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+
+const notifyAdmin = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    await createResendRequestNotification(userId);
+    res.status(200).send('Notification sent to admin');
+  } catch (error) {
+    res.status(500).send('Error sending notification');
+  }
+};
+
+
+export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove, getUserDetail, updateUser, resendEmail, getUserProfile, notifyAdmin, getUserView, blockUser }
