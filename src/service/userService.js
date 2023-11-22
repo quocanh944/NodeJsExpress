@@ -8,7 +8,7 @@ const add = async (newUser) => {
 };
 
 
-const getAllUsers = async (page = 1, limit = 10) => {
+const getAllUsers = async (page = 1, limit = 5) => {
   try {
     const users = await User.find()
       .skip((page - 1) * limit)
@@ -31,6 +31,19 @@ const getAllUsers = async (page = 1, limit = 10) => {
 const getUserById = async (id) => {
   try {
     const user = await User.findById(id);
+
+    if (!user) {
+      return null;
+    }
+    return user
+  } catch (error) {
+    res.status(500).json({ error: 'Lỗi khi lấy thông tin người dùng' });
+  }
+};
+
+const getUserByEmail = async (email) => {
+  try {
+    const user = await User.findOne({ email });
 
     if (!user) {
       return null;
@@ -159,6 +172,9 @@ const setBlock = async (userId) => {
   return user;
 };
 
+
+
+
 const resendActivationEmail = async (userId) => {
   const user = await User.findById(userId);
   if (!user) {
@@ -177,10 +193,7 @@ const resendActivationEmail = async (userId) => {
   return { message: 'Activation email resent successfully' };
 }
 
-const createUserNotification = async (userId, content) => {
-  const newNotification = new Notification({ userId, content });
-  await newNotification.save();
-};
 
 
-export { add, getAllUsers, getUserById, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock, resendActivationEmail, createUserNotification }
+
+export { add, getAllUsers, getUserById, getUserByEmail, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock, resendActivationEmail }

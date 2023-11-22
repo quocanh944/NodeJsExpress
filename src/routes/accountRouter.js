@@ -2,6 +2,11 @@ import express from 'express';
 import { activateUser, getSetPasswordView, setUserPassword } from '../controller/userController.js';
 import User from '../models/user.js';
 import { checkFirstLogin, checkUserActivation, isAuthenticated, isFirstLogined } from '../middleware/authMiddleware.js';
+import { getUserByEmail } from '../service/userService.js';
+import notification from '../models/notification.js';
+import NotificationType from '../constant/NotificationType.js';
+import nodemailer from 'nodemailer';
+
 
 const accountRouter = express.Router();
 
@@ -73,6 +78,46 @@ accountRouter.post('/login', async (req, res, next) => {
 accountRouter.get('/user/set-password', checkUserActivation, checkFirstLogin, getSetPasswordView);
 
 accountRouter.post('/user/set-password', checkUserActivation, checkFirstLogin, setUserPassword);
+
+accountRouter.get('/resend-request', (req, res) => {
+  res.render('pages/resend-request')
+})
+
+accountRouter.post('/send-notification', async (req, res) => {
+  let { userEmail, message } = req.body;
+
+  // Cấu hình nodemailer
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'phuvinh113@gmail.com',
+      pass: 'svphbvlurqfbuxzu',
+    },
+  });
+
+  let mailOptions = {
+    from: userEmail,
+    to: 'phuvinh113@gmail.com',
+    subject: 'Thông Báo Từ Người Dùng',
+    text: message
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+
+    let user = await getUserByEmail(userEmail);
+
+    await notification.create({
+      userId: user._id,
+      content: NotificationType.RESEND_ACTIVATION,
+    });
+
+    res.json({ success: true, message: 'Email đã được gửi.' });
+  } catch (error) {
+    console.error('Lỗi gửi email:', error);
+    res.status(500).send('Lỗi gửi email.');
+  }
+});
 
 
 

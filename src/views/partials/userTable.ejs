@@ -1,7 +1,6 @@
-<!-- Render table here -->
-<table class="table table-bordered">
-  <thead class="thead-light">
-    <tr>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr class="bg-dark text-white p-5">
       <th>ID</th>
       <th>Email</th>
       <th>Full Name</th>
@@ -11,46 +10,7 @@
       <th>Actions</th>
     </tr>
   </thead>
-  <tbody>
-    <% let counter=(pagination.page - 1) * pagination.limit; %>
-      <% users.forEach(user=> { %>
-        <tr>
-          <td>
-            <%= ++counter %>
-          </td>
-          <td>
-            <%= user.email %>
-          </td>
-          <td>
-            <%= user.fullName %>
-          </td>
-          <td>
-            <%= user.role %>
-          </td>
-          <td>
-            <% if (user.isActive) { %>
-              <span class="badge bg-success">Active</span>
-              <% } else { %>
-                <span class="badge bg-danger">Not Active</span>
-                <% } %>
-          </td>
-          <!-- Thêm nội dung cho cột Blocked với switch toggle -->
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="blockedSwitch<%= user._id %>" <%=user.isLocked
-                ? 'checked' : '' %>
-              onchange="toggleBlocked('<%= user._id %>')">
-            </div>
-          </td>
-          <td>
-            <button class="btn btn-primary btn-sm mr-2" onclick="openEditDrawer('<%= user.id %>')">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="deleteUser('<%= user._id %>')">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </td>
-        </tr>
-        <% }) %>
+  <tbody id="usersTableBody">
+    <!-- Dữ liệu người dùng sẽ được thêm vào đây bằng JavaScript -->
   </tbody>
 </table>

@@ -1,10 +1,12 @@
 // userRouter.js
 import express from 'express';
-import { getListUsers, getUserDetail, getUserProfile, resendEmail, updateUser, userRegister, userRemove } from '../controller/userController.js'
+import { blockUser, getListUsers, getUserDetail, getUserProfile, getUserView, resendEmail, updateUser, userRegister, userRemove } from '../controller/userController.js'
 
 const userRouter = express.Router();
 
-userRouter.get('/', getListUsers)
+userRouter.get('/', getUserView)
+
+userRouter.get('/api', getListUsers);
 
 userRouter.post('/register', userRegister);
 
@@ -14,8 +16,11 @@ userRouter.post('/update/:id', updateUser);
 
 userRouter.delete('/delete/:id', userRemove)
 
+userRouter.post('/user/toggle-block/:userId', blockUser);
+
 userRouter.get('/profile/:id', getUserProfile);
 
 userRouter.post('/resend-activation/:userId', resendEmail);
+
 
 export default userRouter;
