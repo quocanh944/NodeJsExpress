@@ -1,0 +1,41 @@
+<div class="table-responsive">
+  <table id="productTable" class="table table-striped mt-3">
+    <thead class="thead-dark">
+      <tr class="bg-dark text-white p-5">
+        <th>ID</th>
+        <th>Barcode</th>
+        <th>Product Name</th>
+        <th>Import Price</th>
+        <th>Retail Price</th>
+        <th>Category</th>
+        <th>Inventory</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="productsTableBody">
+      <% if (products) { %>
+        <% products.forEach(function(prod, index) { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td data-search="barcode <%= prod.barcode %>"><%= prod.barcode %></td>
+            <td data-search="name <%= prod.productName %>"><%= prod.productName %></td>
+            <td data-order="<%= prod.importPrice %>"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(prod.importPrice) %></td>
+            <td data-order="<%= prod.retailPrice %>"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(prod.retailPrice) %></td>
+            <td data-search="category <%= prod.category %>"><%= prod.category %></td>
+            <td data-search="inventory <%= prod.inventory %>"><%= prod.inventory %></td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Product Actions">
+                <button type="button" class="btn btn-primary" onclick="openEditDrawer('<%=prod._id%>')">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-danger" onclick="deleteProduct('<%=prod._id%>', '<%= prod.productName %>')">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+</div>

@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
 
 import dotenv from 'dotenv';
 
@@ -24,6 +24,7 @@ const storage = getStorage(app);
 const uploadFirebase = async (file) => {
     try {
         const dateTime = giveCurrentDateTime();
+        console.log(file);
 
         const storageRef = ref(storage, `files/${file.originalname + "_" + dateTime}`);
 
@@ -48,9 +49,24 @@ const uploadFirebase = async (file) => {
             downloadURL: downloadURL
         }
     } catch (error) {
-        return {success: false, message: error.message}
+        console.log("Firebase error: ", error.message);
+        return { success: false, message: error.message }
     }
 };
+
+const refFromURL = (URL) => decodeURIComponent(URL.split('/').pop().split('?')[0])
+
+const deleteImageFromFirebase = async (downloadURL) => {
+    const fileName = refFromURL(downloadURL);
+    const storageRef = ref(storage, fileName);
+    try {
+        await deleteObject(storageRef);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
 
 const giveCurrentDateTime = () => {
     const today = new Date();
@@ -60,5 +76,5 @@ const giveCurrentDateTime = () => {
     return dateTime;
 }
 
-export { uploadFirebase };
+export { uploadFirebase, deleteImageFromFirebase };
 
