@@ -9,6 +9,8 @@ const singleUpload = upload.single("image");
 
 productRouter.get("/search", productController.search)
 
+productRouter.get("/", productController.getProductView)
+
 productRouter.post('/', function (req, res, next) {
     singleUpload(req, res, function (err) {
         if (err) {

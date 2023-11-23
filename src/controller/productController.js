@@ -21,7 +21,9 @@ export const create = async (req, res) => {
     const { barcode, productName, importPrice, retailPrice, category, inventory } = req.body;
     const checkExist = await Product.exists({barcode}); 
     if (checkExist) {
-      return res.status(400).json({ error: true, message: "Duplicate Barcode" });
+      req.flash('msg', `Create product ${productName} failed. Duplicate Barcode.`);
+      req.flash('status', 'Failed');
+      return res.redirect('/product');
     }
     const result = uploadFirebase(req.file)
     if ((await result).downloadURL) {
@@ -34,14 +36,29 @@ export const create = async (req, res) => {
         retailPrice: Number.parseInt(retailPrice),
         thumbnailUrl: (await result).downloadURL
       });
-      const newProd = await product.save();
-      res.status(201).json({ success: true, message: "Success", product: newProd})
+      await product.save();
+      req.flash('msg', `Create product ${productName} successfully.`);
+      req.flash('status', 'Success');
+      return res.redirect('/product');
     } else {
       throw new Error((await res).message)
     }
 
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: true, message: "Internal Server Error" });
+    req.flash('msg', `Create product ${productName} failed.`);
+    req.flash('status', 'Failed');
+    return res.redirect('/product');
   }
+}
+
+export const getProductView = async (req, res) => {
+  const msg = req.flash('msg');
+  const status = req.flash('status');
+  return res.render('pages/product', {
+    title: "Quản lý hàng hóa",
+    user: req.session.user,
+    products: await productService.getAllProducts(),
+    status,
+    msg
+  });
 }

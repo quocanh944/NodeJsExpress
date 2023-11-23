@@ -24,6 +24,7 @@ const storage = getStorage(app);
 const uploadFirebase = async (file) => {
     try {
         const dateTime = giveCurrentDateTime();
+        console.log(file);
 
         const storageRef = ref(storage, `files/${file.originalname + "_" + dateTime}`);
 
@@ -48,6 +49,7 @@ const uploadFirebase = async (file) => {
             downloadURL: downloadURL
         }
     } catch (error) {
+        console.log("Firebase error: ", error.message);
         return {success: false, message: error.message}
     }
 };
