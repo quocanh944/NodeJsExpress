@@ -1,6 +1,6 @@
 import Order from '../models/order.js';
 import Product from '../models/product.js';
-import ProductCount from '../models/productCount.js';
+import CartItem from '../models/cartItem.js';
 
 export const getOrder = async (id) => {
     try {
@@ -33,22 +33,3 @@ export const getOrder = async (id) => {
         throw err;
     }
   };
-
-export const addProductToOrder = async (productId, orderId, quantity) => {
-  try {
-    const productCount = new ProductCount({
-      productId,
-      quantity,
-    });
-    const savedProductCount= await productCount.save();
-
-    const order = await Order.findById(orderId);
-    order.products.push(savedProductCount._id);
-    return true;
-  } catch (err) {
-    console.log(err)
-    throw err;
-  }
-};
-
-  

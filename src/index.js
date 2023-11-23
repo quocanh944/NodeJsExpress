@@ -22,7 +22,7 @@ import user from './models/user.js';
 import customer from './models/customer.js';
 import product from './models/product.js';
 import order from './models/order.js';
-import productCount from './models/productCount.js';
+import cartItem from './models/cartItem.js';
 import notification from './models/notification.js';
 
 // Setup View Engine
