@@ -33,7 +33,7 @@ function loadUsers(page = 1) {
             <td>${user.isActive ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Not Active</span>'}</td>
             <td>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="blockedSwitch${user._id}" ${user.isLocked ? 'checked' : ''} onchange="toggleBlocked(this)">
+                <input class="form-check-input" type="checkbox" id="blockedSwitch=" data-userid=${user._id} ${user.isLocked ? 'checked' : ''} onchange="toggleBlocked(this)">
                 <label class="form-check-label" for="blockedSwitch${user._id}"></label>
               </div>
             </td>
@@ -176,26 +176,61 @@ document.getElementById('confirmDeleteButton').addEventListener('click', functio
   confirmModal.hide();
 });
 
-function toggleBlocked(checkbox) {
-  const isLocked = checkbox.checked;
-  let id = checkbox.id.replace('blockedSwitch', '');
+function toggleBlocked(checkboxElement) {
+  const userId = checkboxElement.dataset.userid;
+  const isLocked = checkboxElement.checked;
+  console.log(userId, isLocked);
 
-  axios.post(`/user/toggle-block/${id}`, {
+  axios.post(`/user/block/${userId}`, { isLocked }, {
     headers: {
       'Content-Type': 'application/json'
-    },
-    body: { isLocked }
+    }
   })
     .then(response => {
       console.log('Status updated:', response.data);
       loadUsers(1);
+      showMessage(response.data.message || 'Trạng thái người dùng đã được cập nhật.');
     })
     .catch(error => {
       console.error('Error updating status:', error);
+      const errorMessage = error.response ? error.response.data.message : 'Có lỗi xảy ra khi cập nhật trạng thái.';
+      showMessage(errorMessage);
     });
+
+
 }
 
+function showMessage(message, duration = 3000) {
+  const notificationContainer = document.getElementById('notificationContainer');
 
+  // Tạo và cấu hình phần tử thông báo
+  const messageElement = document.createElement('div');
+  messageElement.classList.add('notification-message');
+
+  // Thêm icon (ví dụ: icon thông báo)
+  const icon = document.createElement('i');
+  icon.classList.add('fas', 'fa-info-circle', 'notification-icon');
+  messageElement.appendChild(icon);
+
+  // Thêm nội dung thông báo
+  const text = document.createElement('span');
+  text.textContent = message;
+  messageElement.appendChild(text);
+
+  // Thêm thông báo vào container và áp dụng hiệu ứng
+  notificationContainer.appendChild(messageElement);
+  setTimeout(() => {
+    notificationContainer.style.top = '20px'; // Di chuyển thông báo vào màn hình
+  }, 100);
+
+  // Loại bỏ thông báo sau một khoảng thời gian
+  setTimeout(() => {
+    notificationContainer.style.top = '-100px'; // Di chuyển thông báo ra khỏi màn hình
+    setTimeout(() => {
+      notificationContainer.removeChild(messageElement);
+    }, 500); // Đợi cho hiệu ứng hoàn thành trước khi loại bỏ phần tử
+  }, duration);
+}
 
 
 function openEditDrawer(userId) {

@@ -110,6 +110,9 @@
     </div>
   </div>
 
+  <div id="notificationContainer" class="notification-container"></div>
+
+
   <!-- Bootstrap JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
     integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
@@ -122,6 +125,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"
     integrity="sha512-WrdC3CE9vf1nBf58JHepuWT4x24uTacky9fuzw2g/3L9JkihgwZ6Cfv+JGTtNyosOhEmttMtEZ6H3qJWfI7gIQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
+
+    function updateNotificationBadge() {
+      const badge = document.querySelector('.badge-notification');
+      if (unreadNotificationsCount > 0) {
+        badge.textContent = unreadNotificationsCount;
+        badge.style.display = 'inline'; // Hiển thị badge
+      } else {
+        badge.style.display = 'none'; // Ẩn badge nếu không còn thông báo chưa đọc
+      }
+    }
+
+  </script>
   <script src="./public/js/main.js"></script>
   <script src="./public/js/user.js"></script>
 </body>
