@@ -1,4 +1,5 @@
 import Product from '../models/product.js';
+import mongoose from 'mongoose';
 
 export const searchProduct = async (query, limit) => {
   try {
@@ -21,6 +22,21 @@ export const getAllProducts = async () => {
     return products;
   } catch (err) {
     console.log(err);
+    throw err;
+  }
+}
+
+export const getProductById = async (id) => {
+  try {
+    if (!mongoose.isValidObjectId(id)) {
+      throw new Error("Invalid product id: " + id);
+    } 
+    const products = await Product.findOne({_id: id});
+    if (products) {
+      return products;
+    }
+    throw new Error("Not found product id: " + id);
+  } catch (err) {
     throw err;
   }
 }
