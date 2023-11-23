@@ -3,16 +3,16 @@ import User from '../models/user.js';
 import * as cartService from '../service/cartService.js';
 
 export const addProductToCart = async (req, res) => {
-    try {
-        const { user } = req.session
-        const userId = user._id //current userID
-        const productId = req.params.id;
-        const result = await cartService.addProductToCart(userId, productId)
+  try {
+    const { user } = req.session
+    const userId = user._id //current userID
+    const productId = req.params.id;
+    const result = await cartService.addProductToCart(userId ,productId)
 
-        res.status(201).json(result);
-    } catch (err) {
-        res.status(500).json({ err: 'Internal server error' });
-    }
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(500).json({ err: 'Internal server error' });
+  }
 };
 
 export const getCart = async (req, res) => {
@@ -30,11 +30,11 @@ export const getCart = async (req, res) => {
 
 export const editById = async (req, res) => {
     try {
-        const productCountId = req.query.productCountId;
+        const cartItemId = req.query.cartItemId;
         const newQuantity = req.query.quantity;
 
-        const updatedProductCount = await cartService.editProductInCart(productCountId, newQuantity);
-        res.status(200).json(updatedProductCount);
+        const updatedCartItem = await cartService.editProductInCart(cartItemId, newQuantity);
+        res.status(200).json(updatedCartItem);
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: true, message: "Internal Server Error" });
@@ -43,11 +43,11 @@ export const editById = async (req, res) => {
 
 export const deleteById = async (req, res) => {
     try {
-        const productCountId = req.query.productCountId;
+        const cartItemId = req.query.cartItemId;
 
-        const deletedProductCount = await cartService.deleteById(productCountId);
+        const deletedCartItem = await cartService.deleteById(cartItemId);
 
-        res.status(200).json(deletedProductCount);
+        res.status(200).json(deletedCartItem);
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: true, message: "Internal Server Error" });
@@ -58,8 +58,8 @@ export const clearCart = async (req, res) => {
     try {
         const { user } = req.session
         const userId = user._id //current userID
-        const deletedProductCount = await cartService.clearCart(userId)
-        res.status(200).json(deletedProductCount);
+        const deletedCartItem = await cartService.clearCart(userId)
+        res.status(200).json(deletedCartItem);
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: true, message: "Internal Server Error" });
