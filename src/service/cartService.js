@@ -1,27 +1,27 @@
-import ProductCount from '../models/productCount.js';
+import CartItem from '../models/cartItem.js';
 import Product from '../models/product.js';
 
 export const addProductToCart = async (currentUserId, productId) => {
     try {
-        const isProductExist = await ProductCount.findOne({
+        const isProductExist = await CartItem.findOne({
             $and: [
-                { userId: currentUserId },
-                { productId: productId },
+              { userId: currentUserId},
+              { productId: productId},
             ],
-        })
+          })
         if (!isProductExist) {
-            const productCount = new ProductCount({
+            const cartItem = new CartItem({
                 userId: currentUserId,
                 productId,
                 quantity: 1,
             });
-            const result = await productCount.save();
+            const result = await cartItem.save();
             return result;
         } else {
-            const result = await ProductCount.findByIdAndUpdate(isProductExist._id, { quantity: isProductExist.quantity + 1 }, { new: true })
+            const result = await CartItem.findByIdAndUpdate(isProductExist._id, {quantity: isProductExist.quantity + 1}, { new: true })
             return result;
         }
-
+    
     } catch (err) {
         console.log(err)
         throw err;
@@ -30,19 +30,19 @@ export const addProductToCart = async (currentUserId, productId) => {
 
 export const getCart = async (currentUserId) => {
     try {
-        const cart = await ProductCount.find({ userId: currentUserId })
+        const cart = await CartItem.find({ userId: currentUserId})
         let result = [];
-
-        for (const productCount of cart) {
-            const product = await Product.findById(productCount.productId);
+        
+        for (const cartItem of cart) {
+            const product = await Product.findById(cartItem.productId);
             result.push({
                 "barcode": product.barcode,
                 "productName": product.productName,
                 "importPrice": product.importPrice,
                 "retailPrice": product.retailPrice,
                 "category": product.category,
-                "quantity": productCount.quantity,
-                "productCountId": productCount._id,
+                "quantity": cartItem.quantity,
+                "cartItemId": cartItem._id,
             })
         }
         return result;
@@ -52,20 +52,20 @@ export const getCart = async (currentUserId) => {
     }
 }
 
-export const editProductInCart = async (productCountId, quantity) => {
+export const editProductInCart = async (cartItemId, quantity) => {
     try {
-        const updatedProductCount = await ProductCount.findByIdAndUpdate(productCountId, { quantity: quantity }, { new: true })
-        return updatedProductCount;
+        const updatedCartItem = await CartItem.findByIdAndUpdate(cartItemId, {quantity: quantity}, {new: true})
+        return updatedCartItem;
     } catch (err) {
         console.log(err)
         throw err;
     }
 }
 
-export const deleteById = async (productCountId) => {
+export const deleteById = async (cartItemId) => {
     try {
-        const deletedProductCount = await ProductCount.findByIdAndDelete(productCountId)
-        return deletedProductCount;
+        const deletedCartItem = await CartItem.findByIdAndDelete(cartItemId)
+        return deletedCartItem;
     } catch (err) {
         console.log(err)
         throw err;
@@ -74,8 +74,8 @@ export const deleteById = async (productCountId) => {
 
 export const clearCart = async (currentUserId) => {
     try {
-        const deletedProductCount = await ProductCount.deleteMany({ userId: currentUserId })
-        return deletedProductCount;
+        const deletedCartItem = await CartItem.deleteMany({ userId: currentUserId})
+        return deletedCartItem;
     } catch (err) {
         console.log(err)
         throw err;

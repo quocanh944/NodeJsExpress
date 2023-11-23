@@ -1,79 +1,26 @@
-import Customer from '../models/customer.js';
+import * as customService from '../service/customerService.js';
 
-export const add = async (req, res) => {
+export const search = async (req, res) => {
   try {
-    const customerData = req.body;
+    const limit = 5
+    const query = req.query.query || "";
 
-    const customer = new Customer(customerData);
+    const result = await customService.searchCustomerByPhone(query, limit);
 
-    const savedCustomer = await customer.save();
-
-    res.status(201).json(savedCustomer);
-  } catch (error) {
-    console.error('Lỗi khi tạo khách hàng:', error);
-    res.status(500).json({ error: 'Lỗi khi tạo khách hàng' });
+    res.status(201).json(result)
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: true, message: "Internal Server Error" });
   }
-};
+}
 
-export const getAll = async (req, res) => {
-    try {
-      const customer = await Customer.find()
-      if (!customer) {
-        return res.status(404).json({ error: 'Không tìm thấy khách hàng nào' });
-      }
-  
-      res.status(200).json(customer);
-    } catch (error) {
-      console.error('Lỗi khi đọc thông tin khách hàng:', error);
-      res.status(500).json({ error: 'Lỗi khi đọc thông tin khách hàng' });
-    }
-  };
-
-export const getById = async (req, res) => {
+export const getByPhone = async (req, res) => {
   try {
-    const customerId = req.params.id
-    const customer = await Customer.findById(customerId);
-
-    if (!customer) {
-      return res.status(404).json({ error: 'Không tìm thấy khách hàng' });
-    }
-    res.status(200).json(customer);
-  } catch (error) {
-    console.error('Lỗi khi lấy thông tin khách hàng:', error);
-    res.status(500).json({ error: 'Lỗi khi lấy thông tin khách hàng' });
+    const phone = req.query.phone || "";
+    const customer = await customService.getCustomerByPhone(phone);
+    res.status(200).json(customer)
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
-};
-
-export const editById = async (req, res) => {
-  try {
-    const customerId = req.params.id;
-    const updateData = req.body;
-
-    const updatedCustomer = await Customer.findByIdAndUpdate(customerId, updateData, { new: true });
-
-    if (!updatedCustomer) {
-      return res.status(404).json({ error: 'Không tìm thấy khách hàng' });
-    }
-
-    res.status(200).json(updatedCustomer);
-  } catch (error) {
-    console.error('Lỗi khi cập nhật khách hàng:', error);
-    res.status(500).json({ error: 'Lỗi khi cập nhật khách hàng' });
-  }
-};
-
-export const deleteById = async (req, res) => {
-    try {
-      const customerId = req.params.id;
-      const deletedCustomer = await Customer.findByIdAndRemove(customerId);
-  
-      if (!deletedCustomer) {
-        return res.status(404).json({ error: 'Không tìm thấy khách hàng' });
-      }
-
-      res.status(204).send();
-    } catch (error) {
-      console.error('Lỗi khi xóa khách hàng:', error);
-      res.status(500).json({ error: 'Lỗi khi xóa khách hàng' });
-    }
-  };
+}
