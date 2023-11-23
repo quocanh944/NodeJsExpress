@@ -1,8 +1,9 @@
 import config from '../config/config.js';
 import jwt from 'jsonwebtoken';
-import { add, getAllUsers, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, getUserById, resendActivationEmail } from '../service/userService.js'
+import { add, getAllUsers, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, getUserById, resendActivationEmail, toggleUserBlock } from '../service/userService.js'
 import { sanitizeAndValidateUserData, userHasPermissionToUpdate } from '../utils/userUtil.js';
 import { createResendRequestNotification } from '../service/notificationService.js';
+import user from '../models/user.js';
 
 const getUserView = (req, res) => {
   res.render('pages/user', {
@@ -81,33 +82,23 @@ const activateUser = async (req, res) => {
 };
 
 const blockUser = async (req, res) => {
-  console.log("block")
   try {
     const userId = req.params.userId;
     const { isLocked } = req.body;
 
-    let user = await getUserById(userId);
+    const result = await toggleUserBlock(userId, isLocked);
 
-    console.log(user)
-
-    if (user) {
-      const result = await editById({ ...user, isLocked })
-
-      console.log(result)
-
-      if (!result.success) {
-        return res.status(400).send(result);
-      }
-
-      return res.status(200).send(result);
+    if (!result.success) {
+      return res.status(404).json(result);
     }
+
+    return res.status(200).json(result);
 
   } catch (error) {
     console.error('Error updating user status:', error);
-    res.status(500).json({ success: false, message: 'Lỗi BE' });
+    res.status(500).json({ success: false, message: 'Lỗi BE', data: null });
   }
-}
-
+};
 
 
 const setUserPassword = async (req, res) => {

@@ -4,10 +4,11 @@ import userRouter from './userRouter.js';
 import customerRouter from './customerRouter.js';
 import orderRouter from './orderRouter.js';
 import productRouter from './productRouter.js';
-import { authorization, checkUserActivation, isAuthenticated, isFirstLogined } from '../middleware/authMiddleware.js';
+import { checkUserActivation, isAuthenticated, isFirstLogined } from '../middleware/authMiddleware.js';
 import accountRouter from './accountRouter.js';
 import cartRouter from './cartRouter.js';
 import { fetchNotifications } from '../middleware/notificationMiddleware.js';
+import notificationRouter from './notificationRouter.js';
 
 const rootRouter = express.Router();
 
@@ -34,5 +35,6 @@ rootRouter.use("/product", isAuthenticated, checkUserActivation, isFirstLogined,
 rootRouter.use("/customer", isAuthenticated, checkUserActivation, isFirstLogined, fetchNotifications, customerRouter);
 rootRouter.use("/order", isAuthenticated, checkUserActivation, isFirstLogined, fetchNotifications, orderRouter);
 rootRouter.use("/cart", isAuthenticated, checkUserActivation, isFirstLogined, fetchNotifications, cartRouter);
+rootRouter.use("/notification", isAuthenticated, checkUserActivation, isFirstLogined, fetchNotifications, notificationRouter);
 
 export default rootRouter;

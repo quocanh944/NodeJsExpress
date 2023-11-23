@@ -16,7 +16,7 @@ userRouter.post('/update/:id', updateUser);
 
 userRouter.delete('/delete/:id', userRemove)
 
-userRouter.post('/user/toggle-block/:userId', blockUser);
+userRouter.post('/block/:userId', blockUser);
 
 userRouter.get('/profile/:id', getUserProfile);
 

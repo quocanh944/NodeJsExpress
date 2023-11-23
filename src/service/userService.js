@@ -31,15 +31,15 @@ const getAllUsers = async (page = 1, limit = 5) => {
 const getUserById = async (id) => {
   try {
     const user = await User.findById(id);
-
     if (!user) {
       return null;
     }
-    return user
+    return user;
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi khi lấy thông tin người dùng' });
+    throw new Error('Lỗi khi lấy thông tin người dùng');
   }
 };
+
 
 const getUserByEmail = async (email) => {
   try {
@@ -194,6 +194,25 @@ const resendActivationEmail = async (userId) => {
 }
 
 
+const toggleUserBlock = async (userId, isLocked) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { isLocked: isLocked },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return { success: false, message: 'User not found', data: null };
+    }
+
+    return { success: true, message: 'User updated successfully', data: updatedUser };
+  } catch (error) {
+    throw error;
+  }
+};
 
 
-export { add, getAllUsers, getUserById, getUserByEmail, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock, resendActivationEmail }
+
+
+export { add, getAllUsers, getUserById, getUserByEmail, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock, resendActivationEmail, toggleUserBlock }

@@ -148,3 +148,29 @@ table.table tbody tr:hover {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
+
+.notification-container {
+  position: fixed;
+  top: -100px;
+  /* Đặt ban đầu ngoài màn hình */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  transition: top 0.5s ease;
+  /* Hiệu ứng transition */
+}
+
+.notification-message {
+  display: inline-flex;
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.notification-icon {
+  margin-right: 10px;
+}
+
