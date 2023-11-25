@@ -29,6 +29,22 @@ export const getProductById = async (req, res) => {
   }
 }
 
+export const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params
+    const result = await productService.deleteProductById(id);
+
+    req.flash('msg', `Delete product successfully.`);
+    req.flash('status', 'Success');
+    return res.redirect('/product');
+  } catch (err) {
+    console.log("Delete Product Error: ", err);
+    req.flash('msg', `Delete product failed.`);
+    req.flash('status', 'Failed');
+    return res.redirect('/product');
+  }
+}
+
 export const create = async (req, res) => {
   const { barcode, productName, importPrice, retailPrice, category, inventory } = req.body;
   try {

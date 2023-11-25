@@ -40,3 +40,18 @@ export const getProductById = async (id) => {
     throw err;
   }
 }
+
+export const deleteProductById = async (id) => {
+  try {
+    if (!mongoose.isValidObjectId(id)) {
+      throw new Error("Invalid product id: " + id);
+    } 
+    const products = await Product.deleteOne({_id: id});
+    if (products) {
+      return products;
+    }
+    throw new Error("Not found product id: " + id);
+  } catch (err) {
+    throw err;
+  }
+}

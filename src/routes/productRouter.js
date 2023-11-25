@@ -23,6 +23,8 @@ productRouter.post("/edit/:id", function (req, res, next) {
     });
 }, productController.edit)
 
+productRouter.post("/delete/:id", productController.deleteProduct)
+
 productRouter.post('/', function (req, res, next) {
     singleUpload(req, res, function (err) {
         if (err) {
