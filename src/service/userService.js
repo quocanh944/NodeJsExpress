@@ -8,20 +8,10 @@ const add = async (newUser) => {
 };
 
 
-const getAllUsers = async (page = 1, limit = 5) => {
+const getAllUsers = async () => {
   try {
-    const users = await User.find()
-      .skip((page - 1) * limit)
-      .limit(limit);
-    const total = await User.countDocuments();
-    const totalPages = Math.ceil(total / limit);
-
-    return {
-      users,
-      currentPage: page,
-      totalPages,
-      total
-    };
+    const users = await User.find();
+    return users || [];
   } catch (error) {
     throw error;
   }

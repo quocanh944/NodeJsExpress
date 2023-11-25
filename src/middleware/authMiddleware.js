@@ -43,10 +43,20 @@ const authorization = (req, res, next) => {
   }
 }
 
+const checkUserBlocked = (req, res, next) => {
+  const { user } = req.session;
+
+  if (user && user.isLocked) {
+    return res.status(403).send('Your account is blocked. Please contact the administrator.');
+  }
+
+  next();
+}
 
 
 
-export { isAuthenticated, checkUserActivation, isFirstLogined, checkFirstLogin, authorization }
+
+export { isAuthenticated, checkUserActivation, isFirstLogined, checkFirstLogin, authorization, checkUserBlocked }
 
 
 
