@@ -1,11 +1,12 @@
-import * as customService from '../service/customerService.js';
+import customer from '../models/customer.js';
+import * as customerService from '../service/customerService.js';
 
-export const search = async (req, res) => {
+const search = async (req, res) => {
   try {
     const limit = 5
     const query = req.query.query || "";
 
-    const result = await customService.searchCustomerByPhone(query, limit);
+    const result = await customerService.searchCustomerByPhone(query, limit);
 
     res.status(201).json(result)
   } catch (err) {
@@ -14,13 +15,51 @@ export const search = async (req, res) => {
   }
 }
 
-export const getByPhone = async (req, res) => {
+const getByPhone = async (req, res) => {
   try {
     const phone = req.query.phone || "";
-    const customer = await customService.getCustomerByPhone(phone);
+    const customer = await customerService.getCustomerByPhone(phone);
     res.status(200).json(customer)
   } catch (err) {
     console.log(err);
     throw err;
   }
 }
+
+const getCustomerView = (req, res) => {
+  res.render('pages/customer', {
+    title: "Quản lý người dùng",
+    user: req.session.user
+  });
+}
+
+const getAllCustomers = async (req, res) => {
+  try {
+    const customers = await customerService.getAllCustomers();
+    res.status(200).json(customers);
+  } catch (error) {
+    console.error('Error getting all customers:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+const getCustomerById = async (req, res) => {
+  const customerId = req.params.customerId;
+
+  try {
+    const customer = await customerService.getCustomerById(customerId);
+
+    if (!customer) {
+      return res.status(404).send('Customer not found');
+    }
+
+    res.status(200).json(customer);
+  } catch (error) {
+    console.error('Error getting customer by ID:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView }

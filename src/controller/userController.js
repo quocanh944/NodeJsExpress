@@ -13,16 +13,14 @@ const getUserView = (req, res) => {
 }
 
 const getListUsers = async (req, res) => {
-  let page = parseInt(req.query.page) || 1; // Lấy trang từ query string hoặc mặc định là 1
-  let limit = parseInt(req.query.limit) || 5; // Lấy số lượng mục trên mỗi trang từ query string hoặc mặc định là 5
-
   try {
-    const { users, ...otherData } = await getAllUsers(page, limit);
-    res.status(200).json({ users, ...otherData });
+    const users = await getAllUsers();
+    res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 
 
