@@ -119,6 +119,12 @@
     const fullName = document.getElementById('fullName');
     const address = document.getElementById('address');
     const checkoutButton = document.getElementById('checkoutButton');
+    const amountReceived = document.getElementById('amountReceived')
+    const changeAmount = document.getElementById('changeAmount')
+
+    var cartItemIds = [];
+    var customerId_;
+
 
     window.onload = function() {
       productSearchResults.style.width = productSearchInput.clientWidth + "px"
@@ -211,6 +217,7 @@
       fetch(`/customer/getByPhone?phone=${phone}`)
             .then(response => response.json())
             .then(data => {
+                saleId = data._id
                 phoneNumber.value = data.phoneNumber;
                 fullName.value = data.fullName;
                 address.value = data.address;
@@ -272,7 +279,8 @@ function displayCart(data) {
     
     let totalAmount = 0;
     data.forEach(item => {
-      totalAmount += item.retailPrice * item.quantity;
+        cartItemIds.push(item.cartItemId)
+        totalAmount += item.retailPrice * item.quantity;
 
         const listItem = document.createElement('div');
         listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
@@ -390,8 +398,35 @@ function displayCart(data) {
     updateTotalAmount(data);
     calculateFinalAmount();
 }
+  checkoutButton.addEventListener('click', function() {
+    const data = {
+      customerId: customerId_,
+      cartItemIds: cartItemIds,
+      totalAmount: totalAmountEl.value,
+      moneyReceived: amountReceived.value,
+      moneyBack: changeAmount.value
+    };
 
-checkoutButton.onClick
+    fetch('order/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Yêu cầu không thành công');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Thành công:', data);
+    })
+    .catch((error) => {
+      console.error('Có lỗi xảy ra:', error);
+    });
+  });
 
 
 </script>
