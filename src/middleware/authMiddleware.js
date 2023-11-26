@@ -32,16 +32,34 @@ const checkFirstLogin = (req, res, next) => {
   return res.redirect('/');
 }
 
-const authorization = (req, res, next) => {
-  const { user } = req.session;
+const authorization = (allowedRoles) => {
+  return (req, res, next) => {
+    const { user } = req.session;
 
-  if (user && user.role) {
-    if (user.role === "ADMIN") {
+    if (user && allowedRoles.includes(user.role)) {
       return next();
     }
-    return res.redirect('/');
-  }
-}
+
+    if (user && user.role === 'SALE') {
+      return res.redirect('/sale-specific-page');
+    }
+
+    return res.redirect('/login');
+  };
+};
+
+const requireRole = (roles) => {
+  return (req, res, next) => {
+    const { user } = req.session;
+
+    if (user && roles.includes(user.role)) {
+      return next();
+    }
+
+    return res.status(403).send('Access Denied: You do not have permission to access this page.');
+  };
+};
+
 
 const checkUserBlocked = (req, res, next) => {
   const { user } = req.session;
@@ -56,7 +74,7 @@ const checkUserBlocked = (req, res, next) => {
 
 
 
-export { isAuthenticated, checkUserActivation, isFirstLogined, checkFirstLogin, authorization, checkUserBlocked }
+export { isAuthenticated, checkUserActivation, isFirstLogined, checkFirstLogin, authorization, checkUserBlocked, requireRole }
 
 
 

@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import { add, getAllUsers, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, getUserById, resendActivationEmail, toggleUserBlock } from '../service/userService.js'
 import { sanitizeAndValidateUserData, userHasPermissionToUpdate } from '../utils/userUtil.js';
 import { createResendRequestNotification } from '../service/notificationService.js';
-import user from '../models/user.js';
 
 const getUserView = (req, res) => {
   res.render('pages/user', {

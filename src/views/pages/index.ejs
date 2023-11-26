@@ -49,17 +49,6 @@
 
   <script>
     let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
-
-    function updateNotificationBadge() {
-      const badge = document.querySelector('.badge-notification');
-      if (unreadNotificationsCount > 0) {
-        badge.textContent = unreadNotificationsCount;
-        badge.style.display = 'inline'; // Hiển thị badge
-      } else {
-        badge.style.display = 'none'; // Ẩn badge nếu không còn thông báo chưa đọc
-      }
-    }
-
   </script>
   <script src="./public/js/main.js"></script>
 </body>

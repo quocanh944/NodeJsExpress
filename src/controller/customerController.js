@@ -1,4 +1,3 @@
-import customer from '../models/customer.js';
 import * as customerService from '../service/customerService.js';
 
 const search = async (req, res) => {
@@ -38,10 +37,10 @@ const getAllCustomers = async (req, res) => {
     const customers = await customerService.getAllCustomers();
     res.status(200).json(customers);
   } catch (error) {
-    console.error('Error getting all customers:', error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 
 const getCustomerById = async (req, res) => {

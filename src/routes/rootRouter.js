@@ -4,7 +4,7 @@ import userRouter from './userRouter.js';
 import customerRouter from './customerRouter.js';
 import orderRouter from './orderRouter.js';
 import productRouter from './productRouter.js';
-import { checkUserActivation, checkUserBlocked, isAuthenticated, isFirstLogined } from '../middleware/authMiddleware.js';
+import { checkUserActivation, checkUserBlocked, isAuthenticated, isFirstLogined, requireRole } from '../middleware/authMiddleware.js';
 import accountRouter from './accountRouter.js';
 import cartRouter from './cartRouter.js';
 import { fetchNotifications } from '../middleware/notificationMiddleware.js';
@@ -30,11 +30,11 @@ rootRouter.get('/', isAuthenticated, checkUserActivation, isFirstLogined, checkU
     }
 });
 
-rootRouter.use("/user", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, userRouter);
-rootRouter.use("/product", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, productRouter);
-rootRouter.use("/customer", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, customerRouter);
-rootRouter.use("/order", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, orderRouter);
-rootRouter.use("/cart", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, cartRouter);
-rootRouter.use("/notification", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, notificationRouter);
+rootRouter.use("/user", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN']), userRouter);
+rootRouter.use("/product", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), productRouter);
+rootRouter.use("/customer", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), customerRouter);
+rootRouter.use("/order", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), orderRouter);
+rootRouter.use("/cart", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['SALE']), cartRouter);
+rootRouter.use("/notification", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN']), notificationRouter);
 
 export default rootRouter;

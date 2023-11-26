@@ -41,50 +41,6 @@ app.use(session({
 
 app.use(flash());
 
-// Tạo một vài khách hàng mẫu
-const customer1 = new customer({
-  phoneNumber: '123456789',
-  fullName: 'John Doe',
-  address: '123 Main St'
-});
-
-const customer2 = new customer({
-  phoneNumber: '987654321',
-  fullName: 'Jane Doe',
-  address: '456 Elm St'
-});
-
-// Lưu khách hàng vào cơ sở dữ liệu
-customer1.save();
-customer2.save();
-
-// Tạo một vài đơn hàng mẫu
-const order1 = new order({
-  saleId: '6544fac3edf9c5474e9a7b41', // Thay thế với ID thực tế
-  customerId: "6561f58ac87b8faaaf2d442e",
-  products: ['655f1fd2362185af228321c9', '655f22c3362185af228321d9'], // Thay thế với các ID sản phẩm thực tế
-  totalAmount: 100,
-  moneyReceived: 100,
-  moneyBack: 0,
-  purchaseDate: new Date()
-});
-
-const order2 = new order({
-  saleId: '6540e5a08c25bab42dc4d067', // Thay thế với ID thực tế
-  customerId: customer2._id,
-  products: ['655f24fc8f445911006febbe', '655f28ce404ab5f48ecb1e93'], // Thay thế với các ID sản phẩm thực tế
-  totalAmount: 200,
-  moneyReceived: 200,
-  moneyBack: 0,
-  purchaseDate: new Date()
-});
-
-// // Lưu đơn hàng vào cơ sở dữ liệu
-order1.save();
-order2.save();
-
-
-
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');

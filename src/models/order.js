@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const orderSchema = new mongoose.Schema({
   saleId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer' },
-  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CartItem' }],
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
   totalAmount: Number,
   moneyReceived: Number,
   moneyBack: Number,

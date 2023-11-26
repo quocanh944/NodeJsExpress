@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from "multer";
 import * as productController from '../controller/productController.js';
+import { requireRole } from '../middleware/authMiddleware.js';
 
 const productRouter = express.Router();
 
@@ -13,7 +14,7 @@ productRouter.get("/", productController.getProductView)
 
 productRouter.get("/:id", productController.getProductById)
 
-productRouter.post("/edit/:id", function (req, res, next) {
+productRouter.post("/edit/:id", requireRole(['ADMIN']), function (req, res, next) {
     singleUpload(req, res, function (err) {
         if (err) {
             return res.status(500).json({ error: true, message: err.message });
@@ -23,9 +24,9 @@ productRouter.post("/edit/:id", function (req, res, next) {
     });
 }, productController.edit)
 
-productRouter.post("/delete/:id", productController.deleteProduct)
+productRouter.post("/delete/:id", requireRole(['ADMIN']), productController.deleteProduct)
 
-productRouter.post('/', function (req, res, next) {
+productRouter.post('/', requireRole(['ADMIN']), function (req, res, next) {
     singleUpload(req, res, function (err) {
         if (err) {
             return res.status(500).json({ error: true, message: err.message });

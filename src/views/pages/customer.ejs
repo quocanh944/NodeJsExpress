@@ -41,23 +41,22 @@
 
   <link rel="stylesheet" href="./public/stylesheets/style.css">
 
-  <link rel="stylesheet" href="./public/stylesheets/user.css">
+  <link rel="stylesheet" href="./public/stylesheets/customer.css">
 </head>
 
 <body>
-  <div id="someElement" data-resend-activation="<%= resendActivationRequestExists %>"></div>
   <div class="d-flex h-100 text-white">
     <% include ../partials/sidebar.ejs %>
       <div id="main" class="flex-grow-1 d-flex flex-column">
         <% include ../partials/header.ejs %>
           <div class="main-content">
-            <button class="btn btn-success m-3" onclick="openDrawerForCreate()">Create New User</button>
+            <button class="btn btn-success m-3" onclick="openDrawerForCreate()">Create New Customer</button>
             <div class="flex-grow-1 p-3 text-dark">
               <!-- Render table here -->
               <div class="spinner-border" role="status">
                 <span class="sr-only">Loading...</span>
               </div>
-              <% include ../partials/userTable.ejs %>
+              <% include ../partials/customerTable.ejs %>
                 <nav aria-label="Page navigation" class="nav-pagination">
                   <ul class="pagination" id="pagination">
                     <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
@@ -67,77 +66,6 @@
           </div>
       </div>
   </div>
-
-  <!-- The Drawer -->
-  <div id="userDrawer" class="drawer">
-    <!-- Drawer Header -->
-    <div class="drawer-header">
-      <h5 class="">Register New User</h5>
-      <!-- Close button icon -->
-      <button onclick="closeDrawer()" class="btn-close-icon">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <!-- Registration Form -->
-    <div class="drawer-content mt-3">
-      <form id="registrationForm" action="/user/register" method="post">
-        <div class="mb-3">
-          <label for="fullName" class="form-label">Full Name</label>
-          <input type="text" class="form-control" id="fullName" name="fullName" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Register</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Resend Activation Email -->
-  <div class="modal fade" id="resendEmailModal" tabindex="-1" aria-labelledby="resendEmailModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="resendEmailModalLabel">Kích Hoạt Email</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Nội dung thông báo sẽ được thêm vào đây thông qua JavaScript -->
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Xác Nhận Xóa -->
-  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="confirmDeleteModalLabel">Xác Nhận Xóa</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Bạn có chắc chắn muốn xóa người dùng này không?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-danger" id="confirmDeleteButton">Xóa</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="notificationContainer" class="notification-container"></div>
-
 
   <!-- Bootstrap JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -158,7 +86,7 @@
     let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
   </script>
   <script src="./public/js/main.js"></script>
-  <script src="./public/js/user.js"></script>
+  <script src="./public/js/customer.js"></script>
 </body>
 
 </html>
