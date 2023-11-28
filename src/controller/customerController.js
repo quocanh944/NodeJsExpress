@@ -61,4 +61,18 @@ const getCustomerById = async (req, res) => {
 };
 
 
-export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView }
+const userPreview = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    
+  } catch (error) {
+
+  }
+
+  console.log(id)
+
+  res.status(200).send(id)
+}
+
+export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView, userPreview }

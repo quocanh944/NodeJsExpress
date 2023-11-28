@@ -32,7 +32,12 @@ function loadCustomers() {
                 <td>${customer.address}</td>
                 <td>
                   <!-- Thêm các nút hành động ở đây -->
-                  <button onclick="viewCustomerDetails('${customer._id}')" class="btn btn-primary">View</button>
+                  <button onclick="showPreview('${customer._id}')" class="btn btn-dark text-white">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                  <button onclick="viewCustomerDetails('${customer._id}')" class="btn btn-primary">
+                    <i class="fa fa-angle-double-right"></i>
+                  </button>
                 </td>
               </tr>
           `;
@@ -42,12 +47,23 @@ function loadCustomers() {
         searching: true,
         ordering: true,
         columnDefs: [
-          { orderable: false, targets: 6 }
+          { orderable: false, targets: 4 }
         ]
       });
       hideSpinner()
     })
     .catch(error => console.error('Error loading customers:', error));
+}
+
+function showPreview(id) {
+
+  axios.get(`/customer/preview/${id}`)
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 function viewCustomerDetails(id) {

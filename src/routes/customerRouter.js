@@ -13,4 +13,6 @@ customerRouter.get("/search", customerController.search)
 
 customerRouter.get("/getByPhone", customerController.getByPhone)
 
+customerRouter.get("/preview/:id", customerController.userPreview)
+
 export default customerRouter;

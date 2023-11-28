@@ -43,7 +43,6 @@ navLinks.forEach((link) => {
 });
 
 
-
 function markAsRead(element) {
   const notificationId = element.getAttribute('data-notification-id');
 
