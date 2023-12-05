@@ -8,14 +8,14 @@ import * as orderService from '../service/orderService.js';
 export const addOrder = async (req, res) => {
     try {
         
-      const { customerId, cartItemIds, totalAmount, moneyReceived, moneyBack } = req.body;
+      const { customerId, products, totalAmount, moneyReceived, moneyBack } = req.body;
       const { user } = req.session
       const saleId = user._id //current userID
   
       const newOrder = new Order({
         saleId,
         customerId, 
-        products: cartItemIds,
+        products,
         totalAmount, 
         moneyReceived, 
         moneyBack 
