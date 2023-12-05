@@ -1,0 +1,72 @@
+:root {
+    --main-bg-color: #f9f9f9;
+    --main-border-color: #ddd;
+    --main-btn-color: #28a745;
+    --font-main: Arial, sans-serif;
+    --color-primary: #007bff;
+    --color-secondary: #333;
+}
+
+body {
+    font-family: var(--font-main);
+}
+
+.card {
+    background-color: var(--main-bg-color);
+    border: 1px solid var(--main-border-color);
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.btn-success {
+    background-color: var(--main-btn-color);
+    border-color: var(--main-btn-color);
+}
+
+#checkoutButton {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.1em;
+}
+
+.container-fluid {
+    padding: 15px;
+}
+
+h2 {
+    color: var(--color-primary);
+    margin-bottom: 20px;
+}
+
+.money input {
+    font-family: var(--font-main);
+    font-size: 16px;
+    color: #000;
+    border: none;
+    border-bottom: 1px solid #000;
+    padding: 5px 10px;
+    width: 200px;
+    text-align: right;
+    border-radius: 0px;
+}
+
+section.col-md-8,
+section.col-md-4 {
+    position: relative;
+}
+
+#productSearchResults,
+#customerSearchResults {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    z-index: 10;
+}
+
+#cart {
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
