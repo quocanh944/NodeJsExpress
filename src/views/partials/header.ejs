@@ -1,11 +1,10 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <!-- Loại bỏ danh sách menu -->
     </div>
     <div class="d-flex align-items-center">
 
@@ -60,12 +59,98 @@ F
           </div>
         </ul>
       </div>
+      <div class="dropdown text-end">
+        <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://i.pravatar.cc/300" alt="avatar" width="32" height="32" class="rounded-circle me-2">
+          <strong>
+            <%= user.username %>
+          </strong>
+        </a>
+        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
+          <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><button class="dropdown-item" id="logoutButton">Đăng xuất</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav> -->
 
 
 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- Toggler button for mobile view -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <!-- Navbar content for larger screens -->
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <!-- Menus (removed for brevity) -->
 
-      <!-- Phần thông tin người dùng và đăng xuất -->
+    </div>
+
+    <div class="d-flex align-items-center">
+      <!-- Notification Dropdown -->
+      <div class="dropdown me-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationDropdown"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-bell"></i>
+          <span class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-notification" <% if
+            (notifications.filter(notification=> !notification.isRead).length === 0) { %> style="display: none;" <% } %>
+              >
+              <%= notifications.filter(notification=> !notification.isRead).length %>
+          </span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+          <div class="notification-list">
+            <% if (notifications && notifications.length> 0) { %>
+              <% notifications.forEach(notification=> { %>
+                <li class="notification-item <%= notification.isRead ? 'read' : '' %>">
+                  <div class="avatar">
+                    <img src="<%= notification.userId.avatar %>" alt="Avatar" width="40" height="40"
+                      class="rounded-circle">
+                  </div>
+                  <div class="notification-content">
+                    <a class="dropdown-item" href="#">
+                      <strong>
+                        <%= notification.userId.fullName %>
+                      </strong>
+                      <%= notification.content %>
+                    </a>
+                    <div class="notification-actions">
+                      <% if (!notification.isRead) { %>
+                        <button class="btn btn-sm btn-primary" data-notification-id="<%= notification._id %>"
+                          onclick="markAsRead(this)">
+                          <i class="fas fa-check-circle"></i>
+                        </button>
+                        <% } %>
+                          <button class="btn btn-sm btn-danger" data-notification-id="<%= notification._id %>"
+                            onclick="deleteNotification(this)">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                    </div>
+                  </div>
+                </li>
+                <% }) %>
+                  F
+                  <% } else { %>
+                    <li><a class="dropdown-item" href="#">Không có thông báo mới</a></li>
+                    <% } %>
+                      <li class="text-center">
+                        <button class="btn btn-link" style="text-decoration: none;"><i class="fas fa-times-circle"></i>
+                          Xóa tất cả</button>
+                      </li>
+          </div>
+        </ul>
+      </div>
+
+      <!-- User Info Dropdown -->
       <div class="dropdown text-end">
         <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser"
           data-bs-toggle="dropdown" aria-expanded="false">

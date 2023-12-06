@@ -1,32 +1,40 @@
 var userIdToDelete;
 
-document.addEventListener('DOMContentLoaded', function () {
-  loadUsers(1);
-})
+function showSpinner() {
+  $('.spinner-border').show();
+}
+
+function hideSpinner() {
+  $('.spinner-border').hide();
+}
 
 
-function loadUsers(page = 1) {
-  const limit = 5;
-  axios.get(`/user/api?page=${page}&limit=${limit}`)
+function loadUsers() {
+  if ($.fn.DataTable.isDataTable('#usersTable')) {
+    $('#usersTable').DataTable().clear().destroy();
+  }
+  showSpinner();
+  axios.get(`/user/api`)
     .then(response => {
-      const users = response.data.users;
-      const totalPages = response.data.totalPages;
-      const startIndex = (page - 1) * limit;
+      console.log(response)
+      const users = response.data;
 
       const usersTableBody = document.getElementById('usersTableBody');
-      usersTableBody.innerHTML = '';
+      usersTableBody.innerHTML = "";
 
       var element = document.getElementById('someElement');
       var resendActivationRequestExists = JSON.parse(element.getAttribute('data-resend-activation'))
 
-      users.forEach((user, index) => {
-        const userNumber = startIndex + index + 1;
-        const showResendButton = resendActivationRequestExists.includes(user._id);
-        const resendButtonClass = user.isActive ? 'btn-secondary disabled' : (showResendButton ? 'btn-info' : 'btn-secondary');
+      if (users) {
+        users.forEach((user, index) => {
 
-        usersTableBody.innerHTML += `
+          console.log(user)
+          const showResendButton = resendActivationRequestExists.includes(user._id);
+          const resendButtonClass = user.isActive ? 'btn-secondary disabled' : (showResendButton ? 'btn-info' : 'btn-secondary');
+
+          usersTableBody.innerHTML += `
           <tr>
-            <td>${userNumber}</td>
+            <td>${index + 1}</td>
             <td>${user.email}</td>
             <td>${user.fullName}</td>
             <td>${user.role}</td>
@@ -52,13 +60,27 @@ function loadUsers(page = 1) {
             </td>
           </tr>
         `;
+        });
+      }
+      $('#usersTable').DataTable({
+        searching: true,
+        ordering: true,
+        columnDefs: [
+          { orderable: false, targets: 6 }
+        ]
       });
-
-      // Cập nhật phân trang
-      createPagination(totalPages, page);
+      hideSpinner()
     })
     .catch(error => console.error('Error loading users:', error));
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  loadUsers()
+})
+
+
+
 
 function resendActivationEmail(userId) {
   fetch(`/user/resend-activation/${userId}`, {
@@ -69,57 +91,13 @@ function resendActivationEmail(userId) {
   })
     .then(response => response.json())
     .then(data => {
-      const modalBody = document.querySelector('#resendEmailModal .modal-body');
-      modalBody.innerHTML = data.message;
-
-      // Hiển thị modal
-      var modal = new bootstrap.Modal(document.getElementById('resendEmailModal'));
-      modal.show();
-
+      toastr.success(data.message, 'Success');
       loadUsers(1);
     })
     .catch(error => {
-      const modalBody = document.querySelector('#resendEmailModal .modal-body');
-      modalBody.innerHTML = 'Error: ' + error.message;
-
-      // Hiển thị modal
-      var modal = new bootstrap.Modal(document.getElementById('resendEmailModal'));
-      modal.show();
+      toastr.error('Error: ' + error.message, 'Error');
     });
 }
-
-
-
-function createPagination(totalPages, currentPage) {
-  const paginationUl = document.getElementById('pagination');
-  paginationUl.innerHTML = ''; // Xóa nội dung hiện tại
-
-  // Nút "Previous"
-  paginationUl.innerHTML += `
-    <li class="page-item ${currentPage > 1 ? '' : 'disabled'}">
-      <span class="page-link" onclick="${currentPage > 1 ? `loadUsers(${currentPage - 1})` : ''}">Previous</span>
-    </li>
-  `;
-
-  // Số trang
-  for (let i = 1; i <= totalPages; i++) {
-    paginationUl.innerHTML += `
-      <li class="page-item ${i === currentPage ? 'active' : ''}">
-        <span class="page-link" onclick="loadUsers(${i})">${i}</span>
-      </li>
-    `;
-  }
-
-  // Nút "Next"
-  paginationUl.innerHTML += `
-    <li class="page-item ${currentPage < totalPages ? '' : 'disabled'}">
-      <span class="page-link" onclick="${currentPage < totalPages ? `loadUsers(${currentPage + 1})` : ''}">Next</span>
-    </li>
-  `;
-}
-
-// Gọi hàm này sau khi loadUsers để cập nhật phân trang
-
 
 
 function openDrawerForCreate() {
@@ -162,14 +140,14 @@ document.getElementById('confirmDeleteButton').addEventListener('click', functio
     .delete(`/user/delete/${userIdToDelete}`)
     .then(function (response) {
       if (response.data.success) {
-        console.log('Người dùng đã bị xóa', response.data.message);
-        loadUsers(1);
+        toastr.success(response.data.message, 'Deleted');
+        loadUsers();
       } else {
-        console.error('Lỗi xóa người dùng', response.data.message);
+        toastr.error(response.data.message, 'Error');
       }
     })
     .catch(function (error) {
-      console.error('Lỗi kết nối đến server', error);
+      toastr.error('Error connecting to the server', 'Error');
     });
 
   var confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
@@ -304,8 +282,6 @@ function openEditDrawer(userId) {
           role
         };
 
-        console.log(userData)
-
         axios.post(`/user/update/${userId}`, userData, {
           headers: {
             'Content-Type': 'application/json'
@@ -313,16 +289,15 @@ function openEditDrawer(userId) {
         })
           .then(response => {
             if (response.status === 200) {
-              console.log('User updated successfully:', response.data);
-              loadUsers(1)
+              toastr.success('User updated successfully.', 'Updated');
+              loadUsers(1);
               document.body.classList.remove('drawer-open');
             } else {
-              alert('Cập nhật người dùng không thành công. Vui lòng thử lại sau.');
+              toastr.error('User update failed. Please try again later.', 'Error');
             }
           })
           .catch(error => {
-            console.error('Error updating user:', error);
-            alert('Có lỗi xảy ra khi cập nhật người dùng. Vui lòng thử lại sau.');
+            toastr.error('An error occurred while updating user. Please try again later.', 'Error');
           });
       }
 

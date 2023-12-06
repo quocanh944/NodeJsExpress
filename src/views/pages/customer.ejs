@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <% include ../partials/lib.ejs %>
+
+    <link rel="stylesheet" href="./public/stylesheets/style.css">
+
+    <link rel="stylesheet" href="./public/stylesheets/customer.css">
+</head>
+
+<body>
+  <div class="d-flex h-100 text-white">
+    <% include ../partials/sidebar.ejs %>
+      <div id="main" class="flex-grow-1 d-flex flex-column">
+        <% include ../partials/header.ejs %>
+          <div class="main-content">
+            <button class="btn btn-success m-3" onclick="openDrawerForCreate()">Create New Customer</button>
+            <div class="flex-grow-1 p-3 text-dark">
+              <!-- Render table here -->
+              <% include ../partials/customerTable.ejs %>
+                <nav aria-label="Page navigation" class="nav-pagination">
+                  <ul class="pagination" id="pagination">
+                    <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
+                  </ul>
+                </nav>
+            </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Modal Preview Customer -->
+  <div class="modal fade" id="previewCustomer" tabindex="-1" aria-labelledby="previewCustomerLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="previewCustomerLabel">Kích Hoạt Email</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Nội dung thông báo sẽ được thêm vào đây thông qua JavaScript -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <% include ../partials/script.ejs %>
+
+    <script>
+      let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
+    </script>
+    <script src="./public/js/main.js"></script>
+    <script src="./public/js/customer.js"></script>
+</body>
+
+</html>

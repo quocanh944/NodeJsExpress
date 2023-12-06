@@ -8,20 +8,10 @@ const add = async (newUser) => {
 };
 
 
-const getAllUsers = async (page = 1, limit = 5) => {
+const getAllUsers = async () => {
   try {
-    const users = await User.find()
-      .skip((page - 1) * limit)
-      .limit(limit);
-    const total = await User.countDocuments();
-    const totalPages = Math.ceil(total / limit);
-
-    return {
-      users,
-      currentPage: page,
-      totalPages,
-      total
-    };
+    const users = await User.find();
+    return users || [];
   } catch (error) {
     throw error;
   }
@@ -172,9 +162,6 @@ const setBlock = async (userId) => {
   return user;
 };
 
-
-
-
 const resendActivationEmail = async (userId) => {
   const user = await User.findById(userId);
   if (!user) {
@@ -211,8 +198,6 @@ const toggleUserBlock = async (userId, isLocked) => {
     throw error;
   }
 };
-
-
 
 
 export { add, getAllUsers, getUserById, getUserByEmail, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock, resendActivationEmail, toggleUserBlock }

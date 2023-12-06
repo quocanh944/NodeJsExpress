@@ -1,8 +1,6 @@
 import createError from 'http-errors';
 import express from 'express';
-import path from 'path';
 import cookieParser from 'cookie-parser';
-import expressSession from 'express-session';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 import { setupDB } from './config/db.js';
@@ -42,8 +40,6 @@ app.use(session({
 }));
 
 app.use(flash());
-
-
 
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');

@@ -1,46 +1,243 @@
-<div id="toolbar">
-  <div class="d-flex justify-content-center">
-    <button type="button" class="btn btn-light btn-lg ">Excel Upload</button>
-    <div class="dropdown-container">
-      <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false"><i class="fa fa-sliders"></i> Advance Search</button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <div class="dropdown-list">
-          <input id="search_input" type="search" placeholder="Search states" class="dropdown-search" />
-          <ul></ul>
+<html>
+
+<head>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="branding">
+      <span class="logo">S</span>
+    </div>
+    <nav class="navigation">
+      <ul>
+        <li>
+          <a href="#">Dashboard</a>
+        </li>
+        <li>
+          <a href="#" class="hadsub">Catalog</a>
+          <div class="submenu">
+            <ul>
+              <li>
+                <a href="#">Index</a>
+              </li>
+              <li>
+                <a href="#" class="active">Index</a>
+                <ul>
+                  <li><a href="#">Index</a></li>
+                  <li><a href="#">Index</a></li>
+                  <li><a href="#" class="active">Index</a></li>
+                  <li><a href="#">Index</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#">Index</a>
+              </li>
+              <li>
+                <a href="#">Index</a>
+              </li>
+              <li>
+                <a href="#">Index</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a href="#">Product</a>
+        </li>
+        <li>
+          <a href="#">Clients</a>
+        </li>
+        <li>
+          <a href="#">Setting</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="user">
+      <span class="disconnect">
+        <a href="#">
+          <svg width="454px" height="478px" viewBox="0 0 454 478" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="noun_Power_639959" fill="#FFF" fill-rule="nonzero">
+                <path
+                  d="M453.05,245.76 C452.79,241.18 452.54,236.86 452.17,232.54 C447.55,177.82 425.5,130.16 386.66,90.88 C380.510851,84.5263676 371.397793,82.0107042 362.86,84.31 C354.196578,86.4275525 347.329251,93.0201861 344.86,101.59 C341.91,111.69 344.27,119.8 352.73,128.67 C391.29,169.13 407.56,217.59 401.08,272.67 C395.248541,321.273052 369.250049,365.18452 329.44,393.67 C289.078575,422.530037 238.442811,433.090496 189.91,422.77 C98.88,403.35 38.89,316.1 53.37,224.2 C59.16,187.44 75.74,154.63 102.64,126.68 C107.504331,121.790118 110.193435,115.146661 110.1,108.25 C109.882846,101.456136 106.937836,95.0362301 101.93,90.44 C97.3609684,86.0390199 91.2737739,83.5647544 84.93,83.53 C77.6978742,83.6043607 70.8195123,86.6706621 65.93,92 C11.77,149 -8.85,216.41 4.63,292.36 C15.14,351.57 48.43,403.12 98.36,437.5 C148.57,472.08 208.98,484.85 268.45,473.5 C376.45,452.83 452.45,361.63 453.39,251.61 C453.276667,249.656667 453.163333,247.706667 453.05,245.76 Z"
+                  id="Shape"></path>
+                <path
+                  d="M201.64,126 L202,126 L202,143.1 C202,154.81 201.82,166.53 201.81,178.25 C201.81,205.64 201.65,234.07 201.81,261.89 C201.89,274.89 213.28,286.01 226.81,286.01 C240.43,286.01 251.96,274.94 252,262.01 C252.21,187.7 252.13,112.08 252.06,39.01 L252.06,24.41 C252.06,18.53 249.81,13.29 245.21,8.41 C238.187503,0.948644969 227.339436,-1.50423667 217.79,2.21 C208.040151,5.82612709 201.599364,15.1614696 201.68,25.56 C201.59,53.39 201.61,81.9 201.63,109.27 C201.63,114.8 201.64,120 201.64,126 Z"
+                  id="Shape"></path>
+              </g>
+            </g>
+          </svg>
+        </a>
+      </span>
+    </div>
+  </div>
+  <div id="content">
+    <div class="header">
+      <h2><span>Customers</span></h2>
+      <div class="profile">
+        <span class="photo"><span>H</span></span>
+        <label>H.Piseth</label>
+      </div>
+    </div>
+    <div class="page">
+      <div class="wrapper">
+        <div class="row">
+          <div class="col a-right">
+            <div class="button-set">
+              <button>Add New Customer</button>
+            </div>
+          </div>
+          <div class="w-100"></div>
+          <div class="col">
+            <h2 class="form-title"><span>All Customers</span></h2>
+            <div class="filter">
+              <div class="row">
+                <div class="col">
+                  <div class="filter">
+                    <div class="search-box">
+                      <label>Search by Keyword</label>
+                      <input class="search" type="text" placeholder="Search">
+                    </div>
+                    <div class="button-set">
+                      <button>Search</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-100"></div>
+                <div class="col">
+                  <p class="a-right">10 000 Customers</p>
+                </div>
+              </div>
+            </div>
+            <div class="customer-table">
+              <table class="table">
+                <thead>
+                  <tr class="first">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th class="a-center">Phone</th>
+                    <th class="a-center">Zip</th>
+                    <th class="a-center">Country</th>
+                    <th class="a-center">State/Province</th>
+                    <th class="a-center">Customer Since</th>
+                    <th class="a-center">Date of Birth</th>
+                    <th class="a-center">Gender</th>
+                    <th class="a-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Patrick J</td>
+                    <td>patrick.j@gmail.com</td>
+                    <td class="a-center">096 333 222</td>
+                    <td class="a-center">12000</td>
+                    <td class="a-center">Cambodia</td>
+                    <td class="a-center">Phnom Penh</td>
+                    <td class="a-center">18/08/2018 - 08:30:58 AM</td>
+                    <td class="a-center">08/08/2000</td>
+                    <td class="a-center">Mr</td>
+                    <td class="a-right">
+                      <a href="#" class="edit">Edit</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Jessica Ly</td>
+                    <td>jessica.ly@gmail.com</td>
+                    <td class="a-center">096 111 222</td>
+                    <td class="a-center">12000</td>
+                    <td class="a-center">Cambodia</td>
+                    <td class="a-center">Phnom Penh</td>
+                    <td class="a-center">18/08/2018 - 08:30:58 AM</td>
+                    <td class="a-center">08/08/2000</td>
+                    <td class="a-center">Mrs</td>
+                    <td class="a-right">
+                      <a href="#" class="edit">Edit</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Patrick J</td>
+                    <td>patrick.j@gmail.com</td>
+                    <td class="a-center">096 333 222</td>
+                    <td class="a-center">12000</td>
+                    <td class="a-center">Cambodia</td>
+                    <td class="a-center">Phnom Penh</td>
+                    <td class="a-center">18/08/2018 - 08:30:58 AM</td>
+                    <td class="a-center">08/08/2000</td>
+                    <td class="a-center">Mr</td>
+                    <td class="a-right">
+                      <a href="#" class="edit">Edit</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Jessica Ly</td>
+                    <td>jessica.ly@gmail.com</td>
+                    <td class="a-center">096 111 222</td>
+                    <td class="a-center">12000</td>
+                    <td class="a-center">Cambodia</td>
+                    <td class="a-center">Phnom Penh</td>
+                    <td class="a-center">18/08/2018 - 08:30:58 AM</td>
+                    <td class="a-center">08/08/2000</td>
+                    <td class="a-center">Mrs</td>
+                    <td class="a-right">
+                      <a href="#" class="edit">Edit</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Patrick J</td>
+                    <td>patrick.j@gmail.com</td>
+                    <td class="a-center">096 333 222</td>
+                    <td class="a-center">12000</td>
+                    <td class="a-center">Cambodia</td>
+                    <td class="a-center">Phnom Penh</td>
+                    <td class="a-center">18/08/2018 - 08:30:58 AM</td>
+                    <td class="a-center">08/08/2000</td>
+                    <td class="a-center">Mr</td>
+                    <td class="a-right">
+                      <a href="#" class="edit">Edit</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>Jessica Ly</td>
+                    <td>jessica.ly@gmail.com</td>
+                    <td class="a-center">096 111 222</td>
+                    <td class="a-center">12000</td>
+                    <td class="a-center">Cambodia</td>
+                    <td class="a-center">Phnom Penh</td>
+                    <td class="a-center">18/08/2018 - 08:30:58 AM</td>
+                    <td class="a-center">08/08/2000</td>
+                    <td class="a-center">Mrs</td>
+                    <td class="a-right">
+                      <a href="#" class="edit">Edit</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pager">
+              <ul>
+                <li><a href="#" class="previous">previous</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#" class="active">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#" class="next">next</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</body>
 
-<table id="table" data-locale="en-US" data-toolbar="#toolbar" data-search="true" data-show-refresh="false"
-  data-show-toggle="false" data-show-fullscreen="false" data-show-columns="true" data-detail-view="false"
-  data-show-export="false" data-click-to-select="true" data-detail-formatter="detailFormatter"
-  data-minimum-count-columns="2" data-show-pagination-switch="false" data-pagination="true" data-id-field="id"
-  data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-page-list="[10, 25, 50, 100, all]"
-  data-show-footer="false">
-  <thead>
-    <tr>
-      <th data-field="fname" data-sortable="true">First Name</th>
-      <th data-field="lname" data-sortable="true">Last Name</th>
-      <th data-field="type" data-sortable="true">Type</th>
-      <th data-field="phone" data-sortable="true">Phone</th>
-      <th data-field="unit" data-sortable="true">Unit</th>
-      <th data-field="community" data-sortable="true">Community</th>
-      <th data-field="address" data-sortable="true">Address</th>
-      <th data-field="city" data-sortable="true">City</th>
-      <th data-field="state" data-sortable="true">State</th>
-      <th data-field="zip" data-sortable="true">Zip</th>
-      <th data-field="zip" data-sortable="true" data-visible="false">Lease
-        Start Date</th>
-      <th data-field="zip" data-sortable="true" data-visible="false">Lease End
-        Date</th>
-      <th data-field="zip" data-sortable="true" data-visible="false">Date
-        Purchased</th>
-      <th data-formatter="operateFormatter" data-events="operateEvents">
-        Actions
-      </th>
-    </tr>
-  </thead>
-</table>
+</html>
