@@ -200,6 +200,4 @@ const toggleUserBlock = async (userId, isLocked) => {
 };
 
 
-
-
 export { add, getAllUsers, getUserById, getUserByEmail, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock, resendActivationEmail, toggleUserBlock }
