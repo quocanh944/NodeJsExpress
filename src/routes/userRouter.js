@@ -1,6 +1,17 @@
 // userRouter.js
 import express from 'express';
-import { blockUser, getListUsers, getUserDetail, getUserProfile, getUserView, resendEmail, updateUser, userRegister, userRemove } from '../controller/userController.js'
+import {
+    blockUser,
+    getListUsers,
+    getUserDetail,
+    getUserProfile,
+    getCurrentProfile,
+    getUserView,
+    resendEmail,
+    updateUser,
+    userRegister,
+    userRemove
+} from '../controller/userController.js'
 
 const userRouter = express.Router();
 
@@ -17,6 +28,8 @@ userRouter.post('/update/:id', updateUser);
 userRouter.delete('/delete/:id', userRemove)
 
 userRouter.post('/block/:userId', blockUser);
+
+userRouter.get('/profile', getCurrentProfile);
 
 userRouter.get('/profile/:id', getUserProfile);
 
