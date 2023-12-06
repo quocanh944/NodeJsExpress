@@ -36,11 +36,13 @@ export const getCart = async (currentUserId) => {
         for (const cartItem of cart) {
             const product = await Product.findById(cartItem.productId);
             result.push({
+                "productId": cartItem.productId,
                 "barcode": product.barcode,
                 "productName": product.productName,
                 "importPrice": product.importPrice,
                 "retailPrice": product.retailPrice,
                 "category": product.category,
+                "thumbnailUrl": product.thumbnailUrl,
                 "quantity": cartItem.quantity,
                 "cartItemId": cartItem._id,
             })
