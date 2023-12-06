@@ -20,13 +20,12 @@ const getCustomerByPhone = async (phoneNumber) => {
   }
 }
 
-const getAllCustomers = async () => {
+const getAllCustomers = async (page, limit) => {
   try {
     const customers = await Customer.find();
-    return customers;
-  } catch (err) {
-    console.log(err);
-    throw err;
+    return customers || [];
+  } catch (error) {
+    throw error;
   }
 };
 

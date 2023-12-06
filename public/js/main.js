@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.getElementById('logoutButton');
 
@@ -19,6 +21,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+function updateNotificationBadge() {
+  const badge = document.querySelector('.badge-notification');
+  if (unreadNotificationsCount > 0) {
+    badge.textContent = unreadNotificationsCount;
+    badge.style.display = 'inline'; // Hiển thị badge
+  } else {
+    badge.style.display = 'none'; // Ẩn badge nếu không còn thông báo chưa đọc
+  }
+}
+
+
 const currentPath = window.location.pathname;
 const navLinks = document.querySelectorAll('.nav-link');
 
@@ -28,7 +41,6 @@ navLinks.forEach((link) => {
     link.classList.add('active');
   }
 });
-
 
 
 function markAsRead(element) {

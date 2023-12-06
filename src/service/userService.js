@@ -162,9 +162,6 @@ const setBlock = async (userId) => {
   return user;
 };
 
-
-
-
 const resendActivationEmail = async (userId) => {
   const user = await User.findById(userId);
   if (!user) {
@@ -201,8 +198,6 @@ const toggleUserBlock = async (userId, isLocked) => {
     throw error;
   }
 };
-
-
 
 
 export { add, getAllUsers, getUserById, getUserByEmail, deleteById, editById, signUp, activateUserByEmail, updatePassword, setLoginStatus, removeUser, setActivate, setBlock, resendActivationEmail, toggleUserBlock }

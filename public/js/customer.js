@@ -1,45 +1,81 @@
-document.addEventListener('DOMContentLoaded', function () {
-  loadCustomers()
-});
+var userIdToDelete;
+
+function showSpinner() {
+  $('.spinner-border').show();
+}
+
+function hideSpinner() {
+  $('.spinner-border').hide();
+}
 
 
 function loadCustomers() {
-  axios.get('/customer/api')
+  if ($.fn.DataTable.isDataTable('#customersTable')) {
+    $('#customersTable').DataTable().clear().destroy();
+  }
+  showSpinner();
+  axios.get(`/customer/api`)
     .then(response => {
+      console.log(response)
       const customers = response.data;
-      console.log(customers)
-      const customerContainer = document.getElementById('customerCards');
-      customerContainer.innerHTML = '';
 
-      customers.forEach(customer => {
-        const customerCard = `
-          <div class="card">
-            <img src="path/to/avatar.jpg" class="card-img-top" alt="Avatar">
-            <div class="card-body">
-              <h5 class="card-title">${customer.fullName}</h5>
-              <p class="card-text">${customer.phoneNumber}</p>
-              <button onclick="viewCustomerDetails('${customer._id}')" class="btn btn-primary">View Details</button>
-            </div>
-          </div>
-        `;
-        customerContainer.innerHTML += customerCard;
+      const customersTableBody = document.getElementById('customersTableBody');
+      customersTableBody.innerHTML = "";
+
+      if (customers) {
+        customers.forEach((customer, index) => {
+          customersTableBody.innerHTML += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${customer.fullName}</td>
+                <td>${customer.phoneNumber}</td>
+                <td>${customer.address}</td>
+                <td>
+                  <!-- Thêm các nút hành động ở đây -->
+                  <button onclick="showPreview('${customer._id}')" class="btn btn-dark text-white">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                  <button onclick="viewCustomerDetails('${customer._id}')" class="btn btn-primary">
+                    <i class="fa fa-angle-double-right"></i>
+                  </button>
+                </td>
+              </tr>
+          `;
+        });
+      }
+      $('#customersTable').DataTable({
+        searching: true,
+        ordering: true,
+        columnDefs: [
+          { orderable: false, targets: 4 }
+        ]
       });
+      hideSpinner()
     })
-    .catch(error => {
-      console.error('Error loading customers:', error);
-    });
+    .catch(error => console.error('Error loading customers:', error));
 }
 
-function viewCustomerDetails(customerId) {
-  axios.get(`/customers/api/${customerId}`)
-    .then(response => {
-      const customer = response.data;
-      // Hiển thị chi tiết của khách hàng, có thể thông qua modal hoặc một trang chi tiết
-      console.log(customer); // Thay thế bằng cách xử lý dữ liệu thực tế
+function showPreview(id) {
+
+  axios.get(`/customer/preview/${id}`)
+    .then(res => {
+      console.log(res)
     })
-    .catch(error => {
-      console.error('Error fetching customer details:', error);
-    });
+    .catch(err => {
+      console.log(err)
+    })
 }
+
+function viewCustomerDetails(id) {
+  console.log(id)
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  loadCustomers()
+})
+
+
+
 
 

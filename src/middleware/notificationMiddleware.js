@@ -7,6 +7,7 @@ const fetchNotifications = async (req, res, next) => {
       .populate('userId')
       .sort({ createdAt: -1 });
     res.locals.notifications = notifications || [];
+
     const resendActivationRequestExists = notifications.map(notification => notification.userId._id);
     res.locals.resendActivationRequestExists = JSON.stringify(resendActivationRequestExists);
     next();
