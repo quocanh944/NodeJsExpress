@@ -164,7 +164,7 @@ const updateUser = async (req, res) => {
 
     const updatedData = sanitizeAndValidateUserData(req.body);
 
-    if (!userHasPermissionToUpdate(req.session.user)) {
+    if (!userHasPermissionToUpdate(req.session.user, userId)) {
       return res.status(403).send("Bạn không có quyền cập nhật thông tin người dùng này.");
     }
 
@@ -181,6 +181,11 @@ const updateUser = async (req, res) => {
   }
 }
 
+const updateProfile = async (req, res) => {
+  const { user } = req.session;
+  const { fullName, birthday, phoneNumber } = req.body;
+}
+
 const getUserProfile = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -193,6 +198,11 @@ const getUserProfile = async (req, res) => {
   } catch (error) {
     res.status(500).send('Server error');
   }
+};
+
+const getCurrentProfile = async (req, res) => {
+  const { user } = req.session;
+  res.render('pages/current-profile', { title: "Profile", user, messages: req.flash() })
 };
 
 const resendEmail = async (req, res) => {
@@ -225,4 +235,19 @@ const notifyAdmin = async (req, res) => {
 };
 
 
-export { getListUsers, userRegister, activateUser, getSetPasswordView, setUserPassword, userRemove, getUserDetail, updateUser, resendEmail, getUserProfile, notifyAdmin, getUserView, blockUser }
+export {
+  getListUsers,
+  userRegister,
+  activateUser,
+  getSetPasswordView,
+  setUserPassword,
+  userRemove,
+  getUserDetail,
+  updateUser,
+  resendEmail,
+  getCurrentProfile,
+  getUserProfile,
+  notifyAdmin,
+  getUserView,
+  blockUser
+}
