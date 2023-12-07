@@ -1,6 +1,16 @@
 // userRouter.js
 import express from 'express';
-import { blockUser, getListUsers, getUserDetail, getUserProfile, getUserView, resendEmail, updateUser, userRegister, userRemove } from '../controller/userController.js'
+import {
+    blockUser,
+    getListUsers,
+    getUserDetail,
+    getUserProfile,
+    getUserView,
+    resendEmail,
+    updateUser,
+    userRegister,
+    userRemove
+} from '../controller/userController.js'
 
 const userRouter = express.Router();
 

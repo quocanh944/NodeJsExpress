@@ -20,8 +20,8 @@ function validateEmail(email) {
 }
 
 
-function userHasPermissionToUpdate(currentUser) {
-  return currentUser.role === 'ADMIN';
+function userHasPermissionToUpdate(currentUser, userId) {
+  return currentUser.role === 'ADMIN' || currentUser._id === userId;
 }
 
 export { userHasPermissionToUpdate, sanitizeAndValidateUserData }
