@@ -9,6 +9,7 @@ import accountRouter from './accountRouter.js';
 import cartRouter from './cartRouter.js';
 import { fetchNotifications } from '../middleware/notificationMiddleware.js';
 import notificationRouter from './notificationRouter.js';
+import profileRouter from './profileRouter.js';
 
 const rootRouter = express.Router();
 
@@ -36,5 +37,6 @@ rootRouter.use("/customer", isAuthenticated, checkUserActivation, isFirstLogined
 rootRouter.use("/order", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), orderRouter);
 rootRouter.use("/cart", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['SALE']), cartRouter);
 rootRouter.use("/notification", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN']), notificationRouter);
+rootRouter.use('/profile', isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), profileRouter);
 
 export default rootRouter;
