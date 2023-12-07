@@ -1,4 +1,3 @@
-import product from '../models/product.js';
 import Product from '../models/product.js';
 import * as productService from '../service/productService.js';
 import { uploadFirebase, deleteImageFromFirebase } from "./firebaseController.js";

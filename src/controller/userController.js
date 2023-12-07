@@ -124,26 +124,6 @@ const setUserPassword = async (req, res) => {
   }
 }
 
-const changeUserPassword = async (req, res) => {
-  try {
-    const { password, confirmPassword } = req.body;
-
-    if (password !== confirmPassword) {
-      req.flash('error_msg', 'Passwords do not match.');
-      return res.redirect(`/profile/change-password`);
-    }
-
-    await updatePassword(email, password);
-
-    req.flash('success_msg', 'Password has been set successfully.');
-    return res.redirect('/profile');
-  } catch (error) {
-    console.error('Error setting password:', error);
-    req.flash('error_msg', 'Lỗi báo BE');
-    return res.redirect(`/profile`);
-  }
-}
-
 const userRemove = async (req, res) => {
   try {
     const { id } = req.params;

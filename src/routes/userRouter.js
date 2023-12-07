@@ -5,7 +5,6 @@ import {
     getListUsers,
     getUserDetail,
     getUserProfile,
-    getCurrentProfile,
     getUserView,
     resendEmail,
     updateUser,
@@ -28,8 +27,6 @@ userRouter.post('/update/:id', updateUser);
 userRouter.delete('/delete/:id', userRemove)
 
 userRouter.post('/block/:userId', blockUser);
-
-userRouter.get('/profile', getCurrentProfile);
 
 userRouter.get('/profile/:id', getUserProfile);
 
