@@ -108,8 +108,6 @@
 
   <% include ../partials/script.ejs %>
 
-
-
     <script>
       let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
     </script>
