@@ -38,6 +38,7 @@ export const getCart = async (currentUserId) => {
             result.push({
                 "productId": cartItem.productId,
                 "barcode": product.barcode,
+                "inventory": product.inventory,
                 "productName": product.productName,
                 "importPrice": product.importPrice,
                 "retailPrice": product.retailPrice,

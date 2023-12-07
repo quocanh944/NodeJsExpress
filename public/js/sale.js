@@ -1,6 +1,6 @@
 async function fetchData(url, method = 'GET', body = null) {
-    const options = { 
-        method, 
+    const options = {
+        method,
         headers: { 'Content-Type': 'application/json' }
     };
     if (body) options.body = JSON.stringify(body);
@@ -42,11 +42,14 @@ const changeAmount = document.getElementById('changeAmount');
 let products = [];
 let customerId_;
 
+let newCustomer = false;
+
 // Event Listeners and Initializers
 window.onload = () => fetchData(`/cart/get`).then(displayCart);
 
 productSearchInput.addEventListener('input', () => searchProduct(productSearchInput.value));
 customerSearchInput.addEventListener('input', () => searchCustomer(customerSearchInput.value));
+amountReceived.addEventListener('input', () => changeAmount.textContent = formatMoney(amountReceived.value - finalAmountEl.textContent.replace(/[$,]/g, "")));
 
 checkoutButton.addEventListener('click', processCheckout);
 
@@ -85,19 +88,34 @@ function displayProductSearch(results, query) {
     if (results.length > 0) {
         results.forEach(product => {
             productText = makeMatchingLettersBold(product.productName, query);
-            html += `
-                <li class="list-group-item list-group-item-action" onclick="addProductToCart('${product._id}')">
+            if (product.inventory < 1) {
+                html += `
+                <li class="list-group-item list-group-item-action disabled">
                     <div style="display: flex; align-items: center;">
                         <img src="${product.thumbnailUrl}" alt="${product.productName}" style="width: 50px; height: 50px; margin-right: 10px;">
                         <div>
                             <div>${productText}</div>
                             <div>${product.barcode}</div>
+                            <div>Inventory: ${product.inventory}</div>
                         </div>
                     </div>
                 </li>`;
+            } else {
+                html += `
+                <li class="list-group-item list-group-item-action" onclick="addProductToCart('${product._id}')">
+                    <div style="display: flex; align-items: center;">
+                        <img src="${product.thumbnailUrl}" alt="${product.productName}" style="width: 50px; height: 50px; margin-right: 10px;">
+                        <div>
+                            <div>${productText}(</div>
+                            <div>${product.barcode}</div>
+                            <div>Inventory: ${product.inventory}</div>
+                        </div>
+                    </div>
+                </li>`;
+            }
         });
     } else {
-        html += '<a href="#" class="list-group-item list-group-item-action disabled">Không tìm thấy sản phẩm nào.</a>';
+        html += '<li class="list-group-item list-group-item-action disabled">Không tìm thấy sản phẩm nào.</li>';
     }
     html += '</ul>';
     productSearchResults.innerHTML = html;
@@ -116,10 +134,20 @@ function displayCustomerSearch(results, query) {
               </li>`;
         });
     } else {
-        html += '<a href="#" class="list-group-item list-group-item-action disabled ">Không tìm thấy (Bấm vào để thêm mới SĐT).</a>';
+        html += `<li class="list-group-item list-group-item-action" onclick="addNewCustomer('${query}')"" >No phone numbers found (Click to add new).</li>`;
     }
     html += '</ul>';
     customerSearchResults.innerHTML = html
+}
+
+async function fetchDataCart(productID) {
+    try {
+        await fetchData(`/cart/addProduct/${productID}`, 'POST');
+        const cart = await fetchData(`/cart/get`);
+        displayCart(cart);
+    } catch (error) {
+        console.error("Error adding product to cart:", error);
+    }
 }
 
 async function addProductToCart(productId) {
@@ -142,14 +170,11 @@ async function addCustomerToForm(phone) {
     }
 }
 
-async function fetchDataCart(productID) {
-    try {
-        await fetchData(`/cart/addProduct/${productID}`, 'POST');
-        const cart = await fetchData(`/cart/get`);
-        displayCart(cart);
-    } catch (error) {
-        console.error("Error adding product to cart:", error);
-    }
+function addNewCustomer(phone) {
+    phoneNumber.value = phone;
+    customerSearchInput.value = "";
+    customerSearchResults.innerHTML = "";
+    newCustomer = true;
 }
 
 function deleteItem(item, listItem, data) {
@@ -194,6 +219,7 @@ function updateQuantity(item, listItem, data, newQuantity) {
                 const productsIndex = products.findIndex(p => p.productId === item.productId);
                 if (productsIndex !== -1) {
                     products[productsIndex].quantity = newQuantity;
+                    products[productsIndex].totalPrice = data[index].totalPrice;
                 }
 
                 // Update the UI
@@ -214,7 +240,7 @@ function displayCart(data) {
 
     const listGroup = document.createElement('div');
     listGroup.className = 'list-group';
-    listGroup.style.maxHeight = '360px';
+    listGroup.style.maxHeight = '436px';
     listGroup.style.overflowY = 'auto';
 
     let totalAmount = 0;
@@ -222,7 +248,7 @@ function displayCart(data) {
     data.forEach(item => {
         // Update products array without duplicates
         const index = products.findIndex(p => p.productId === item.productId);
-        const productData = { productId: item.productId, quantity: item.quantity, totalPrice: item.retailPrice * item.quantity };
+        const productData = { productId: item.productId, productName: item.productName, quantity: item.quantity, totalPrice: item.retailPrice * item.quantity };
         if (index !== -1) {
             products[index] = productData;
         } else {
@@ -259,17 +285,27 @@ function displayCart(data) {
 
         // Attach event listener to quantity input
         const quantityInput = listItem.querySelector('input[type="number"]');
-        quantityInput.addEventListener('change', (event) => updateQuantity(item, listItem, data, event.target.value));
+        quantityInput.addEventListener('change', (event) => {
+            console.log(item.inventory);
+            if (event.target.value > item.inventory) {
+                alert("Not enough products");
+                quantityInput.value = item.inventory;
+                return;
+            } else {
+                updateQuantity(item, listItem, data, event.target.value)
+            }
+
+        });
     });
 
     cartDiv.appendChild(listGroup);
-    totalAmountEl.textContent = `$${totalAmount.toFixed(2)}`;
+    totalAmountEl.textContent = formatMoney(totalAmount);
     updateTotalAmount(data);
     calculateFinalAmount();
 }
 
 function calculateFinalAmount() {
-    const totalAmount = parseFloat(totalAmountEl.textContent.replace('$', ''));
+    const totalAmount = parseFloat(totalAmountEl.textContent.replace(/[$,]/g, ""));
     const discount = parseFloat(discountInput.value) || 0;
     const discountedAmount = (totalAmount * discount) / 100;
     const finalAmount = totalAmount - discountedAmount;
@@ -278,10 +314,18 @@ function calculateFinalAmount() {
 
 function updateTotalAmount(data) {
     let totalAmount = data.reduce((sum, item) => sum + item.retailPrice * item.quantity, 0);
-    totalAmountEl.textContent = `$${totalAmount.toFixed(2)}`;
+    totalAmountEl.textContent = formatMoney(totalAmount);
+}
+
+function clearTableInvoice() {
+    const tableBody = document.getElementById('productsTable').getElementsByTagName('tbody')[0];
+    while (tableBody.rows.length > 0) {
+        tableBody.deleteRow(0);
+    }
 }
 
 function clearCart() {
+    clearTableInvoice();
     cartDiv.innerHTML = '';
     products = [];
     totalAmountEl.textContent = `$0`;
@@ -291,24 +335,114 @@ function clearCart() {
     fullName.value = '';
     address.value = '';
     amountReceived.value = '';
-    changeAmount.value = '';
+    changeAmount.textContent = '$0';
     fetchData('/cart/clear', 'DELETE').catch(error => console.error('Error clearing cart:', error));
 }
 
-async function processCheckout() {
-    const data = {
-        customerId: customerId_,
-        products: products,
-        totalAmount: parseFloat(totalAmountEl.textContent.replace('$', '')),
-        moneyReceived: parseFloat(amountReceived.value),
-        moneyBack: parseFloat(changeAmount.value)
-    };
+async function printInvoice() {
+    document.getElementById('phoneNumberInv').textContent = phoneNumber.value;
+    document.getElementById('fullNameInv').textContent = fullName.value;
+    document.getElementById('addressInv').textContent = address.value;
+    document.getElementById('totalAmountInv').textContent = totalAmountEl.textContent;
+    document.getElementById('discountInv').textContent = discountInput.value;
+    document.getElementById('finalAmountInv').textContent = finalAmountEl.textContent;
+    document.getElementById('amountReceivedInv').textContent = amountReceived.value;
+    document.getElementById('changeAmountInv').textContent = changeAmount.textContent;
+    products.forEach(product => {
+        const table = document.getElementById('productsTable').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow(table.rows.length);
 
-    try {
-        const responseData = await fetchData('order/add', 'POST', data);
-        console.log('Checkout successful:', responseData);
-        clearCart();
-    } catch (error) {
-        console.error('Checkout error:', error);
+        newRow.insertCell(0).innerHTML = product.productName;
+        newRow.insertCell(1).innerHTML = product.quantity;
+        newRow.insertCell(2).innerHTML = product.totalPrice;
+    })
+
+
+
+    const { jsPDF } = window.jspdf;
+    function downloadPDF() {
+        const invoice = document.querySelector('.invoice');
+
+        html2canvas(invoice, {
+            onclone: (clonedDocument) => {
+                const clonedInvoice = clonedDocument.querySelector('.invoice');
+                // Modify the cloned invoice as needed
+                clonedInvoice.style.display = 'block';
+            }
+        }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+
+            // Get image dimensions
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+
+            // Create a PDF that matches the dimensions of the image
+            // Convert dimensions from pixels to millimeters for jsPDF (1 pixel = 0.264583 mm)
+            const pdfWidth = imgWidth * 0.264583;
+            const pdfHeight = imgHeight * 0.264583;
+
+            // Initialize jsPDF with image dimensions portrait
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: [pdfWidth, pdfHeight]
+            });
+
+            // Add image to PDF
+            pdf.addImage(imgData, 'PNG', 5, 0, pdfWidth, pdfHeight);
+            pdf.save('invoice.pdf');
+        });
+    }
+
+    downloadPDF();
+}
+
+async function updateInventory() {
+    for (const product of products) {
+        data = {
+            productId: product.productId,
+            quantity: product.quantity,
+        }
+        await fetchData('product/decreaseProductInventory', 'PUT', data);
+    }
+}
+
+async function processCheckout() {
+    if (products.length == 0) { alert("There are no products in the cart"); return; }
+    if (!fullName.value || !address.value) { alert("Missing customer infomation"); return; }
+    if (!amountReceived.value) { alert('Missing Amout Received'); return; }
+    if (parseFloat(changeAmount.textContent.replace(/[$,]/g, "")) < 0) { alert('The amount received is not enough for payment'); return; }
+
+    if (newCustomer) {
+        const dataCustomer = {
+            phoneNumber: phoneNumber.value,
+            fullName: fullName.value,
+            address: address.value,
+        }
+        console.log(dataCustomer)
+        const response = await fetchData('customer/add', 'POST', dataCustomer);
+        newCustomer = false;
+    }
+
+    if (fullName.value && address.value && amountReceived.value && products.length != 0) {
+        await printInvoice();
+        //Remove productName
+        const productsToCheckout = products.map(({ productName, ...rest }) => rest);
+        const data = {
+            customerId: customerId_,
+            products: productsToCheckout,
+            totalAmount: parseFloat(totalAmountEl.textContent.replace(/[$,]/g, "")),
+            moneyReceived: parseFloat(amountReceived.value),
+            moneyBack: parseFloat(changeAmount.value)
+        };
+
+        try {
+            await updateInventory();
+            const responseData = await fetchData('order/add', 'POST', data);
+            console.log('Checkout successful:', responseData);
+            clearCart();
+        } catch (error) {
+            console.error('Checkout error:', error);
+        }
     }
 }

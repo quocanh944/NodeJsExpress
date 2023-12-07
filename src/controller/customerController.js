@@ -1,4 +1,5 @@
 import * as customerService from '../service/customerService.js';
+import Customer from "../models/customer.js";
 
 const search = async (req, res) => {
   try {
@@ -75,4 +76,18 @@ const userPreview = async (req, res) => {
   res.status(200).send(id)
 }
 
-export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView, userPreview }
+const addNewCustomer = async (req, res) => {
+  try {
+      const { phoneNumber, fullName, address } = req.body;
+
+      const newCustomer = new Customer({ phoneNumber, fullName, address });
+
+      await newCustomer.save();
+
+      res.status(201).json({ message: "New customer added successfully", customer: newCustomer });
+  } catch (error) {
+      res.status(400).json({ message: "Error adding customer", error: error.message });
+  }
+};
+
+export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView, userPreview, addNewCustomer }

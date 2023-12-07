@@ -15,4 +15,6 @@ customerRouter.get("/getByPhone", customerController.getByPhone)
 
 customerRouter.get("/preview/:id", customerController.userPreview)
 
+customerRouter.post("/add", customerController.addNewCustomer);
+
 export default customerRouter;

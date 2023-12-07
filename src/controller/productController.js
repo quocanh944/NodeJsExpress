@@ -1,3 +1,4 @@
+import product from '../models/product.js';
 import Product from '../models/product.js';
 import * as productService from '../service/productService.js';
 import { uploadFirebase, deleteImageFromFirebase } from "./firebaseController.js";
@@ -145,4 +146,14 @@ export const getProductView = async (req, res) => {
     status,
     msg
   });
+}
+
+export const decreaseProductInventory = async (req, res) => {
+  try {
+    const { productId, quantity } = req.body;
+    const result = await productService.decreaseProductInventory(productId ,quantity)
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ err: 'Internal server error' });
+  }
 }
