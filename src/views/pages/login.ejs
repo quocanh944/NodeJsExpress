@@ -55,14 +55,15 @@
               </div>
             </div>
             <div class="form-group">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
-                <label class="custom-control-label" for="customCheck">Remember</label>
-              </div>
-            </div>
-            <div class="form-group">
               <button class="btn btn-success px-5" type="submit">Login</button>
             </div>
+            <!-- Render flash message here -->
+            <% if (msg) { %>
+              <p class="text-danger">
+                <%= msg %>
+              </p>
+              <% } %>
+
           </form>
         </div>
       </div>

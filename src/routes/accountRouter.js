@@ -35,7 +35,11 @@ accountRouter.get('/login', (req, res) => {
   if (user && user.isFirstLogin === false && user.isActive === true) {
     res.redirect('/');
   } else {
-    res.render('pages/login');
+    console.log("req flash: ",req.flash("error_msg"));
+    res.render('pages/login', {
+      status: req.flash("status"),
+      msg: req.flash("error_msg")
+    });
   }
 });
 
@@ -43,25 +47,22 @@ accountRouter.get('/login', (req, res) => {
 accountRouter.post('/login', async (req, res, next) => {
   const { username, password } = req.body;
 
-  console.log(username, username.length)
-
   if (!password) {
+    req.flash('msg', 'Please enter password');
+    req.flash('status', 'Failed');
     return res.redirect('/login');
   }
-
-  // if (username === 'admin' && password === 'admin') {
-  //   req.session.user = { username: 'admin', role: 'ADMIN', isActive: true, isFirstLogin: false, isBlocked: false };
-  //   return res.redirect('/');
-  // }
+  if (!username) {
+    req.flash('msg', 'Please enter username');
+    req.flash('status', 'Failed');
+    return res.redirect('/login');
+  }
 
   try {
     const user = await User.findOne({ email: username.trim() + '@gmail.com' });
 
-    console.log(user)
-
-    console.log(await user.isValidPassword(password))
-
     if (!user || !user.isActive || !(await user.isValidPassword(password))) {
+      req.flash('msg', 'Username or password is incorrect');
       return res.redirect('/login');
     }
 
@@ -74,7 +75,8 @@ accountRouter.post('/login', async (req, res, next) => {
     return res.redirect('/');
   } catch (error) {
     console.error('Database query error', error);
-    req.flash('error_msg', 'Lỗi báo BE');
+    req.flash('msg', 'Lỗi báo BE');
+    req.flash('status', 'Failed');
     return res.redirect('/login');
   }
 });
