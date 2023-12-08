@@ -25,7 +25,7 @@ export const getOrder = async (id) => {
 
 export const getListOrder = async (id) => {
   try {
-    const orders = await Order.find(id);
+    const orders = await Order.find(id).sort({purchaseDate: 'desc'});
     let result = []
 
     for (const order of orders) {
