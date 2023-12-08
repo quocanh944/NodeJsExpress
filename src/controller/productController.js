@@ -1,3 +1,4 @@
+import product from '../models/product.js';
 import Product from '../models/product.js';
 import * as productService from '../service/productService.js';
 import { uploadFirebase, deleteImageFromFirebase } from "./firebaseController.js";
@@ -136,13 +137,33 @@ export const edit = async (req, res) => {
 }
 
 export const getProductView = async (req, res) => {
+  const {user} = req.session;
   const msg = req.flash('msg');
   const status = req.flash('status');
-  return res.render('pages/product', {
+  if (user.role === 'ADMIN') {
+    return res.render('pages/product', {
+      title: "Quản lý sản phẩm.",
+      user: req.session.user,
+      products: await productService.getAllProducts(),
+      status,
+      msg
+    });
+  }
+  return res.render('pages/sale-product', {
     title: "Quản lý sản phẩm.",
     user: req.session.user,
     products: await productService.getAllProducts(),
     status,
     msg
   });
+}
+
+export const decreaseProductInventory = async (req, res) => {
+  try {
+    const { productId, quantity } = req.body;
+    const result = await productService.decreaseProductInventory(productId ,quantity)
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ err: 'Internal server error' });
+  }
 }

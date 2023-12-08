@@ -32,12 +32,11 @@ body {
 }
 
 .container-fluid {
-    padding: 15px;
+    padding: 10px;
 }
 
 h2 {
     color: var(--color-primary);
-    margin-bottom: 20px;
 }
 
 .money input {
@@ -66,7 +65,16 @@ section.col-md-4 {
 }
 
 #cart {
-    padding: 10px;
     border-radius: 5px;
     margin-top: 20px;
+}
+
+.customCard {
+    margin-top: 30px;
+}
+
+/* Centering table data */
+td,
+th {
+    text-align: center;
 }

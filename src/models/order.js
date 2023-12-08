@@ -17,5 +17,4 @@ const orderSchema = new mongoose.Schema({
   purchaseDate: { type: Date, default: Date.now }
 });
 
-
 export default mongoose.model('Order', orderSchema);

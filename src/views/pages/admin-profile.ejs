@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Profile</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <% include ../partials/lib.ejs %>
+
+    <link rel="stylesheet" href="./public/stylesheets/style.css">
+</head>
+
+<body>
+
+    <div class="d-flex h-100 text-white">
+    <% include ../partials/sidebar.ejs %>
+        <div id="main" class="flex-grow-1 d-flex flex-column">
+        <% include ../partials/header.ejs %>
+          <div class="main-content">
+            <div class="flex-grow-1 p-3 text-dark">
+              <div class="main-content">
+                <div class="flex-grow-1 p-3 text-dark">
+                    <div class="container mt-4">
+                        <div class="row">
+                            <div class="col-xl-4">
+                                <!-- Profile picture card-->
+                                <div class="card mb-4 mb-xl-0">
+                                    <div class="card-header">Profile Picture</div>
+                                    <div class="card-body text-center">
+                                        <form action="/profile/update-avatar" method="post" enctype="multipart/form-data">
+                                            <!-- Profile picture image-->
+                                            <img class="img-account-profile img-fluid rounded-circle mb-2" id="frame"
+                                            <% if (user.avatar) { %>
+                                                src="<%= user.avatar %>"
+                                            <% } else { %> 
+                                                src="http://bootdey.com/img/Content/avatar/avatar1.png"
+                                            <% } %>
+                                                alt="avatar user">
+                                            <!-- Profile picture help block-->
+                                            <div class="small font-italic text-muted mb-4">JPG or PNG</div>
+                                            <!-- Profile picture upload button-->
+                                            <input class="form-control mb-4" name="image" accept="image/png, image/jpeg" type="file" id="inputAvatar" onchange="preview()">
+                                            <button class="btn btn-primary" type="submit">Save Avatar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a href="#accountDetails" class="nav-link active" id="navAccountDetails" data-bs-toggle="tab" style="color: black;">Account Details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#changePassword" class="nav-link" id="navChangePassword" data-bs-toggle="tab" style="color: black;">Change Password</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="accountDetails">
+                                        <!-- Account details card-->
+                                        <div class="card mb-4" style="border-radius: 0px 0px 0.375rem 0.375rem;">
+                                            <div class="card-body">
+                                                <form method="post" action="/profile">
+                                                    <!-- Form Group (username)-->
+                                                    <div class="mb-3">
+                                                        <label class="small mb-1" for="inputUsername">Username (how your name will appear to
+                                                            other
+                                                            users on the site)</label>
+                                                        <input class="form-control" id="inputUsername" type="text" disabled
+                                                            placeholder="Enter your username" value="<%= user.email.split('@')[0] %>">
+                                                    </div>
+                                                    <!-- Form Group (email address)-->
+                                                    <div class="mb-3">
+                                                        <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                                                        <input class="form-control" id="inputEmailAddress" type="email" disabled
+                                                            placeholder="Enter your email address" value="<%= user.email %>">
+                                                    </div>
+                                                    <!-- Form Group (full name)-->
+                                                    <div class="mb-3">
+                                                        <label class="small mb-1" for="inputFullname">Full name</label>
+                                                        <input class="form-control" id="inputFullname" type="text" name="fullName" required
+                                                            placeholder="Enter your fullname" value="<%= user.fullName %>">
+                                                    </div>
+                                                    <!-- Form Group (gender)-->
+                                                    <div class="mb-3">
+                                                        <label class="small mb-1" for="inputGender">Gender</label>
+                                                        <select class="form-select" name="gender" id="inputGender">
+                                                            <option value="" <% if (user.gender) { %>
+                                                                selected
+                                                                <% } %>>Select Gender
+                                                            </option>
+                                                            <option value="male" <% if (user.gender=="male" ) { %>
+                                                                selected
+                                                                <% } %>>Male
+                                                            </option>
+                                                            <option value="female" <% if (user.gender=="female" ) { %>
+                                                                selected
+                                                                <% } %>>Female
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- Form Row-->
+                                                    <div class="row gx-3 mb-3">
+                                                        <!-- Form Group (phone number)-->
+                                                        <div class="col-md-6">
+                                                            <label class="small mb-1" for="inputPhone">Phone number</label>
+                                                            <input class="form-control" id="inputPhone" type="tel" name="phoneNumber"
+                                                                placeholder="Enter your phone number" value="<%= user.phoneNumber %>">
+                                                        </div>
+                                                        <!-- Form Group (birthday)-->
+                                                        <div class="col-md-6">
+                                                            <label class="small mb-1" for="inputBirthday">Birthday</label>
+                                                            <input class="form-control" id="inputBirthday" type="date" name="birthday"
+                                                                placeholder="Enter your birthday" value="<%= user.birthday %>">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Save changes button-->
+                                                    <button class="btn btn-primary" type="submit">Save changes</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="changePassword">
+                                        <!-- Account details card-->
+                                        <div class="card mb-4" style="border-radius: 0px 0px 0.375rem 0.375rem;">
+                                            <div class="card-body">
+                                                <form method="post" action="/profile/change-password">
+                                                    <!-- Form Group (current password)-->
+                                                    <div class="mb-3">
+                                                        <label class="small mb-1" for="inputCurrentPassword">Current Password</label>
+                                                        <input class="form-control" id="inputCurrentPassword" type="password" name="currentPassword">
+                                                    </div>
+                                                    <!-- Form Group (new password)-->
+                                                    <div class="mb-3">
+                                                        <label class="small mb-1" for="inputNewPassword">New Password</label>
+                                                        <input class="form-control" id="inputNewPassword" type="password" name="newPassword">
+                                                    </div>
+                                                    <!-- Form Group (confirm password)-->
+                                                    <div class="mb-3">
+                                                        <label class="small mb-1" for="inputConfirmPassword">Confirm Password</label>
+                                                        <input class="form-control" id="inputConfirmPassword" type="password" name="confirmPassword">
+                                                    </div>
+                                                    <!-- Save changes button-->
+                                                    <button class="btn btn-primary" type="submit">Change Password</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <% include ../partials/script.ejs %>
+    <script>
+        let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
+    </script>
+    <script src="./public/js/main.js"></script>
+<script src="./public/js/profile.js"></script>
+</body>
+
+</html>
