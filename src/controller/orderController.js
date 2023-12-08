@@ -44,6 +44,8 @@ export const getListOrderSale = async (req, res) => {
     let query = {};
     if (req.query.customerId) {
       query.customerId = req.query.customerId;
+    } else if (req.query.saleId) {
+      query.saleId = req.query.saleId;
     } else {
       query.saleId = saleId;
     }
