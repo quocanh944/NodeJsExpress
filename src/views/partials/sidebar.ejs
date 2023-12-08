@@ -1,36 +1,38 @@
 <div id="sidebar" class="bg-dark p-3 text-light">
   <a href="/" class="text-decoration-none">
-    <h2 class="fs-4 text-center mb-4">Phone E-Commerce</h2>
+    <!-- Thay thế h2 bằng ảnh logo -->
+    <img src="./public/images/phone-e-commerce-high-resolution-logo-white-transparent.svg" alt="Logo"
+      class="img-fluid mb-4" style="max-width: 100%;">
   </a>
   <ul class="nav flex-column">
     <li class="nav-item">
-      <% if (user.role === "ADMIN") { %>
+      <% if (user.role==="ADMIN" ) { %>
         <a class="nav-link" href="/" id="nav-home">
-          <i class="fas fa-chart-bar me-2 icon"></i> Báo cáo và phân tích
+          <i class="fas fa-chart-bar me-2 icon"></i> Reports & Analytics
         </a>
-      <% } else { %>
-        <a class="nav-link" href="/home" id="nav-home">
-          <i class="fas fa-chart-bar me-2 icon"></i> Báo cáo và phân tích
-        </a>
-      <% } %>
+        <% } else { %>
+          <a class="nav-link" href="/home" id="nav-home">
+            <i class="fas fa-chart-bar me-2 icon"></i> Reports & Analytics
+          </a>
+          <% } %>
     </li>
-    
+
     <li class="nav-item">
       <a class="nav-link" href="/product" id="nav-product">
-        <i class="fas fa-box me-2 icon"></i> Quản lý sản phẩm
+        <i class="fas fa-box me-2 icon"></i> Product Management
       </a>
     </li>
-    <% if (user.role === "ADMIN") { %>
+    <% if (user.role==="ADMIN" ) { %>
       <li class="nav-item">
         <a class="nav-link" href="/user" id="nav-user">
-          <i class="fas fa-users me-2 icon"></i> Quản lý người dùng
+          <i class="fas fa-users me-2 icon"></i> User Management
         </a>
       </li>
-    <% } %>
-    <li class="nav-item">
-      <a class="nav-link" href="/customer" id="nav-customer">
-        <i class="fas fa-user-friends me-2 icon"></i> Quản lý khách hàng
-      </a>
-    </li>
+      <% } %>
+        <li class="nav-item">
+          <a class="nav-link" href="/customer" id="nav-customer">
+            <i class="fas fa-user-friends me-2 icon"></i> Customer Management
+          </a>
+        </li>
   </ul>
 </div>

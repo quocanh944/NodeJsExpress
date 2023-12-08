@@ -56,6 +56,7 @@ function loadDashboardData() {
 }
 
 function renderDashboardData({ numberOfProducts, numberOfOrders, numberOfCustomers, numberOfUnreadNotifications }) {
+  let arrOutline = ['inventory_2', 'shopping_cart', 'people', 'notifications']
   let arrCategoryTitle = ['Products', 'Orders', 'Customers', 'Alerts']
   let arrCategory = [numberOfProducts, numberOfOrders, numberOfCustomers, numberOfUnreadNotifications]
   let contentHTML = "";
@@ -64,7 +65,7 @@ function renderDashboardData({ numberOfProducts, numberOfOrders, numberOfCustome
       <div class="card">
         <div class="card-inner">
           <h3>${arrCategoryTitle[i]}</h3>
-          <span class="material-icons-outlined">inventory_2</span>
+          <span class="material-icons-outlined">${arrOutline[i]}</span>
         </div>
         <h1>${arrCategory[i]}</h1>
       </div>

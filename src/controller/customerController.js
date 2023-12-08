@@ -68,20 +68,6 @@ const getCustomerById = async (req, res) => {
 };
 
 
-const userPreview = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    
-  } catch (error) {
-
-  }
-
-  console.log(id)
-
-  res.status(200).send(id)
-}
-
 const addNewCustomer = async (req, res) => {
   try {
       const { phoneNumber, fullName, address } = req.body;
@@ -96,4 +82,4 @@ const addNewCustomer = async (req, res) => {
   }
 };
 
-export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView, userPreview, addNewCustomer }
+export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView, addNewCustomer }

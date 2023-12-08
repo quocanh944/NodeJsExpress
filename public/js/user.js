@@ -47,15 +47,16 @@ function loadUsers() {
             </td>
             <td>
               <div class="btn-group" role="group" aria-label="User Actions">
-                <button type="button" class="btn btn-primary" onclick="openEditDrawer('${user._id}')">
+                <button type="button" class="btn btn-primary" onclick="openEditDrawer('${user._id}')" data-toggle="tooltip" title="Edit User">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button type="button" class="btn btn-danger" onclick="deleteUser('${user._id}')">
+                <button type="button" class="btn btn-danger" onclick="deleteUser('${user._id}')" data-toggle="tooltip" title="Delete User">
                   <i class="fas fa-trash-alt"></i>
                 </button>
-               <button type="button" class="btn ${resendButtonClass}" onclick="resendActivationEmail('${user._id}')" ${user.isActive ? 'disabled' : ''}>
-                <i class="fas fa-redo-alt"></i>
-               </button>
+                <button type="button" class="btn ${resendButtonClass}" onclick="resendActivationEmail('${user._id}')" ${user.isActive ? 'disabled' : ''} data-toggle="tooltip" title="Resend Activation Email">
+                  <i class="fas fa-redo-alt"></i>
+                </button>
+
               </div>
             </td>
           </tr>
