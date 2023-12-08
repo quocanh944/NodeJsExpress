@@ -32,12 +32,13 @@ function loadCustomers() {
                 <td>${customer.address}</td>
                 <td>
                   <!-- Thêm các nút hành động ở đây -->
-                  <button onclick="showPreview('${customer._id}')" class="btn btn-dark text-white">
+                  <button onclick="showPreview('${customer._id}')" class="btn btn-dark text-white" data-toggle="tooltip" title="Preview Customer">
                     <i class="fa fa-eye"></i>
                   </button>
-                  <button onclick="viewCustomerDetails('${customer._id}')" class="btn btn-primary">
+                  <button onclick="viewCustomerDetails('${customer._id}')" class="btn btn-primary" data-toggle="tooltip" title="View Details">
                     <i class="fa fa-angle-double-right"></i>
                   </button>
+
                 </td>
               </tr>
           `;
@@ -57,25 +58,45 @@ function loadCustomers() {
 
 function showPreview(id) {
 
-  axios.get(`/customer/preview/${id}`)
+  axios.get(`/customer/api/${id}`)
     .then(res => {
       console.log(res)
+      setModalContent(res.data)
     })
     .catch(err => {
       console.log(err)
     })
 }
 
-function viewCustomerDetails(id) {
-  console.log(id)
+function setModalContent(customerData) {
+  let html = `
+      <div class="card p-0">
+        <div class="card-image">
+          <img
+            src="https://st.depositphotos.com/1003593/2504/i/450/depositphotos_25042169-stock-photo-customer-concept.jpg"
+            alt="${customerData.fullName}">
+        </div>
+        <div class="card-content d-flex flex-column align-items-center text-dark">
+          <h4 class="pt-2">${customerData.fullName}</h4>
+          <h5>Customer</h5>
+          <ul class="social-icons d-flex">
+            <li data-toggle="tooltip" title="Phone Number"><span class="fas fa-phone-alt"></span> ${customerData.phoneNumber}</li>
+            <li data-toggle="tooltip" title="Address"><span class="fas fa-home"></span> ${customerData.address}</li>
+            <li data-toggle="tooltip" title="Total Products Bought"><span class="fas fa-shopping-cart"></span> ${customerData.totalProductsBought}</li>
+            <li data-toggle="tooltip" title="Total Spent"><span class="fas fa-dollar-sign"></span> $${customerData.totalSpent}</li>
+          </ul>
+
+        </div>
+      </div>
+    `;
+
+  // Hiển thị modal với nội dung mới
+  const modalBody = document.querySelector('#previewCustomer .modal-content');
+  modalBody.innerHTML = html;
+  $('#previewCustomer').modal('show');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
 
   loadCustomers()
 })
-
-
-
-
-

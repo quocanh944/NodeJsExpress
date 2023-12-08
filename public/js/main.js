@@ -1,4 +1,6 @@
-
+$(document).ready(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.getElementById('logoutButton');

@@ -11,9 +11,9 @@
 
 	<% include ../partials/lib.ejs %>
 
-	<link rel="stylesheet" href="./public/stylesheets/style.css">
+		<link rel="stylesheet" href="./public/stylesheets/style.css">
 
-	<link rel="stylesheet" href="./public/stylesheets/product.css">
+		<link rel="stylesheet" href="./public/stylesheets/product.css">
 </head>
 
 <body>
@@ -23,22 +23,23 @@
 			<div id="main" class="flex-grow-1 d-flex flex-column">
 				<% include ../partials/header.ejs %>
 					<div class="main-content">
-						<% if (user.role === "ADMIN") { %>
-						<button class="btn btn-success m-3" onclick="openDrawerForCreate()">Create New Product</button>
-						<% } %>
-						<div class="flex-grow-1 p-3 text-dark">
-							<!-- Render table here -->
-							<% include ../partials/productTable.ejs %>
-								<nav aria-label="Page navigation" class="nav-pagination">
-									<ul class="pagination" id="pagination">
-										<!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
-									</ul>
-								</nav>
-						</div>
+						<h1 class="fw-bold text-center mb-3 text-dark">Product Management</h1>
+						<% if (user.role==="ADMIN" ) { %>
+							<button class="btn btn-success m-3" onclick="openDrawerForCreate()">Create New Product</button>
+							<% } %>
+								<div class="flex-grow-1 p-3 text-dark">
+									<!-- Render table here -->
+									<% include ../partials/productTable.ejs %>
+										<nav aria-label="Page navigation" class="nav-pagination">
+											<ul class="pagination" id="pagination">
+												<!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
+											</ul>
+										</nav>
+								</div>
 					</div>
 			</div>
 	</div>
-	<% if (user.role === "ADMIN") { %>
+	<% if (user.role==="ADMIN" ) { %>
 		<!-- The Drawer -->
 		<div id="userDrawer" class="drawer">
 			<!-- Drawer Header -->
@@ -49,14 +50,14 @@
 					<i class="fas fa-times"></i>
 				</button>
 			</div>
-	
+
 			<!-- Registration Form -->
 			<div class="drawer-content mt-3">
 				<form id="formDrawer" method="post" enctype="multipart/form-data">
 					<div class="mb-3 text-center w-50 m-auto">
 						<img id="frame" src="./public/images/productImagePlaceholder.webp" class="img-fluid" />
 					</div>
-	
+
 					<div class="mb-3">
 						<label for="formFile" class="form-label">Product Thumbnail</label>
 						<input class="form-control" name="image" type="file" id="formFile" onchange="preview()">
@@ -65,7 +66,7 @@
 						<label for="productName" class="form-label">Product Name</label>
 						<input type="text" class="form-control" id="productName" name="productName" required>
 					</div>
-	
+
 					<div class="mb-3">
 						<label for="barcode" class="form-label">Barcode</label>
 						<input type="text" class="form-control" id="barcode" name="barcode" required>
@@ -74,27 +75,27 @@
 						<label for="importPrice" class="form-label">Import Price</label>
 						<input type="number" class="form-control" id="importPrice" name="importPrice" required>
 					</div>
-	
+
 					<div class="mb-3">
 						<label for="retailPrice" class="form-label">Retail Price</label>
 						<input type="number" class="form-control" id="retailPrice" name="retailPrice" required>
 					</div>
-	
+
 					<div class="mb-3">
 						<label for="category" class="form-label">Category</label>
 						<input type="text" class="form-control" id="category" name="category" required>
 					</div>
-	
+
 					<div class="mb-3">
 						<label for="inventory" class="form-label">Inventory</label>
 						<input type="number" class="form-control" id="inventory" name="inventory" required>
 					</div>
-	
+
 					<button type="submit" class="btn btn-primary">Create Product</button>
 				</form>
 			</div>
 		</div>
-	
+
 		<!-- Modal Xác Nhận Xóa -->
 		<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
 			aria-hidden="true">
@@ -116,27 +117,27 @@
 				</div>
 			</div>
 		</div>
-	<% } %>
-	<% if (status && status == 'Success') { %>
-		<script>
-			toastr.success('<%= msg %>', 'System Status')
-		</script>
-	<% } %>
+		<% } %>
+			<% if (status && status=='Success' ) { %>
+				<script>
+					toastr.success('<%= msg %>', 'System Status')
+				</script>
+				<% } %>
 
-	<% if (status && status == 'Failed') { %>
-		<script>
-			toastr.warning('<%= msg %>', 'System Status')
-		</script>
-	<% } %>
-	<div id="notificationContainer" class="notification-container"></div>
+					<% if (status && status=='Failed' ) { %>
+						<script>
+							toastr.warning('<%= msg %>', 'System Status')
+						</script>
+						<% } %>
+							<div id="notificationContainer" class="notification-container"></div>
 
-	<% include ../partials/script.ejs %>
+							<% include ../partials/script.ejs %>
 
-	<script>
-		let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
-	</script>
-	<script src="./public/js/main.js"></script>
-	<script src="./public/js/product.js"></script>
+								<script>
+									let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
+								</script>
+								<script src="./public/js/main.js"></script>
+								<script src="./public/js/product.js"></script>
 </body>
 
 </html>

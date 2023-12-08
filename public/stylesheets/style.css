@@ -1,6 +1,6 @@
 body {
   /* padding: 50px; */
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 a {
@@ -9,8 +9,34 @@ a {
 
 /* Điều chỉnh thanh bên để có độ rộng cố định */
 #sidebar {
-  width: 250px;
+  width: 300px;
   min-height: 100vh;
+}
+
+/* CSS cho màn hình nhỏ */
+@media (max-width: 768px) {
+  #sidebar {
+    position: fixed;
+    left: -250px;
+    /* Sidebar bắt đầu từ ngoài màn hình */
+    width: 250px;
+    transition: all 0.3s;
+    /* Hiệu ứng chuyển động */
+    z-index: 1000;
+  }
+
+  #sidebar.active {
+    left: 0;
+    /* Khi active, đưa sidebar vào màn hình */
+  }
+
+  /* Style cho nút toggle */
+  #toggleSidebar {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    z-index: 1001;
+  }
 }
 
 /* Đảm bảo nội dung chính không bị sidebar che khuất */

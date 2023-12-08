@@ -1,4 +1,5 @@
 import Customer from "../models/customer.js";
+import order from "../models/order.js";
 
 const searchCustomerByPhone = async (query, limit) => {
   try {
@@ -32,7 +33,23 @@ const getAllCustomers = async (page, limit) => {
 const getCustomerById = async (id) => {
   try {
     const customer = await Customer.findById(id);
-    return customer;
+
+    if (!customer) {
+      throw new Error('Customer not found');
+    }
+
+    const orders = await order.find({ customerId: id });
+
+    const totalSpent = orders.reduce((sum, order) => sum + order.totalAmount, 0);
+
+    const totalProductsBought = orders.reduce((sum, order) => sum + order.products.length, 0);
+
+    return {
+      ...customer.toObject(),
+      totalSpent,
+      totalProductsBought,
+      orders
+    };
   } catch (err) {
     console.log(err);
     throw err;

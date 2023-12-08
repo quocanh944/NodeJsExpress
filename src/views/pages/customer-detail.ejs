@@ -2,9 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>
-    <%= title %>
-  </title>
+  <title>Customers Preview</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,44 +11,33 @@
 
     <link rel="stylesheet" href="./public/stylesheets/style.css">
 
-    <link rel="stylesheet" href="./public/stylesheets/customer.css">
+    <link rel="stylesheet" href="./public/stylesheets/customer-detail.css">
 </head>
 
 <body>
+  <div id="someElement" data-resend-activation="<%= resendActivationRequestExists %>"></div>
   <div class="d-flex h-100 text-white">
     <% include ../partials/sidebar.ejs %>
       <div id="main" class="flex-grow-1 d-flex flex-column">
         <% include ../partials/header.ejs %>
           <div class="main-content">
             <div class="flex-grow-1 p-3 text-dark">
-              <h1 class="fw-bold text-center mb-3">Customer Management</h1>
-              <!-- Render table here -->
-              <% include ../partials/customerTable.ejs %>
-                <nav aria-label="Page navigation" class="nav-pagination">
-                  <ul class="pagination" id="pagination">
-                    <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
-                  </ul>
-                </nav>
+
             </div>
           </div>
       </div>
   </div>
 
-  <!-- Modal Preview Customer -->
-  <div class="modal fade" id="previewCustomer" tabindex="-1" aria-labelledby="previewCustomerLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-      </div>
-    </div>
-  </div>
+  <div id="notificationContainer" class="notification-container"></div>
 
   <% include ../partials/script.ejs %>
 
     <script>
       let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
     </script>
+
     <script src="./public/js/main.js"></script>
-    <script src="./public/js/customer.js"></script>
+    <script src="./public/js/customer-detail.js"></script>
 </body>
 
 </html>
