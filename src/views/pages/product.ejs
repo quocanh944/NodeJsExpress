@@ -23,7 +23,9 @@
 			<div id="main" class="flex-grow-1 d-flex flex-column">
 				<% include ../partials/header.ejs %>
 					<div class="main-content">
+						<% if (user.role === "ADMIN") { %>
 						<button class="btn btn-success m-3" onclick="openDrawerForCreate()">Create New Product</button>
+						<% } %>
 						<div class="flex-grow-1 p-3 text-dark">
 							<!-- Render table here -->
 							<% include ../partials/productTable.ejs %>
@@ -36,85 +38,85 @@
 					</div>
 			</div>
 	</div>
-
-	<!-- The Drawer -->
-	<div id="userDrawer" class="drawer">
-		<!-- Drawer Header -->
-		<div class="drawer-header">
-			<h5 class="">Create New Product</h5>
-			<!-- Close button icon -->
-			<button onclick="closeDrawer()" class="btn-close-icon">
-				<i class="fas fa-times"></i>
-			</button>
+	<% if (user.role === "ADMIN") { %>
+		<!-- The Drawer -->
+		<div id="userDrawer" class="drawer">
+			<!-- Drawer Header -->
+			<div class="drawer-header">
+				<h5 class="">Create New Product</h5>
+				<!-- Close button icon -->
+				<button onclick="closeDrawer()" class="btn-close-icon">
+					<i class="fas fa-times"></i>
+				</button>
+			</div>
+	
+			<!-- Registration Form -->
+			<div class="drawer-content mt-3">
+				<form id="formDrawer" method="post" enctype="multipart/form-data">
+					<div class="mb-3 text-center w-50 m-auto">
+						<img id="frame" src="./public/images/productImagePlaceholder.webp" class="img-fluid" />
+					</div>
+	
+					<div class="mb-3">
+						<label for="formFile" class="form-label">Product Thumbnail</label>
+						<input class="form-control" name="image" type="file" id="formFile" onchange="preview()">
+					</div>
+					<div class="mb-3">
+						<label for="productName" class="form-label">Product Name</label>
+						<input type="text" class="form-control" id="productName" name="productName" required>
+					</div>
+	
+					<div class="mb-3">
+						<label for="barcode" class="form-label">Barcode</label>
+						<input type="text" class="form-control" id="barcode" name="barcode" required>
+					</div>
+					<div class="mb-3">
+						<label for="importPrice" class="form-label">Import Price</label>
+						<input type="number" class="form-control" id="importPrice" name="importPrice" required>
+					</div>
+	
+					<div class="mb-3">
+						<label for="retailPrice" class="form-label">Retail Price</label>
+						<input type="number" class="form-control" id="retailPrice" name="retailPrice" required>
+					</div>
+	
+					<div class="mb-3">
+						<label for="category" class="form-label">Category</label>
+						<input type="text" class="form-control" id="category" name="category" required>
+					</div>
+	
+					<div class="mb-3">
+						<label for="inventory" class="form-label">Inventory</label>
+						<input type="number" class="form-control" id="inventory" name="inventory" required>
+					</div>
+	
+					<button type="submit" class="btn btn-primary">Create Product</button>
+				</form>
+			</div>
 		</div>
-
-		<!-- Registration Form -->
-		<div class="drawer-content mt-3">
-			<form id="formDrawer" method="post" enctype="multipart/form-data">
-				<div class="mb-3 text-center w-50 m-auto">
-					<img id="frame" src="./public/images/productImagePlaceholder.webp" class="img-fluid" />
-				</div>
-
-				<div class="mb-3">
-					<label for="formFile" class="form-label">Product Thumbnail</label>
-					<input class="form-control" name="image" type="file" id="formFile" onchange="preview()">
-				</div>
-				<div class="mb-3">
-					<label for="productName" class="form-label">Product Name</label>
-					<input type="text" class="form-control" id="productName" name="productName" required>
-				</div>
-
-				<div class="mb-3">
-					<label for="barcode" class="form-label">Barcode</label>
-					<input type="text" class="form-control" id="barcode" name="barcode" required>
-				</div>
-
-				<div class="mb-3">
-					<label for="importPrice" class="form-label">Import Price</label>
-					<input type="number" class="form-control" id="importPrice" name="importPrice" required>
-				</div>
-
-				<div class="mb-3">
-					<label for="retailPrice" class="form-label">Retail Price</label>
-					<input type="number" class="form-control" id="retailPrice" name="retailPrice" required>
-				</div>
-
-				<div class="mb-3">
-					<label for="category" class="form-label">Category</label>
-					<input type="text" class="form-control" id="category" name="category" required>
-				</div>
-
-				<div class="mb-3">
-					<label for="inventory" class="form-label">Inventory</label>
-					<input type="number" class="form-control" id="inventory" name="inventory" required>
-				</div>
-
-				<button type="submit" class="btn btn-primary">Create Product</button>
-			</form>
-		</div>
-	</div>
-
-	<!-- Modal Xác Nhận Xóa -->
-	<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="confirmDeleteModalLabel">Delete Confirmation Form</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					Do you want to delete product <b id="productModalName"></b>?
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-					<form id="formDeleteProduct" method="post">
-						<button type="submit" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
-					</form>
+	
+		<!-- Modal Xác Nhận Xóa -->
+		<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="confirmDeleteModalLabel">Delete Confirmation Form</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						Do you want to delete product <b id="productModalName"></b>?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						<form id="formDeleteProduct" method="post">
+							<button type="submit" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	<% } %>
 	<% if (status && status == 'Success') { %>
 		<script>
 			toastr.success('<%= msg %>', 'System Status')
