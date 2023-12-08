@@ -11,9 +11,8 @@
 
 	<% include ../partials/lib.ejs %>
 
-		<link rel="stylesheet" href="./public/stylesheets/style.css">
-
-		<link rel="stylesheet" href="./public/stylesheets/product.css">
+		<link rel="stylesheet" href="/public/stylesheets/style.css">
+		<link rel="stylesheet" href="/public/stylesheets/product.css">
 </head>
 
 <body>
@@ -55,7 +54,7 @@
 			<div class="drawer-content mt-3">
 				<form id="formDrawer" method="post" enctype="multipart/form-data">
 					<div class="mb-3 text-center w-50 m-auto">
-						<img id="frame" src="./public/images/productImagePlaceholder.webp" class="img-fluid" />
+						<img id="frame" src="/public/images/productImagePlaceholder.webp" class="img-fluid" />
 					</div>
 
 					<div class="mb-3">
@@ -136,8 +135,8 @@
 								<script>
 									let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
 								</script>
-								<script src="./public/js/main.js"></script>
-								<script src="./public/js/product.js"></script>
+								<script src="/public/js/main.js"></script>
+								<script src="/public/js/product.js"></script>
 </body>
 
 </html>

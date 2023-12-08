@@ -9,9 +9,9 @@
 
   <% include ../partials/lib.ejs %>
 
-    <link rel="stylesheet" href="./public/stylesheets/style.css">
+    <link rel="stylesheet" href="/public/stylesheets/style.css">
 
-    <link rel="stylesheet" href="./public/stylesheets/user.css">
+    <link rel="stylesheet" href="/public/stylesheets/user.css">
 </head>
 
 <body>
@@ -116,8 +116,8 @@
       let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
     </script>
 
-    <script src="./public/js/main.js"></script>
-    <script src="./public/js/user.js"></script>
+    <script src="/public/js/main.js"></script>
+    <script src="/public/js/user.js"></script>
 </body>
 
 </html>

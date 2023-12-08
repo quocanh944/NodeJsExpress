@@ -9,16 +9,8 @@
 
   <% include ../partials/lib.ejs %>
 
-    <link rel="stylesheet" href="./public/stylesheets/style.css">
-
-    <link rel="stylesheet" href="./public/stylesheets/statistic.css">
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-
+    <link rel="stylesheet" href="/public/stylesheets/style.css">
+    <link rel="stylesheet" href="/public/stylesheets/statistic.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 
@@ -122,8 +114,8 @@
     <script>
       let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
     </script>
-    <script src="./public/js/main.js"></script>
-    <script src="./public/js/statistic.js"></script>
+    <script src="/public/js/main.js"></script>
+    <script src="/public/js/statistic.js"></script>
 </body>
 
 </html>

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tìm kiếm Sản phẩm và Khách hàng</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./public/stylesheets/sale.css">
+  <link rel="stylesheet" href="/public/stylesheets/sale.css">
 </head>
 <style>
   .containerSale {
@@ -64,75 +64,75 @@
 <body>
   <div class="containerSale">
     <% include ../partials/sale-header.ejs %>
-    <div class="container mt-4">
-      <div class="row">
-        <!-- Product Search Section -->
-        <section class="col-md-8">
-          <h2>Search Product</h2>
-          <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="productSearchInput"
-            oninput="searchProduct(this.value)">
-          <span id="productSearchResults"></span>
-          <div id="cart"></div>
-        </section>
+      <div class="container mt-4">
+        <div class="row">
+          <!-- Product Search Section -->
+          <section class="col-md-8">
+            <h2>Search Product</h2>
+            <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="productSearchInput"
+              oninput="searchProduct(this.value)">
+            <span id="productSearchResults"></span>
+            <div id="cart"></div>
+          </section>
 
-        <!-- Customer Search Section -->
-        <section class="col-md-4">
-          <h2>Search Customer</h2>
-          <input type="number" class="form-control" placeholder="Nhập số điện thoại khách hàng" id="customerSearchInput"
-            oninput="searchCustomer(this.value)">
-          <div id="customerSearchResults"></div>
+          <!-- Customer Search Section -->
+          <section class="col-md-4">
+            <h2>Search Customer</h2>
+            <input type="number" class="form-control" placeholder="Nhập số điện thoại khách hàng"
+              id="customerSearchInput" oninput="searchCustomer(this.value)">
+            <div id="customerSearchResults"></div>
 
-          <div class="card customCard">
-            <div class="card-body">
-              <!-- Replaced IDs with classes for repeated elements -->
-              <div class="form-group">
-                <label for="phoneNumber">Số điện thoại</label>
-                <input type="text" class="form-control" id="phoneNumber" readonly>
+            <div class="card customCard">
+              <div class="card-body">
+                <!-- Replaced IDs with classes for repeated elements -->
+                <div class="form-group">
+                  <label for="phoneNumber">Số điện thoại</label>
+                  <input type="text" class="form-control" id="phoneNumber" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="fullName">Họ và tên</label>
+                  <input type="text" class="form-control" id="fullName">
+                </div>
+                <div class="form-group">
+                  <label for="address">Địa chỉ</label>
+                  <input type="text" class="form-control" id="address">
+                </div>
               </div>
-              <div class="form-group">
-                <label for="fullName">Họ và tên</label>
-                <input type="text" class="form-control" id="fullName">
+            </div>
+
+            <div class="mt-4">
+              <div class="money d-flex justify-content-between">
+                <label>Tổng số tiền:</label>
+                <span id="totalAmount"></span>
               </div>
-              <div class="form-group">
-                <label for="address">Địa chỉ</label>
-                <input type="text" class="form-control" id="address">
+
+              <!-- Other money-related elements -->
+              <div class="money d-flex justify-content-between align-items-center mt-2">
+                <label for="discount">Giảm giá (%):</label>
+                <input type="number" id="discount" class="form-control w-25" placeholder="0"
+                  oninput="calculateFinalAmount()">
+              </div>
+              <div class="money d-flex justify-content-between mt-2">
+                <label>Khách cần trả:</label>
+                <span id="finalAmount"></span>
+              </div>
+              <div class="money d-flex justify-content-between align-items-center mt-2">
+                <label for="amountReceived">Tiền đã nhận:</label>
+                <input type="text" class="form-control w-25" id="amountReceived">
+              </div>
+              <div class="money d-flex justify-content-between mt-2">
+                <label for="changeAmount">Tiền thừa trả lại:</label>
+                <span id="changeAmount"></span>
+              </div>
+
+              <div class="d-grid mt-3">
+                <button class="btn btn-success" id="checkoutButton">Thanh Toán</button>
               </div>
             </div>
-          </div>
 
-          <div class="mt-4">
-            <div class="money d-flex justify-content-between">
-              <label>Tổng số tiền:</label>
-              <span id="totalAmount"></span>
-            </div>
-
-            <!-- Other money-related elements -->
-            <div class="money d-flex justify-content-between align-items-center mt-2">
-              <label for="discount">Giảm giá (%):</label>
-              <input type="number" id="discount" class="form-control w-25" placeholder="0"
-                oninput="calculateFinalAmount()">
-            </div>
-            <div class="money d-flex justify-content-between mt-2">
-              <label>Khách cần trả:</label>
-              <span id="finalAmount"></span>
-            </div>
-            <div class="money d-flex justify-content-between align-items-center mt-2">
-              <label for="amountReceived">Tiền đã nhận:</label>
-              <input type="text" class="form-control w-25" id="amountReceived">
-            </div>
-            <div class="money d-flex justify-content-between mt-2">
-              <label for="changeAmount">Tiền thừa trả lại:</label>
-              <span id="changeAmount"></span>
-            </div>
-
-            <div class="d-grid mt-3">
-              <button class="btn btn-success" id="checkoutButton">Thanh Toán</button>
-            </div>
-          </div>
-
-        </section>
+          </section>
+        </div>
       </div>
-    </div>
   </div>
 
   <div class="invoice" style="display: none;">
@@ -140,7 +140,7 @@
     <p><strong>Phone Number:</strong> <span id="phoneNumberInv"><!-- Phone Number --></span></p>
     <p><strong>Full Name:</strong> <span id="fullNameInv"><!-- Full Name --></span></p>
     <p><strong>Address:</strong> <span id="addressInv"><!-- Address --></span></p>
-  
+
     <h2>Product Information</h2>
     <table id="productsTable" border="1">
       <thead>
@@ -162,11 +162,11 @@
   </div>
 
   <% include ../partials/script.ejs %>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="./public/js/sale.js"></script>
-  <script src="./public/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="/public/js/sale.js"></script>
+    <script src="/public/js/main.js"></script>
 </body>
 
 </html>

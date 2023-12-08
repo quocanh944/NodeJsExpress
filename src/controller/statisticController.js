@@ -18,9 +18,6 @@ const getSalesData = async (req, res) => {
 const getDashboardData = async (req, res) => {
   try {
     const data = await statisticService.getDashboardData();
-
-    console.log(data)
-
     res.status(200).json({ message: true, data });
   } catch (error) {
     console.error('Error fetching dashboard data:', error);

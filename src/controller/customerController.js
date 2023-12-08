@@ -83,6 +83,7 @@ const addNewCustomer = async (req, res) => {
 };
 
 const getCustomerViewDetail = async (req, res) => {
+  console.log('getCustomerViewDetail')
   const { customerId } = req.params;
   const customer = await customerService.getCustomerById(customerId);
   res.render('pages/customer-detail', {

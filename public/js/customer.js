@@ -40,7 +40,6 @@ function loadCustomers() {
                       <i class="fa fa-angle-double-right"></i>
                     </button>
                   </a>
-
                 </td>
               </tr>
           `;
