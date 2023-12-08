@@ -51,7 +51,11 @@
                         data-bs-toggle="tooltip" title="Edit Product">
                         <i class="fas fa-edit"></i>
                       </button>
+                      
                       <button type="button" class="btn btn-danger"
+                        <% if (prod.isBought) { %>
+                          disabled
+                        <% } %>
                         onclick="deleteProduct('<%=prod._id%>', '<%= prod.productName %>')" data-bs-toggle="tooltip"
                         title="Delete Product">
                         <i class="fas fa-trash-alt"></i>
