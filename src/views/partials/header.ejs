@@ -9,7 +9,6 @@
     <!-- Navbar content for larger screens -->
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <!-- Menus (removed for brevity) -->
-
     </div>
 
     <div class="d-flex align-items-center">
@@ -55,13 +54,12 @@
                   </div>
                 </li>
                 <% }) %>
-                  F
                   <% } else { %>
-                    <li><a class="dropdown-item" href="#">Không có thông báo mới</a></li>
+                    <li><a class="dropdown-item" href="#">No new notifications</a></li>
                     <% } %>
                       <li class="text-center">
                         <button class="btn btn-link" style="text-decoration: none;"><i class="fas fa-times-circle"></i>
-                          Xóa tất cả</button>
+                          Clear All</button>
                       </li>
           </div>
         </ul>
@@ -72,20 +70,21 @@
         <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser"
           data-bs-toggle="dropdown" aria-expanded="false">
           <img <% if (user.avatar) { %>
-                src="<%= user.avatar %>"
-               <% } else { %> 
-                src="http://bootdey.com/img/Content/avatar/avatar1.png"
+          src="<%= user.avatar %>"
+            <% } else { %>
+              src="http://bootdey.com/img/Content/avatar/avatar1.png"
               <% } %> alt="avatar" width="32" height="32" class="rounded-circle me-2">
-          <strong>
-            <%= user.username %>
-          </strong>
+                <strong>
+                  <%= user.username %>
+                </strong>
         </a>
-        <ul class="dropdown-menu text-small shadow" style="margin-left: -150px; max-width: 200px;" aria-labelledby="dropdownUser">
-          <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+        <ul class="dropdown-menu text-small shadow" style="margin-left: -150px; max-width: 200px;"
+          aria-labelledby="dropdownUser">
+          <li><a class="dropdown-item" href="/profile">Profile</a></li>
           <li>
             <hr class="dropdown-divider">
           </li>
-          <li><button class="dropdown-item" id="logoutButton">Đăng xuất</button></li>
+          <li><button class="dropdown-item" id="logoutButton">Log out</button></li>
         </ul>
       </div>
     </div>

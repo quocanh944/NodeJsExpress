@@ -56,7 +56,6 @@ function loadUsers() {
                 <button type="button" class="btn ${resendButtonClass}" onclick="resendActivationEmail('${user._id}')" ${user.isActive ? 'disabled' : ''} data-toggle="tooltip" title="Resend Activation Email">
                   <i class="fas fa-redo-alt"></i>
                 </button>
-
               </div>
             </td>
           </tr>
