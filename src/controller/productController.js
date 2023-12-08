@@ -32,8 +32,13 @@ export const getProductById = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params
+    const prod = await productService.getProductById(id);
+    if (prod.isBought) {
+      req.flash('msg', `Delete product failed (This product is bought).`);
+      req.flash('status', 'Failed');
+      return res.redirect('/product');
+    }
     const result = await productService.deleteProductById(id);
-
     req.flash('msg', `Delete product successfully.`);
     req.flash('status', 'Success');
     return res.redirect('/product');
