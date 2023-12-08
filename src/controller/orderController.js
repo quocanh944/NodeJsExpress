@@ -7,7 +7,6 @@ import * as orderService from '../service/orderService.js';
 
 export const addOrder = async (req, res) => {
   try {
-
     const { customerId, products, totalAmount, moneyReceived, moneyBack } = req.body;
     const { user } = req.session
     const saleId = user._id //current userID
@@ -30,10 +29,12 @@ export const addOrder = async (req, res) => {
 };
 
 export const getOrderByCustomerID = async (req, res) => {
+  console.log("getOrderByCustomerID")
   try {
     const { customerId } = req.params;
     const { startDate, endDate } = req.query;
     const orders = await orderService.getOrderByCustomerID(customerId, startDate, endDate);
+    console.log(orders)
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
