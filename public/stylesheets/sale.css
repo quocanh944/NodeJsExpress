@@ -7,10 +7,6 @@
     --color-secondary: #333;
 }
 
-body {
-    font-family: var(--font-main);
-}
-
 .card {
     background-color: var(--main-bg-color);
     border: 1px solid var(--main-border-color);
@@ -77,4 +73,55 @@ section.col-md-4 {
 td,
 th {
     text-align: center;
+}
+
+.containerSale {
+    overflow: hidden;
+}
+
+/* Set the width of dropdown items with the custom class */
+.custom-width {
+    width: fit-content;
+    /* or any other value */
+    min-width: 151px;
+}
+
+.navbar {
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-brand:hover {
+    color: #007bff;
+}
+
+.nav-link {
+    color: #343a40;
+    margin-right: 1rem;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+/* Dropdown and Avatar Styles */
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-toggle img {
+    border: 2px solid #007bff;
+}
+
+.dropdown-menu {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    z-index: 10;
 }
