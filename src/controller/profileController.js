@@ -96,6 +96,13 @@ const getCurrentProfile = async (req, res) => {
     const msg = req.flash('msg');
     const status = req.flash('status');
     const { user } = req.session;
+    if (user.role === 'ADMIN') {
+        return res.render('pages/admin-profile', {
+            title: "Profile", user,
+            msg,
+            status
+        })
+    }
     return res.render('pages/current-profile', {
         title: "Profile", user,
         msg,

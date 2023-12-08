@@ -27,7 +27,14 @@ const getByPhone = async (req, res) => {
 }
 
 const getCustomerView = (req, res) => {
-  res.render('pages/customer', {
+  const {user} = req.session;
+  if (user.role === 'ADMIN') { 
+    return res.render('pages/customer', {
+      title: "Quản lý người dùng",
+      user: req.session.user
+    });
+  }
+  return res.render('pages/sale-customer', {
     title: "Quản lý người dùng",
     user: req.session.user
   });

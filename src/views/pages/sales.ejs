@@ -63,47 +63,8 @@
 
 <body>
   <div class="containerSale">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">Phone E-Commerce</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="/product">Products</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/customer">Customers</a>
-            </li>
-          </ul>
-          <ul class="navbar-nav">
-            <li class="nav-item dropdown custom-width">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <img <% if (user.avatar) { %>
-									src="<%= user.avatar %>"
-								<% } else { %> 
-									src="http://bootdey.com/img/Content/avatar/avatar1.png"
-								<% } %> alt="avatar" width="32" height="32" class="rounded-circle me-2">
-                <strong id="username">
-                  <%= user.email.split('@')[0] %>
-                </strong>
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                <li><a class="dropdown-item" href="#">Logout</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container-fluid">
+    <% include ../partials/sale-header.ejs %>
+    <div class="container mt-4">
       <div class="row">
         <!-- Product Search Section -->
         <section class="col-md-8">
@@ -200,12 +161,12 @@
     <p><strong>Change Amount:</strong> <span id="changeAmountInv"><!-- Change Amount --></span></p>
   </div>
 
-
+  <% include ../partials/script.ejs %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="./public/js/sale.js"></script>
+  <script src="./public/js/main.js"></script>
 </body>
 
 </html>
