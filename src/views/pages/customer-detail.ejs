@@ -2,42 +2,99 @@
 <html lang="en">
 
 <head>
-  <title>Customers Preview</title>
+  <title>
+    <%= title %>
+  </title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <% include ../partials/lib.ejs %>
 
-    <link rel="stylesheet" href="./public/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" href="/public/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/customer-detail.css" />
 
-    <link rel="stylesheet" href="./public/stylesheets/customer-detail.css">
 </head>
 
 <body>
-  <div id="someElement" data-resend-activation="<%= resendActivationRequestExists %>"></div>
+
   <div class="d-flex h-100 text-white">
     <% include ../partials/sidebar.ejs %>
       <div id="main" class="flex-grow-1 d-flex flex-column">
         <% include ../partials/header.ejs %>
           <div class="main-content">
             <div class="flex-grow-1 p-3 text-dark">
+              <div class="container mt-4">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                        <a href="#customerDetail" class="nav-link active" id="navCustomerDetail" data-bs-toggle="tab"
+                          style="color: black;">Customer Details</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#customerOrder" class="nav-link" id="navCustomerOrder" data-bs-toggle="tab"
+                          style="color: black;">Order</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="customerDetail">
+                        <!-- Account details card-->
+                        <div class="card mb-4" style="border-radius: 0px 0px 0.375rem 0.375rem;">
+                          <div class="card-body">
+                            <form>
+                              <!-- Form Group (username)-->
+                              <div class="mb-3">
+                                <label class="small mb-1" for="customerName">Full Name</label>
+                                <input class="form-control" id="customerName" type="text" disabled>
+                              </div>
+                              <div class="mb-3">
+                                <label class="small mb-1" for="customerAddress">Email address</label>
+                                <input class="form-control" id="customerAddress" type="email" disabled>
+                              </div>
+                              <div class="mb-3">
+                                <label class="small mb-1" for="customerPhone">Phone Number</label>
+                                <input class="form-control" id="customerPhone" type="text" name="fullName" disabled>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="customerOrder">
+                        <!-- Show order of specific customer  -->
+                        <div class="row mt-4">
+                          <div class="col-6">
+                            <div id="reportrange"
+                              style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; display: inline-block;">
+                              <i class="fa fa-calendar"></i>&nbsp;
+                              <span></span>
+                            </div>
+                          </div>
+                        </div>
 
+                        <div class="row">
+                          <% include ../partials/admin-orderTable.ejs %>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
       </div>
   </div>
 
-  <div id="notificationContainer" class="notification-container"></div>
-
   <% include ../partials/script.ejs %>
-
     <script>
       let unreadNotificationsCount = <%= notifications.filter(notification => !notification.isRead).length %>;
     </script>
-
-    <script src="./public/js/main.js"></script>
-    <script src="./public/js/customer-detail.js"></script>
+    <script src="/public/js/main.js"></script>
+    <script src="/public/js/customer-detail.js"></script>
 </body>
 
 </html>

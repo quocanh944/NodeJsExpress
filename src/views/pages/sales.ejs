@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tìm kiếm Sản phẩm và Khách hàng</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./public/stylesheets/sale.css">
+  <link rel="stylesheet" href="/public/stylesheets/sale.css">
 </head>
 <style>
 	.containerSale {
@@ -97,7 +97,6 @@
                 <input type="text" class="form-control" id="address">
               </div>
             </div>
-          </div>
 
           <div class="mt-4">
             <div class="money d-flex justify-content-between">
@@ -131,7 +130,6 @@
 
         </section>
       </div>
-    </div>
   </div>
 
   <div class="invoice" style="display: none;">
@@ -139,7 +137,7 @@
     <p><strong>Phone Number:</strong> <span id="phoneNumberInv"><!-- Phone Number --></span></p>
     <p><strong>Full Name:</strong> <span id="fullNameInv"><!-- Full Name --></span></p>
     <p><strong>Address:</strong> <span id="addressInv"><!-- Address --></span></p>
-  
+
     <h2>Product Information</h2>
     <table id="productsTable" border="1">
       <thead>
@@ -161,11 +159,11 @@
   </div>
 
   <% include ../partials/script.ejs %>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="./public/js/sale.js"></script>
-  <script src="./public/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="/public/js/sale.js"></script>
+    <script src="/public/js/main.js"></script>
 </body>
 
 </html>

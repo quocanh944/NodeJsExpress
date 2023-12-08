@@ -35,10 +35,11 @@ function loadCustomers() {
                   <button onclick="showPreview('${customer._id}')" class="btn btn-dark text-white" data-toggle="tooltip" title="Preview Customer">
                     <i class="fa fa-eye"></i>
                   </button>
-                  <button onclick="viewCustomerDetails('${customer._id}')" class="btn btn-primary" data-toggle="tooltip" title="View Details">
-                    <i class="fa fa-angle-double-right"></i>
-                  </button>
-
+                  <a href="/customer/${customer._id}">
+                    <button class="btn btn-primary" data-toggle="tooltip" title="View Details">
+                      <i class="fa fa-angle-double-right"></i>
+                    </button>
+                  </a>
                 </td>
               </tr>
           `;

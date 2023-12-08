@@ -27,8 +27,8 @@ const getByPhone = async (req, res) => {
 }
 
 const getCustomerView = (req, res) => {
-  const {user} = req.session;
-  if (user.role === 'ADMIN') { 
+  const { user } = req.session;
+  if (user.role === 'ADMIN') {
     return res.render('pages/customer', {
       title: "Quản lý người dùng",
       user: req.session.user
@@ -70,16 +70,27 @@ const getCustomerById = async (req, res) => {
 
 const addNewCustomer = async (req, res) => {
   try {
-      const { phoneNumber, fullName, address } = req.body;
+    const { phoneNumber, fullName, address } = req.body;
 
-      const newCustomer = new Customer({ phoneNumber, fullName, address });
+    const newCustomer = new Customer({ phoneNumber, fullName, address });
 
-      await newCustomer.save();
+    await newCustomer.save();
 
-      res.status(201).json({ message: "New customer added successfully", customer: newCustomer });
+    res.status(201).json({ message: "New customer added successfully", customer: newCustomer });
   } catch (error) {
-      res.status(400).json({ message: "Error adding customer", error: error.message });
+    res.status(400).json({ message: "Error adding customer", error: error.message });
   }
 };
 
-export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView, addNewCustomer }
+const getCustomerViewDetail = async (req, res) => {
+  console.log('getCustomerViewDetail')
+  const { customerId } = req.params;
+  const customer = await customerService.getCustomerById(customerId);
+  res.render('pages/customer-detail', {
+    title: "Customer Detail",
+    user: req.session.user,
+    customer
+  });
+}
+
+export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView, addNewCustomer, getCustomerViewDetail }

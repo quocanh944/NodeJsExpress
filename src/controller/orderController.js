@@ -35,6 +35,19 @@ export const addOrder = async (req, res) => {
   }
 };
 
+export const getOrderByCustomerID = async (req, res) => {
+  console.log("getOrderByCustomerID")
+  try {
+    const { customerId } = req.params;
+    const { startDate, endDate } = req.query;
+    const orders = await orderService.getOrderByCustomerID(customerId, startDate, endDate);
+    console.log(orders)
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const getListOrder = async (req, res) => {
   try {
     const { user } = req.session
