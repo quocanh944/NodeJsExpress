@@ -36,6 +36,4 @@ productRouter.post('/', requireRole(['ADMIN']), function (req, res, next) {
     });
 }, productController.create);
 
-productRouter.put("/decreaseProductInventory", productController.decreaseProductInventory)
-
 export default productRouter;

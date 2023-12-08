@@ -12,6 +12,8 @@ const orderSchema = new mongoose.Schema({
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer' },
   products: [orderDetailSchema],
   totalAmount: Number,
+  discount: Number,
+  finalAmount: Number,
   moneyReceived: Number,
   moneyBack: Number,
   purchaseDate: { type: Date, default: Date.now }
