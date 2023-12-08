@@ -45,13 +45,38 @@ let customerId_;
 let newCustomer = false;
 
 // Event Listeners and Initializers
-window.onload = () => fetchData(`/cart/get`).then(displayCart);
+window.onload = () => {
+    fetchData(`/cart/get`).then(displayCart);
+    discountInput.value = 0;
+    changeAmount.textContent = "$0";
+};
 
 productSearchInput.addEventListener('input', () => searchProduct(productSearchInput.value));
 customerSearchInput.addEventListener('input', () => searchCustomer(customerSearchInput.value));
 amountReceived.addEventListener('input', () => changeAmount.textContent = formatMoney(amountReceived.value - finalAmountEl.textContent.replace(/[$,]/g, "")));
 
 checkoutButton.addEventListener('click', processCheckout);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.getElementById('logoutButton');
+  
+    if (logoutButton) {
+      logoutButton.addEventListener('click', () => {
+        // Gửi yêu cầu đăng xuất bằng Axios khi nút đăng xuất được nhấn
+        fetch('/logout')
+          .then((response) => {
+            // Xử lý phản hồi từ máy chủ (ví dụ: chuyển hướng hoặc hiển thị thông báo đăng xuất thành công)
+            console.log(response)
+            location.reload()
+          })
+          .catch((error) => {
+            // Xử lý lỗi nếu có
+            console.log(error)
+          });
+      });
+    }
+  });
+  
 
 // Function Declarations
 async function searchProduct(value) {
@@ -106,7 +131,7 @@ function displayProductSearch(results, query) {
                     <div style="display: flex; align-items: center;">
                         <img src="${product.thumbnailUrl}" alt="${product.productName}" style="width: 50px; height: 50px; margin-right: 10px;">
                         <div>
-                            <div>${productText}(</div>
+                            <div>${productText}</div>
                             <div>${product.barcode}</div>
                             <div>Inventory: ${product.inventory}</div>
                         </div>
@@ -397,16 +422,6 @@ async function printInvoice() {
     downloadPDF();
 }
 
-async function updateInventory() {
-    for (const product of products) {
-        data = {
-            productId: product.productId,
-            quantity: product.quantity,
-        }
-        await fetchData('product/decreaseProductInventory', 'PUT', data);
-    }
-}
-
 async function processCheckout() {
     if (products.length == 0) { alert("There are no products in the cart"); return; }
     if (!fullName.value || !address.value) { alert("Missing customer infomation"); return; }
@@ -432,12 +447,13 @@ async function processCheckout() {
             customerId: customerId_,
             products: productsToCheckout,
             totalAmount: parseFloat(totalAmountEl.textContent.replace(/[$,]/g, "")),
+            discount: parseFloat(discountInput.value),
+            finalAmount: parseFloat(finalAmountEl.textContent.replace(/[$,]/g, "")),
             moneyReceived: parseFloat(amountReceived.value),
-            moneyBack: parseFloat(changeAmount.value)
+            moneyBack: parseFloat(changeAmount.textContent.replace(/[$,]/g, ""))
         };
 
         try {
-            await updateInventory();
             const responseData = await fetchData('order/add', 'POST', data);
             console.log('Checkout successful:', responseData);
             clearCart();

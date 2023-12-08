@@ -9,129 +9,126 @@
   <link rel="stylesheet" href="/public/stylesheets/sale.css">
 </head>
 <style>
-  .containerSale {
-    overflow: hidden;
-  }
-
-  /* Set the width of dropdown items with the custom class */
-  .custom-width {
-    width: fit-content;
-    /* or any other value */
-    min-width: 151px;
-  }
-
-  .navbar {
-    background-color: #f8f9fa;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-
-  .navbar-brand:hover {
-    color: #007bff;
-  }
-
-  .nav-link {
-    color: #343a40;
-    margin-right: 1rem;
-  }
-
-  .nav-link:hover {
-    color: #007bff;
-  }
-
-  /* Dropdown and Avatar Styles */
-  .dropdown-toggle {
-    display: flex;
-    align-items: center;
-  }
-
-  .dropdown-toggle img {
-    border: 2px solid #007bff;
-  }
-
-  .dropdown-menu {
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    z-index: 10;
-  }
+	.containerSale {
+	  overflow: hidden;
+	}
+  
+	/* Set the width of dropdown items with the custom class */
+	.custom-width {
+	  width: fit-content;
+	  /* or any other value */
+	  min-width: 151px;
+	}
+  
+	.navbar {
+	  background-color: #f8f9fa;
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+  
+	.navbar-brand {
+	  font-size: 1.5rem;
+	  font-weight: bold;
+	}
+  
+	.navbar-brand:hover {
+	  color: #007bff;
+	}
+  
+	.nav-link {
+	  color: #343a40;
+	  margin-right: 1rem;
+	}
+  
+	.nav-link:hover {
+	  color: #007bff;
+	}
+  
+	/* Dropdown and Avatar Styles */
+	.dropdown-toggle {
+	  display: flex;
+	  align-items: center;
+	}
+  
+	.dropdown-toggle img {
+	  border: 2px solid #007bff;
+	}
+  
+	.dropdown-menu {
+	  position: absolute;
+	  left: 12px;
+	  right: 12px;
+	  z-index: 10;
+	}
 </style>
-
 <body>
   <div class="containerSale">
     <% include ../partials/sale-header.ejs %>
-      <div class="container mt-4">
-        <div class="row">
-          <!-- Product Search Section -->
-          <section class="col-md-8">
-            <h2>Search Product</h2>
-            <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="productSearchInput"
-              oninput="searchProduct(this.value)">
-            <span id="productSearchResults"></span>
-            <div id="cart"></div>
-          </section>
+    <div class="container mt-4">
+      <div class="row">
+        <!-- Product Search Section -->
+        <section class="col-md-8">
+          <h2>Search Product</h2>
+          <input type="text" class="form-control" placeholder="Enter the product name" id="productSearchInput"
+            oninput="searchProduct(this.value)">
+          <span id="productSearchResults"></span>
+          <div id="cart"></div>
+        </section>
 
-          <!-- Customer Search Section -->
-          <section class="col-md-4">
-            <h2>Search Customer</h2>
-            <input type="number" class="form-control" placeholder="Nhập số điện thoại khách hàng"
-              id="customerSearchInput" oninput="searchCustomer(this.value)">
-            <div id="customerSearchResults"></div>
+        <!-- Customer Search Section -->
+        <section class="col-md-4">
+          <h2>Search Customer</h2>
+          <input type="number" class="form-control" placeholder="Enter the customer's phone number" id="customerSearchInput"
+            oninput="searchCustomer(this.value)">
+          <div id="customerSearchResults"></div>
 
-            <div class="card customCard">
-              <div class="card-body">
-                <!-- Replaced IDs with classes for repeated elements -->
-                <div class="form-group">
-                  <label for="phoneNumber">Số điện thoại</label>
-                  <input type="text" class="form-control" id="phoneNumber" readonly>
-                </div>
-                <div class="form-group">
-                  <label for="fullName">Họ và tên</label>
-                  <input type="text" class="form-control" id="fullName">
-                </div>
-                <div class="form-group">
-                  <label for="address">Địa chỉ</label>
-                  <input type="text" class="form-control" id="address">
-                </div>
+          <div class="card customCard">
+            <div class="card-body">
+              <!-- Replaced IDs with classes for repeated elements -->
+              <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" class="form-control" id="phoneNumber" readonly>
+              </div>
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" class="form-control" id="fullName">
+              </div>
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address">
               </div>
             </div>
 
-            <div class="mt-4">
-              <div class="money d-flex justify-content-between">
-                <label>Tổng số tiền:</label>
-                <span id="totalAmount"></span>
-              </div>
-
-              <!-- Other money-related elements -->
-              <div class="money d-flex justify-content-between align-items-center mt-2">
-                <label for="discount">Giảm giá (%):</label>
-                <input type="number" id="discount" class="form-control w-25" placeholder="0"
-                  oninput="calculateFinalAmount()">
-              </div>
-              <div class="money d-flex justify-content-between mt-2">
-                <label>Khách cần trả:</label>
-                <span id="finalAmount"></span>
-              </div>
-              <div class="money d-flex justify-content-between align-items-center mt-2">
-                <label for="amountReceived">Tiền đã nhận:</label>
-                <input type="text" class="form-control w-25" id="amountReceived">
-              </div>
-              <div class="money d-flex justify-content-between mt-2">
-                <label for="changeAmount">Tiền thừa trả lại:</label>
-                <span id="changeAmount"></span>
-              </div>
-
-              <div class="d-grid mt-3">
-                <button class="btn btn-success" id="checkoutButton">Thanh Toán</button>
-              </div>
+          <div class="mt-4">
+            <div class="money d-flex justify-content-between">
+              <label>Total Amount:</label>
+              <span id="totalAmount"></span>
             </div>
 
-          </section>
-        </div>
+            <!-- Other money-related elements -->
+            <div class="money d-flex justify-content-between align-items-center mt-2">
+              <label for="discount">Discount (%):</label>
+              <input type="number" id="discount" class="form-control w-25" placeholder="0"
+                oninput="calculateFinalAmount()">
+            </div>
+            <div class="money d-flex justify-content-between mt-2">
+              <label>Customers need to pay:</label>
+              <span id="finalAmount"></span>
+            </div>
+            <div class="money d-flex justify-content-between align-items-center mt-2">
+              <label for="amountReceived">Amount Received:</label>
+              <input type="number" class="form-control w-25" id="amountReceived">
+            </div>
+            <div class="money d-flex justify-content-between mt-2">
+              <label for="changeAmount">Amount Returned:</label>
+              <span id="changeAmount"></span>
+            </div>
+
+            <div class="d-grid mt-3">
+              <button class="btn btn-success" id="checkoutButton">Thanh Toán</button>
+            </div>
+          </div>
+
+        </section>
       </div>
   </div>
 
@@ -156,9 +153,9 @@
     </table>
     <p><strong>Total Amount:</strong> <span id="totalAmountInv"><!-- Total Amount --></span></p>
     <p><strong>Discount(%):</strong> <span id="discountInv"><!-- Discount --></span></p>
-    <p><strong>Final Amount:</strong> <span id="finalAmountInv"><!-- Final Amount --></span></p>
+    <p><strong>Customers need to pay:</strong> <span id="finalAmountInv"><!-- Final Amount --></span></p>
     <p><strong>Amount Received:</strong> <span id="amountReceivedInv"><!-- Amount Received --></span></p>
-    <p><strong>Change Amount:</strong> <span id="changeAmountInv"><!-- Change Amount --></span></p>
+    <p><strong>Amount Returned:</strong> <span id="changeAmountInv"><!-- Change Amount --></span></p>
   </div>
 
   <% include ../partials/script.ejs %>

@@ -32,8 +32,13 @@ export const getProductById = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params
+    const prod = await productService.getProductById(id);
+    if (prod.isBought) {
+      req.flash('msg', `Delete product failed (This product is bought).`);
+      req.flash('status', 'Failed');
+      return res.redirect('/product');
+    }
     const result = await productService.deleteProductById(id);
-
     req.flash('msg', `Delete product successfully.`);
     req.flash('status', 'Success');
     return res.redirect('/product');
@@ -156,14 +161,4 @@ export const getProductView = async (req, res) => {
     status,
     msg
   });
-}
-
-export const decreaseProductInventory = async (req, res) => {
-  try {
-    const { productId, quantity } = req.body;
-    const result = await productService.decreaseProductInventory(productId ,quantity)
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json({ err: 'Internal server error' });
-  }
 }

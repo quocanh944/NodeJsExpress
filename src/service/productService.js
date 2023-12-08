@@ -67,10 +67,9 @@ export const decreaseProductInventory = async (productId, quantity) => {
     // Calculate new inventory, ensuring it doesn't drop below zero
     const newInventory = Math.max(product.inventory - quantity, 0);
 
-    // Update the product inventory
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
-      { inventory: newInventory },
+      { inventory: newInventory, isBought: true },
       { new: true }
     );
 

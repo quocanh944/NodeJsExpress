@@ -19,6 +19,8 @@
       rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+		<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
@@ -79,7 +81,7 @@
 		<% include ../partials/sale-header.ejs %>
 		<div class="container mt-4">
 			<div class="row">
-				<div class="col-xl-4">
+				<div class="col-xl-2">
 					<!-- Profile picture card-->
 					<div class="card mb-4 mb-xl-0">
 						<div class="card-header">Profile Picture</div>
@@ -102,7 +104,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xl-8">
+				<div class="col-xl-10">
 					<ul class="nav nav-tabs">
 						<li class="nav-item">
 							<a href="#accountDetails" class="nav-link active" id="navAccountDetails" data-bs-toggle="tab" style="color: black;">Account Details</a>
@@ -111,7 +113,10 @@
 							<a href="#changePassword" class="nav-link" id="navChangePassword" data-bs-toggle="tab" style="color: black;">Change Password</a>
 						</li>
 						<li class="nav-item">
-							<a href="#overview" class="nav-link" id="navChangePassword" data-bs-toggle="tab" style="color: black;">Overview</a>
+							<a href="#overview" class="nav-link" id="navOverview" data-bs-toggle="tab" style="color: black;">Overview</a>
+						</li>
+						<li class="nav-item">
+							<a href="#orderHistory" class="nav-link" id="navOrderHistory" data-bs-toggle="tab" style="color: black;">Order History</a>
 						</li>
 					</ul>
 					<div class="tab-content">
@@ -222,8 +227,25 @@
 								</div>
 							</div>
 						</div>
+						<div class="tab-pane fade" id="orderHistory">
+							<% include ../partials/orderTable.ejs %>
+						</div>
 					</div>
-					
+					<!-- Order Details Modal -->
+					<div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+							</div>
+							<div class="modal-body">
+							<!-- Table for order details will go here -->
+							</div>
+						</div>
+						</div>
+					</div>
+  
+  
 				</div>
 			</div>
 		</div>
@@ -248,9 +270,15 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-	<script src="/public/js/main.js"></script>
-	<script src="/public/js/profile.js"></script>
-	<script src="/public/js/statistic.js"></script>
+	<!-- DataTables library -->
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+
+
+	<script src="./public/js/order-sale.js"></script>
+	<script src="./public/js/main.js"></script>
+	<script src="./public/js/profile.js"></script>
+	<script src="./public/js/statistic.js"></script>
+		
 </body>
 
 </html>
