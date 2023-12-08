@@ -132,3 +132,7 @@ a {
   opacity: 0.6;
   /* Làm mờ thông báo đã đọc */
 }
+
+.dataTables_length {
+  margin-bottom: 20px;
+}
