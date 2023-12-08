@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
   isActive: { type: Boolean, default: false },
   isLocked: { type: Boolean, default: false },
   isFirstLogin: { type: Boolean, default: true },
-  salesHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
 }, { timestamps: true });
 
 // Mã hóa mật khẩu trước khi lưu
