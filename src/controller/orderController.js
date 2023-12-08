@@ -35,7 +35,7 @@ export const addOrder = async (req, res) => {
   }
 };
 
-export const getListOrderSale = async (req, res) => {
+export const getListOrder = async (req, res) => {
   try {
     const { user } = req.session
     const saleId = user._id //current userID

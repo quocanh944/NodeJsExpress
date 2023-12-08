@@ -11,7 +11,7 @@ function loadOrders() {
         $('#orderTable').DataTable().clear().destroy();
     }
     showSpinner();
-    axios.get(`/order/getListOrderSale`)  // Adjust the endpoint as needed
+    axios.get(`/order/getListOrder`)
         .then(response => {
             console.log(response)
             const orders = response.data;
