@@ -292,7 +292,7 @@ function displayCart(data) {
                 <h5 style="width: 250px;">${item.productName}</h5>
                 <label>
                     Quantity: 
-                    <input type="number" class="form-control ml-2 d-inline-block" value="${item.quantity}" min="1" style="width: 80px;">
+                    <input type="number" class="form-control ml-2 d-inline-block" value="${item.quantity}" min="1" max="${item.inventory}" style="width: 80px;">
                 </label>
             </div>
             <div style="width: 100px;">Price: $${item.retailPrice}</div>
@@ -313,7 +313,7 @@ function displayCart(data) {
         quantityInput.addEventListener('change', (event) => {
             console.log(item.inventory);
             if (event.target.value > item.inventory) {
-                alert("Not enough products");
+                toastr.error('Error: Not enough products', 'Error');
                 quantityInput.value = item.inventory;
                 return;
             } else {
@@ -423,10 +423,22 @@ async function printInvoice() {
 }
 
 async function processCheckout() {
-    if (products.length == 0) { alert("There are no products in the cart"); return; }
-    if (!fullName.value || !address.value) { alert("Missing customer infomation"); return; }
-    if (!amountReceived.value) { alert('Missing Amout Received'); return; }
-    if (parseFloat(changeAmount.textContent.replace(/[$,]/g, "")) < 0) { alert('The amount received is not enough for payment'); return; }
+    if (products.length == 0) {
+        toastr.error("Error: There are no products in the cart.", "Error");
+        return; 
+    }
+    if (!fullName.value || !address.value) { 
+        toastr.error("Error: Missing customer infomation.", "Error");
+        return; 
+    }
+    if (!amountReceived.value) { 
+        toastr.error("Error: Missing Amout Received.", "Error");
+        return; 
+    }
+    if (parseFloat(changeAmount.textContent.replace(/[$,]/g, "")) < 0) { 
+        toastr.error("Error: The amount received is not enough for payment.", "Error");
+        return;
+    }
 
     if (newCustomer) {
         const dataCustomer = {

@@ -27,10 +27,6 @@
     font-size: 1.1em;
 }
 
-.container-fluid {
-    padding: 10px;
-}
-
 h2 {
     color: var(--color-primary);
 }

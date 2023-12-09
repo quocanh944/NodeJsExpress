@@ -24,7 +24,7 @@ const getListUsers = async (req, res) => {
 
 
 const getSetPasswordView = (req, res) => {
-  res.render('pages/set-password', { email: req.session.user.email, messages: req.flash() });
+  res.render('pages/set-password', { email: req.session.user.email, msg: req.flash('msg') });
 }
 
 const userRegister = async (req, res) => {
@@ -105,7 +105,7 @@ const setUserPassword = async (req, res) => {
     console.log(req.body)
 
     if (password !== confirmPassword) {
-      req.flash('error_msg', 'Passwords do not match.');
+      req.flash('msg', 'Passwords do not match.');
       return res.redirect(`/user/set-password`);
     }
 
@@ -119,7 +119,7 @@ const setUserPassword = async (req, res) => {
     return res.redirect('/login');
   } catch (error) {
     console.error('Error setting password:', error);
-    req.flash('error_msg', 'Lỗi báo BE');
+    req.flash('msg', 'Lỗi báo BE');
     return res.redirect(`/user/set-password`);
   }
 }

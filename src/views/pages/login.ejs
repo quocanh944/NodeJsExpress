@@ -55,6 +55,13 @@
               </div>
             </div>
             <div class="form-group">
+              <% if (msg.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                  <%= msg[0] %>
+                </div>
+              <% } %>
+            </div>
+            <div class="form-group">
               <button class="btn btn-success px-5" type="submit">Login</button>
             </div>
             <!-- Render flash message here -->
