@@ -1,5 +1,6 @@
 import Order from '../models/order.js';
 import Product from '../models/product.js';
+import Customer from '../models/customer.js';
 
 export const getOrderByCustomerID = async (customerId, startDate, endDate) => {
   try {
@@ -47,10 +48,12 @@ export const getListOrder = async (id) => {
 export const getOrderDetail = async (id) => {
   try {
     const order = await Order.findById(id);
+    const customer = await Customer.findById(order.customerId);
     let result = []
 
     for (const product of order.products) {
       const productDetail = await Product.findById(product.productId);
+      
       result.push({
         "productName": productDetail.productName,
         "thumbnailUrl": productDetail.thumbnailUrl,
@@ -59,7 +62,7 @@ export const getOrderDetail = async (id) => {
         "totalPrice": product.totalPrice,
       })
     }
-    return result;
+    return {orderDetail: result, customer};
   } catch (err) {
     console.log(err)
     throw err;

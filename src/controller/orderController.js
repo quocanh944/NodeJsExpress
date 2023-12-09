@@ -38,9 +38,12 @@ export const addOrder = async (req, res) => {
 export const getOrderByCustomerID = async (req, res) => {
   console.log("getOrderByCustomerID")
   try {
-    const { customerId } = req.params;
-    const { startDate, endDate } = req.query;
-    const orders = await orderService.getOrderByCustomerID(customerId, startDate, endDate);
+    const { customerID } = req.params;
+    let { startDate, endDate } = req.query;
+    startDate = new Date(startDate)
+    endDate = new Date(endDate)
+    endDate.setDate(endDate.getDate() + 1);
+    const orders = await orderService.getOrderByCustomerID(customerID, startDate, endDate);
     console.log(orders)
     res.status(200).json(orders);
   } catch (error) {

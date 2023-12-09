@@ -69,8 +69,21 @@ async function loadOrders(customerId = null) {
 function viewOrderDetails(id) {
     axios.get(`/order/getOrderDetail/${id}`)
         .then(response => {
-            const orderDetails = response.data;
+            const orderDetails = response.data.orderDetail;
+            const customer = response.data.customer;
             let tableContent = `
+            <div class="d-flex justify-content-between">
+                <p>Customer Name:</p>
+                <p><b>${customer.fullName}</b></p>
+            </div>
+            <div class="d-flex justify-content-between">
+                <p>Customer Phone Number:</p>
+                <p><b>${customer.phoneNumber}</b></p>
+            </div>
+            <div class="d-flex justify-content-between">
+                <p>Customer Address:</p>
+                <p><b>${customer.address}</b></p>
+            </div>
           <table class="table">
             <thead>
               <tr>
