@@ -1,3 +1,6 @@
+const pathArray = window.location.pathname.split('/');
+const customerId = pathArray[pathArray.length - 1];
+
 function showSpinner() {
     $('.spinner-border').show();
 }
@@ -128,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $("#navCustomerOrder").click(async () => {
         if (!alreadyLoaded) {
             alreadyLoaded = true;
-            await loadOrders()
+            await loadOrders(customerId);
         }
     })
 })
