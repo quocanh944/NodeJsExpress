@@ -55,10 +55,11 @@
               </div>
             </div>
             <div class="form-group">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
-                <label class="custom-control-label" for="customCheck">Remember</label>
-              </div>
+              <% if (msg.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                  <%= msg[0] %>
+                </div>
+              <% } %>
             </div>
             <div class="form-group">
               <button class="btn btn-success px-5" type="submit">Login</button>
