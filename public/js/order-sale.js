@@ -14,7 +14,7 @@ async function addToTable(data) {
           <td data-order="${(new Date(order.purchaseDate)).getTime()}">${new Date(order.purchaseDate).toLocaleDateString()}</td>
           <td>${order.totalProduct}</td>
           <td data-order="${order.totalAmount}">${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(order.totalAmount)}</td>
-          <td>${order.discount}</td>
+          <td>${order.discount}%</td>
           <td data-order="${order.finalAmount}">${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(order.finalAmount)}</td>
           <td data-order="${order.moneyReceived}">${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(order.moneyReceived)}</td>
           <td data-order="${order.moneyBack}">${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(order.moneyBack)}</td>
@@ -30,18 +30,24 @@ async function addToTable(data) {
     return s
 }
 
-async function loadOrders() {
+async function loadOrders(customerId = null) {
     if ($.fn.DataTable.isDataTable('#orderTable')) {
         $('#orderTable').DataTable().clear().destroy();
     }
     showSpinner();
+
+    let url = '/order/getListOrder';
+    if (customerId) {
+        url += `?customerId=${customerId}`;
+    }
+
     try {
-        const res = await axios.get(`/order/getListOrder`)  // Adjust the endpoint as needed
+        const res = await axios.get(url); 
         const orders = res.data;
 
         const orderTableBody = document.getElementById('orderTableBody');
 
-        const s = await addToTable(orders)
+        const s = await addToTable(orders);
         
         Promise.all(s).then((values) => {
             orderTableBody.innerHTML = values.join("");
@@ -52,13 +58,13 @@ async function loadOrders() {
                     { orderable: false, targets: 8 }
                 ]
             });
-        })
-        hideSpinner()
+        });
+        hideSpinner();
     } catch (error) {
-        console.error('Error loading orders:', error)
+        console.error('Error loading orders:', error);
     }
-
 }
+
 
 function viewOrderDetails(id) {
     axios.get(`/order/getOrderDetail/${id}`)

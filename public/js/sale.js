@@ -292,7 +292,7 @@ function displayCart(data) {
                 <h5 style="width: 250px;">${item.productName}</h5>
                 <label>
                     Quantity: 
-                    <input type="number" class="form-control ml-2 d-inline-block" value="${item.quantity}" min="1" max="${item.quantity}" style="width: 80px;">
+                    <input type="number" class="form-control ml-2 d-inline-block" value="${item.quantity}" min="1" max="${item.inventory}" style="width: 80px;">
                 </label>
             </div>
             <div style="width: 100px;">Price: $${item.retailPrice}</div>
