@@ -1,0 +1,13 @@
+tr.group-start::before {
+  content: attr(data-date);
+  display: block;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #f0f0f0;
+  /* Thêm các style khác của bạn ở đây */
+}
+
+/* Để ẩn cột ngày mua mà không ảnh hưởng đến DataTables */
+tr.group-start td:first-child {
+  display: none;
+}

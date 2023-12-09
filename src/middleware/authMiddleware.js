@@ -72,8 +72,6 @@ const checkUserBlocked = (req, res, next) => {
 }
 
 
-
-
 export { isAuthenticated, checkUserActivation, isFirstLogined, checkFirstLogin, authorization, checkUserBlocked, requireRole }
 
 

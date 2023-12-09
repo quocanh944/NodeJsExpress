@@ -12,6 +12,7 @@ const productSchema = new mongoose.Schema({
     importPrice: Number,
     retailPrice: Number,
     category: String,
+    isBought: { type: Boolean, default: false },
     inventory: Number
 }, { timestamps: true });
 

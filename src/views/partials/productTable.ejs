@@ -5,37 +5,68 @@
         <th>ID</th>
         <th>Barcode</th>
         <th>Product Name</th>
-        <th>Import Price</th>
-        <th>Retail Price</th>
-        <th>Category</th>
-        <th>Inventory</th>
-        <th>Actions</th>
+        <% if (user.role==="ADMIN" ) { %>
+          <th>Import Price</th>
+          <% } %>
+            <th>Retail Price</th>
+            <th>Category</th>
+            <th>Inventory</th>
+            <% if (user.role==="ADMIN" ) { %>
+              <th>Actions</th>
+              <% } %>
       </tr>
     </thead>
     <tbody id="productsTableBody">
       <% if (products) { %>
         <% products.forEach(function(prod, index) { %>
-          <tr>
-            <td><%= index + 1 %></td>
-            <td data-search="barcode <%= prod.barcode %>"><%= prod.barcode %></td>
-            <td data-search="name <%= prod.productName %>"><%= prod.productName %></td>
-            <td data-order="<%= prod.importPrice %>"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(prod.importPrice) %></td>
-            <td data-order="<%= prod.retailPrice %>"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(prod.retailPrice) %></td>
-            <td data-search="category <%= prod.category %>"><%= prod.category %></td>
-            <td data-search="inventory <%= prod.inventory %>"><%= prod.inventory %></td>
+          <tr style="height: 40px;">
             <td>
-              <div class="btn-group" role="group" aria-label="Product Actions">
-                <button type="button" class="btn btn-primary" onclick="openEditDrawer('<%=prod._id%>')">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button type="button" class="btn btn-danger" onclick="deleteProduct('<%=prod._id%>', '<%= prod.productName %>')">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
+              <%= index + 1 %>
             </td>
+            <td data-search="barcode <%= prod.barcode %>">
+              <%= prod.barcode %>
+            </td>
+            <td data-search="name <%= prod.productName %>">
+              <%= prod.productName %>
+            </td>
+            <% if (user.role==="ADMIN" ) { %>
+              <td data-order="<%= prod.importPrice %>">
+                <%= new Intl.NumberFormat('en-US', { style: 'currency' , currency: 'USD' }).format(prod.importPrice) %>
+              </td>
+              <% } %>
+                <td data-order="<%= prod.retailPrice %>">
+                  <%= new Intl.NumberFormat('en-US', { style: 'currency' , currency: 'USD' }).format(prod.retailPrice)
+                    %>
+                </td>
+                <td data-search="category <%= prod.category %>">
+                  <%= prod.category %>
+                </td>
+                <td data-search="inventory <%= prod.inventory %>">
+                  <%= prod.inventory %>
+                </td>
+                <% if (user.role==="ADMIN" ) { %>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Product Actions">
+                      <button type="button" class="btn btn-primary" onclick="openEditDrawer('<%=prod._id%>')"
+                        data-bs-toggle="tooltip" title="Edit Product">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      
+                      <button type="button" class="btn btn-danger"
+                        <% if (prod.isBought) { %>
+                          disabled
+                        <% } %>
+                        onclick="deleteProduct('<%=prod._id%>', '<%= prod.productName %>')" data-bs-toggle="tooltip"
+                        title="Delete Product">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+
+                    </div>
+                  </td>
+                  <% } %>
           </tr>
-        <% }) %>
-      <% } %>
+          <% }) %>
+            <% } %>
     </tbody>
   </table>
 </div>

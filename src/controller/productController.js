@@ -1,3 +1,4 @@
+import product from '../models/product.js';
 import Product from '../models/product.js';
 import * as productService from '../service/productService.js';
 import { uploadFirebase, deleteImageFromFirebase } from "./firebaseController.js";
@@ -31,8 +32,13 @@ export const getProductById = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params
+    const prod = await productService.getProductById(id);
+    if (prod.isBought) {
+      req.flash('msg', `Delete product failed (This product is bought).`);
+      req.flash('status', 'Failed');
+      return res.redirect('/product');
+    }
     const result = await productService.deleteProductById(id);
-
     req.flash('msg', `Delete product successfully.`);
     req.flash('status', 'Success');
     return res.redirect('/product');
@@ -136,9 +142,19 @@ export const edit = async (req, res) => {
 }
 
 export const getProductView = async (req, res) => {
+  const {user} = req.session;
   const msg = req.flash('msg');
   const status = req.flash('status');
-  return res.render('pages/product', {
+  if (user.role === 'ADMIN') {
+    return res.render('pages/product', {
+      title: "Quản lý sản phẩm.",
+      user: req.session.user,
+      products: await productService.getAllProducts(),
+      status,
+      msg
+    });
+  }
+  return res.render('pages/sale-product', {
     title: "Quản lý sản phẩm.",
     user: req.session.user,
     products: await productService.getAllProducts(),

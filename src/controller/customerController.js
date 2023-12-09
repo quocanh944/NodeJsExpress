@@ -1,4 +1,5 @@
 import * as customerService from '../service/customerService.js';
+import Customer from "../models/customer.js";
 
 const search = async (req, res) => {
   try {
@@ -26,7 +27,14 @@ const getByPhone = async (req, res) => {
 }
 
 const getCustomerView = (req, res) => {
-  res.render('pages/customer', {
+  const { user } = req.session;
+  if (user.role === 'ADMIN') {
+    return res.render('pages/customer', {
+      title: "Quản lý người dùng",
+      user: req.session.user
+    });
+  }
+  return res.render('pages/sale-customer', {
     title: "Quản lý người dùng",
     user: req.session.user
   });
@@ -40,7 +48,6 @@ const getAllCustomers = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 
 
 const getCustomerById = async (req, res) => {
@@ -61,18 +68,29 @@ const getCustomerById = async (req, res) => {
 };
 
 
-const userPreview = async (req, res) => {
-  const { id } = req.params;
-
+const addNewCustomer = async (req, res) => {
   try {
-    
+    const { phoneNumber, fullName, address } = req.body;
+
+    const newCustomer = new Customer({ phoneNumber, fullName, address });
+
+    await newCustomer.save();
+
+    res.status(201).json({ message: "New customer added successfully", customer: newCustomer });
   } catch (error) {
-
+    res.status(400).json({ message: "Error adding customer", error: error.message });
   }
+};
 
-  console.log(id)
-
-  res.status(200).send(id)
+const getCustomerViewDetail = async (req, res) => {
+  console.log('getCustomerViewDetail')
+  const { customerId } = req.params;
+  const customer = await customerService.getCustomerById(customerId);
+  res.render('pages/customer-detail', {
+    title: "Customer Detail",
+    user: req.session.user,
+    customer
+  });
 }
 
-export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView, userPreview }
+export { search, getByPhone, getAllCustomers, getCustomerById, getCustomerView, addNewCustomer, getCustomerViewDetail }

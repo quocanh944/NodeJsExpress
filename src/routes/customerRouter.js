@@ -13,6 +13,8 @@ customerRouter.get("/search", customerController.search)
 
 customerRouter.get("/getByPhone", customerController.getByPhone)
 
-customerRouter.get("/preview/:id", customerController.userPreview)
+customerRouter.post("/add", customerController.addNewCustomer);
+
+customerRouter.get('/:customerId', customerController.getCustomerViewDetail);
 
 export default customerRouter;

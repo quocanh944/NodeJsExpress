@@ -9,6 +9,7 @@ import accountRouter from './accountRouter.js';
 import cartRouter from './cartRouter.js';
 import { fetchNotifications } from '../middleware/notificationMiddleware.js';
 import notificationRouter from './notificationRouter.js';
+import statisticRouter from './statisticRouter.js';
 import profileRouter from './profileRouter.js';
 import { faker } from '@faker-js/faker';
 import Order from '../models/order.js';
@@ -72,12 +73,18 @@ rootRouter.get('/', isAuthenticated, checkUserActivation, isFirstLogined, checkU
     }
 });
 
+rootRouter.get('/home', isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, (req, res) => {
+    const { user } = req.session;
+    res.render('pages/index', { user });
+});
+
 rootRouter.use("/user", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN']), userRouter);
 rootRouter.use("/product", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), productRouter);
 rootRouter.use("/customer", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), customerRouter);
 rootRouter.use("/order", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), orderRouter);
 rootRouter.use("/cart", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['SALE']), cartRouter);
 rootRouter.use("/notification", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN']), notificationRouter);
+rootRouter.use("/statistic", isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), statisticRouter);
 rootRouter.use('/profile', isAuthenticated, checkUserActivation, isFirstLogined, checkUserBlocked, fetchNotifications, requireRole(['ADMIN', 'SALE']), profileRouter);
 
 export default rootRouter;

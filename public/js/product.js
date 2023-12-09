@@ -14,7 +14,7 @@ function preview() {
 
 function clearImage() {
   document.getElementById('formFile').value = null;
-  frame.src = "./public/images/productImagePlaceholder.webp";
+  frame.src = "/public/images/productImagePlaceholder.webp";
 }
 
 // Gọi hàm này sau khi loadUsers để cập nhật phân trang
@@ -22,7 +22,7 @@ function openDrawerForCreate() {
   $('.drawer-content').html(`
       <form id="formDrawer" method="post" enctype="multipart/form-data">
 				<div class="mb-3 text-center w-50 m-auto">
-					<img id="frame" src="./public/images/productImagePlaceholder.webp" class="img-fluid" />
+					<img id="frame" src="/public/images/productImagePlaceholder.webp" class="img-fluid" />
 				</div>
 
 				<div class="mb-3">
