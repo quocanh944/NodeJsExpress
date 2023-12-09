@@ -16,15 +16,22 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" href="/public/stylesheets/style.css">
     <link rel="stylesheet" type="text/css" href="/public/stylesheets/customer-detail.css" />
-
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/sale.css" />
 </head>
 
 <body>
 
   <div class="d-flex h-100 text-white">
-    <% include ../partials/sidebar.ejs %>
+    <% if (user.role==="ADMIN" ) { %>
+      <% include ../partials/sidebar.ejs %>
+      <% } %>
       <div id="main" class="flex-grow-1 d-flex flex-column">
-        <% include ../partials/header.ejs %>
+          <% if (user.role === "ADMIN") { %>
+            <% include ../partials/header.ejs %>
+          <% } %>
+          <% if (user.role === "SALE") { %>
+            <% include ../partials/sale-header.ejs %>
+          <% } %>
           <div class="main-content">
             <div class="flex-grow-1 p-3 text-dark">
               <div class="container mt-4">
