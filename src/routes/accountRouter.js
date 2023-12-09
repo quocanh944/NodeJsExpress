@@ -35,17 +35,20 @@ accountRouter.get('/login', (req, res) => {
   if (user && user.isFirstLogin === false && user.isActive === true) {
     res.redirect('/');
   } else {
-    res.render('pages/login');
+    const msg = req.flash('msg');
+    console.log(msg);
+    res.render('pages/login', { msg });
   }
 });
 
 
-accountRouter.post('/login', async (req, res, next) => {
+accountRouter.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   console.log(username, username.length)
 
   if (!password) {
+    req.flash('msg',"Please enter your password!")
     return res.redirect('/login');
   }
 
@@ -62,6 +65,7 @@ accountRouter.post('/login', async (req, res, next) => {
     console.log(await user.isValidPassword(password))
 
     if (!user || !user.isActive || !(await user.isValidPassword(password))) {
+      req.flash('msg',"Incorrect username or password!")
       return res.redirect('/login');
     }
 
@@ -74,7 +78,7 @@ accountRouter.post('/login', async (req, res, next) => {
     return res.redirect('/');
   } catch (error) {
     console.error('Database query error', error);
-    req.flash('error_msg', 'Lỗi báo BE');
+    // req.flash('error_msg', 'Lỗi báo BE');
     return res.redirect('/login');
   }
 });
