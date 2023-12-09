@@ -45,24 +45,13 @@ accountRouter.get('/login', (req, res) => {
 accountRouter.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  console.log(username, username.length)
-
   if (!password) {
     req.flash('msg',"Please enter your password!")
     return res.redirect('/login');
   }
 
-  // if (username === 'admin' && password === 'admin') {
-  //   req.session.user = { username: 'admin', role: 'ADMIN', isActive: true, isFirstLogin: false, isBlocked: false };
-  //   return res.redirect('/');
-  // }
-
   try {
     const user = await User.findOne({ email: username.trim() + '@gmail.com' });
-
-    console.log(user)
-
-    console.log(await user.isValidPassword(password))
 
     if (!user || !user.isActive || !(await user.isValidPassword(password))) {
       req.flash('msg',"Incorrect username or password!")

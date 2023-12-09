@@ -5,37 +5,25 @@
   <meta charset="UTF-8">
   <title>Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css    ">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <style>
-    p.item {
-      padding: 16px;
-      text-align: center;
-      border-radius: 8px;
-      color: white;
-      background-color: green;
-    }
-  </style>
+
+  <% include ../partials/lib.ejs %>
+
 </head>
 
 <body class="bg-secondary">
 
   <h3 class="text-center my-5 text-light">User Login</h3>
 
-  <!-- buộc toàn bộ dòng và cột phải bỏ trong class container -->
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-5">
         <div class="border p-3 rounded bg-light">
           <form method="post" action="/login">
             <div class="form-group">
-              <label for="user">Username</label>
+              <label class="my-2" for="user">Username</label>
               <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
+                <div class="input-group-prepend" style="margin-right: 10px;">
+                  <span class=" input-group-text h-100">
                     <i class="fas fa-user"></i>
                   </span>
                 </div>
@@ -44,10 +32,10 @@
 
             </div>
             <div class="form-group">
-              <label for="pass">Password</label>
+              <label class="my-2" for="pass">Password</label>
               <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
+                <div class="input-group-prepend" style="margin-right: 10px;">
+                  <span class="input-group-text h-100">
                     <i class="fas fa-lock"></i>
                   </span>
                 </div>
@@ -55,15 +43,21 @@
               </div>
             </div>
             <div class="form-group">
-              <% if (msg.length > 0) { %>
+              <% if (msg.length> 0) { %>
                 <div class="alert alert-danger" role="alert">
                   <%= msg[0] %>
                 </div>
-              <% } %>
+                <% } %>
             </div>
             <div class="form-group">
               <button class="btn btn-success px-5" type="submit">Login</button>
             </div>
+            <!-- Render flash message here -->
+            <% if (msg) { %>
+              <p class="text-danger">
+                <%= msg %>
+              </p>
+              <% } %>
           </form>
         </div>
       </div>

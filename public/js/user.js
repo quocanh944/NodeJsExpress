@@ -8,7 +8,6 @@ function hideSpinner() {
   $('.spinner-border').hide();
 }
 
-
 function loadUsers() {
   if ($.fn.DataTable.isDataTable('#usersTable')) {
     $('#usersTable').DataTable().clear().destroy();
@@ -16,7 +15,6 @@ function loadUsers() {
   showSpinner();
   axios.get(`/user/api`)
     .then(response => {
-      console.log(response)
       const users = response.data;
 
       const usersTableBody = document.getElementById('usersTableBody');
@@ -77,9 +75,6 @@ function loadUsers() {
 document.addEventListener('DOMContentLoaded', () => {
   loadUsers()
 })
-
-
-
 
 function resendActivationEmail(userId) {
   fetch(`/user/resend-activation/${userId}`, {

@@ -11,3 +11,64 @@ tr.group-start::before {
 tr.group-start td:first-child {
   display: none;
 }
+
+
+/* Modal Content */
+#orderDetailsModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Header Info */
+#orderDetailsModal .modal-content .d-flex {
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+#orderDetailsModal .modal-content .d-flex p {
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+#orderDetailsModal .modal-content .d-flex p b {
+  font-weight: 600;
+}
+
+/* Table Styling */
+#orderDetailsModal .table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+#orderDetailsModal .table thead {
+  background-color: #333;
+  color: #fff;
+}
+
+#orderDetailsModal .table th,
+#orderDetailsModal .table td {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+#orderDetailsModal .table th {
+  font-weight: bold;
+}
+
+#orderDetailsModal .table td img {
+  border-radius: 4px;
+}
+
+/* Zebra Striping for rows */
+#orderDetailsModal .table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hover effect for rows */
+#orderDetailsModal .table tr:hover {
+  background-color: #ddd;
+}
