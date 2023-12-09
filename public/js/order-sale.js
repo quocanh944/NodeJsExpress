@@ -42,13 +42,14 @@ async function loadOrders(customerId = null) {
     }
 
     try {
-        const res = await axios.get(url); 
+        const res = await axios.get(url);
+
         const orders = res.data;
 
         const orderTableBody = document.getElementById('orderTableBody');
 
         const s = await addToTable(orders);
-        
+
         Promise.all(s).then((values) => {
             orderTableBody.innerHTML = values.join("");
             $('#orderTable').DataTable({
@@ -87,8 +88,8 @@ function viewOrderDetails(id) {
           <table class="table">
             <thead>
               <tr>
+              <th>Image</th>
                 <th>Product Name</th>
-                <th>Image</th>
                 <th>Retail Price</th>
                 <th>Quantity</th>
                 <th>Total Price</th>
@@ -99,8 +100,8 @@ function viewOrderDetails(id) {
             orderDetails.forEach(detail => {
                 tableContent += `
             <tr>
-              <td>${detail.productName}</td>
               <td><img src="${detail.thumbnailUrl}" alt="${detail.productName}" style="width: 100px; height: 100px;"></td>
+              <td>${detail.productName}</td>
               <td>$${detail.retailPrice}</td>
               <td>${detail.quantity}</td>
               <td>$${detail.totalPrice}</td>
@@ -119,6 +120,12 @@ function viewOrderDetails(id) {
 document.addEventListener('DOMContentLoaded', () => {
     let alreadyLoaded = false;
     $("#navOrderHistory").click(async () => {
+        if (!alreadyLoaded) {
+            alreadyLoaded = true;
+            await loadOrders()
+        }
+    })
+    $("#navCustomerOrder").click(async () => {
         if (!alreadyLoaded) {
             alreadyLoaded = true;
             await loadOrders()
