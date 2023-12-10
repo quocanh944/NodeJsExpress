@@ -111,7 +111,7 @@ function openDrawerForCreate() {
             <input type="email" class="form-control" id="email" name="email" required>
           </div>
 
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="submit" class="btn btn-dark text-white">Register</button>
         </form>
       `;
   document.body.classList.add('drawer-open');
@@ -235,14 +235,6 @@ function openEditDrawer(userId) {
                 <label for="editBirthday" class="form-label">Birthday</label>
                 <input type="date" class="form-control" id="editBirthday" value="${user.birthday || ''}">
               </div>
-              <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="editIsActive" ${user.isActive ? 'checked' : ''}>
-                <label class="form-check-label" for="editIsActive">Is Active</label>
-              </div>
-              <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="editIsLocked" ${user.isLocked ? 'checked' : ''}>
-                <label class="form-check-label" for="editIsLocked">Is Locked</label>
-              </div>
               <div class="mb-3">
                 <label for="editRole" class="form-label">Role</label>
                 <select class="form-select" id="editRole">
@@ -260,8 +252,8 @@ function openEditDrawer(userId) {
         const gender = document.querySelector('#editGender').value;
         const phoneNumber = document.querySelector('#editPhoneNumber').value;
         const birthday = document.querySelector('#editBirthday').value;
-        const isActive = document.querySelector('#editIsActive').checked;
-        const isLocked = document.querySelector('#editIsLocked').checked;
+        // const isActive = document.querySelector('#editIsActive').checked;
+        // const isLocked = document.querySelector('#editIsLocked').checked;
         const role = document.querySelector('#editRole').value;
 
         // Tạo đối tượng JSON

@@ -18,15 +18,15 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-header">
-            Gửi Thông Báo
+            Send Notifiction to ADMIN to Resend Request
           </div>
           <div class="card-body">
             <form id="contactForm">
               <div class="mb-3">
-                <label for="userEmail" class="form-label">Email của bạn</label>
-                <input type="email" class="form-control" id="userEmail" placeholder="Nhập email của bạn" required>
+                <label for="userEmail" class="form-label">Your Email</label>
+                <input type="email" class="form-control" id="userEmail" placeholder="Enter your email" required>
               </div>
-              <button type="submit" class="btn btn-primary">Gửi Thông Báo</button>
+              <button type="submit" class="btn btn-dark text-white">Send your request</button>
             </form>
           </div>
         </div>
@@ -51,7 +51,8 @@
         })
           .then(response => response.json())
           .then(data => {
-            console.log('Email đã được gửi:', data);
+            alert('Email is sent');
+            location.reload();
             // Xử lý thành công
           })
           .catch(error => {

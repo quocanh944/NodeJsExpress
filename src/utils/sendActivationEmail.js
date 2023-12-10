@@ -1,12 +1,23 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
+import { getMailTemplate } from '../constant/mailTemplate.js';
+
+const createUserCredentials = (email) => {
+  const username = email.split('@')[0];
+  const password = username;
+  return { username, password };
+};
 
 const sendActivationEmail = async (email) => {
   try {
-    const token = jwt.sign({ email }, config.secret_key, { expiresIn: '1m' }); 
+    const token = jwt.sign({ email }, config.secret_key, { expiresIn: '1m' });
 
     const activationLink = `${config.host}activate/${token}`;
+
+    const { username, password } = createUserCredentials(email);
+
+    console.log(username, password)
 
     let transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -22,6 +33,7 @@ const sendActivationEmail = async (email) => {
       to: email,
       subject: 'Account Activation',
       text: `Hello, please use the following link to activate your account: ${activationLink}`,
+      html: getMailTemplate(username, password, activationLink)
     };
 
     // Gửi email
@@ -36,3 +48,5 @@ const sendActivationEmail = async (email) => {
 };
 
 export default sendActivationEmail;
+
+
