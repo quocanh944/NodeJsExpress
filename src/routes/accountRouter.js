@@ -70,7 +70,17 @@ accountRouter.post('/login', async (req, res) => {
   try {
     const user = await User.findOne({ email: username.trim() + '@gmail.com' });
 
-    if (!user || !user.isActive || !(await user.isValidPassword(password))) {
+    if (!user) {
+      req.flash('msg', "Incorrect username or password!")
+      return res.redirect('/login');
+    }
+
+    if (!user.isActive) {
+      req.flash('msg', "User is not active!")
+      return res.redirect('/login');
+    }
+
+    if (!(await user.isValidPassword(password))) {
       req.flash('msg', "Incorrect username or password!")
       return res.redirect('/login');
     }
