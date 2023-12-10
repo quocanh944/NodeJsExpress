@@ -58,12 +58,19 @@ export const getListOrder = async (req, res) => {
     console.log(saleId)
     
     let query = {};
-    if (req.query.customerId) {
-      query.customerId = req.query.customerId;
-    } else if (req.query.saleId) {
-      query.saleId = req.query.saleId;
+    if (user.role === "ADMIN") {
+      if (req.query.customerId) {
+        query.customerId = req.query.customerId;
+      } else if (req.query.saleId) {
+        query.saleId = req.query.saleId;
+      } else {
+        query.saleId = saleId;
+      }
     } else {
-      query.saleId = saleId;
+      query.saleId = user._id;
+      if (req.query.customerId) {
+        query.customerId = req.query.customerId;
+      }
     }
 
     const orders = await orderService.getListOrder(query)
