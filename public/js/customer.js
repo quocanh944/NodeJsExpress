@@ -16,7 +16,6 @@ function loadCustomers() {
   showSpinner();
   axios.get(`/customer/api`)
     .then(response => {
-      console.log(response)
       const customers = response.data;
 
       const customersTableBody = document.getElementById('customersTableBody');
@@ -61,7 +60,6 @@ function showPreview(id) {
 
   axios.get(`/customer/api/${id}`)
     .then(res => {
-      console.log(res)
       setModalContent(res.data)
     })
     .catch(err => {

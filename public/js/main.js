@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
       axios.get('/logout')
         .then((response) => {
           // Xử lý phản hồi từ máy chủ (ví dụ: chuyển hướng hoặc hiển thị thông báo đăng xuất thành công)
-          console.log(response)
           location.reload()
         })
         .catch((error) => {
@@ -50,7 +49,6 @@ function markAsRead(element) {
 
   axios.post('/notification/mark-as-read/' + notificationId)
     .then(response => {
-      console.log('Notification marked as read');
 
       // Giảm số lượng thông báo chưa đọc và cập nhật UI
       unreadNotificationsCount--;
@@ -70,7 +68,6 @@ function deleteNotification(element) {
   // Gửi yêu cầu tới back-end
   axios.delete('/notification/delete/' + notificationId)
     .then(response => {
-      console.log('Notification deleted');
       location.reload()
       // Cập nhật UI hoặc thông báo cho người dùng
     })
@@ -83,7 +80,6 @@ function deleteNotification(element) {
 function deleteAllNotifications() {
   axios.delete('/notification/delete-all')
     .then(response => {
-      console.log('All notifications deleted');
       // Cập nhật UI hoặc thông báo cho người dùng
     })
     .catch(error => {

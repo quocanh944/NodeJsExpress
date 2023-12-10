@@ -53,7 +53,6 @@ accountRouter.get('/login', (req, res) => {
     res.redirect('/');
   } else {
     const msg = req.flash('msg');
-    console.log(msg);
     res.render('pages/login', { msg });
   }
 });

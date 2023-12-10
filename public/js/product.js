@@ -82,7 +82,6 @@ function openEditDrawer(productId) {
   axios.get(`/product/${productId}`)
     .then(response => {
       const { product, error, message } = response.data;
-      console.log({ product, error, message });
       $('.drawer-content').html(`
         <form id="formDrawer" action="/product/edit/${product._id}" method="post" enctype="multipart/form-data">
           <input type="hidden" name="_method" value="PUT">

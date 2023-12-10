@@ -40,7 +40,6 @@ const uploadFirebase = async (file) => {
         // Grab the public url
         const downloadURL = await getDownloadURL(snapshot.ref);
 
-        console.log('File successfully uploaded.');
         return {
             success: true,
             message: 'file uploaded to firebase storage',

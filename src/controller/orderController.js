@@ -36,7 +36,6 @@ export const addOrder = async (req, res) => {
 };
 
 export const getOrderByCustomerID = async (req, res) => {
-  console.log("getOrderByCustomerID")
   try {
     const { customerID } = req.params;
     let { startDate, endDate } = req.query;
@@ -44,7 +43,6 @@ export const getOrderByCustomerID = async (req, res) => {
     endDate = new Date(endDate)
     endDate.setDate(endDate.getDate() + 1);
     const orders = await orderService.getOrderByCustomerID(customerID, startDate, endDate);
-    console.log(orders)
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
@@ -55,7 +53,6 @@ export const getListOrder = async (req, res) => {
   try {
     const { user } = req.session
     const saleId = user._id //current userID
-    console.log(saleId)
     
     let query = {};
     if (user.role === "ADMIN") {

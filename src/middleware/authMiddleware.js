@@ -1,6 +1,5 @@
 const isAuthenticated = (req, res, next) => {
   if (req.session && req.session.user) {
-    console.log('isAuthenticated')
     return next();
   }
   req.flash("error_msg", "You are not authenticated")

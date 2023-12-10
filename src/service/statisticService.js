@@ -11,8 +11,6 @@ const getSalesData = async (startDate, endDate) => {
     purchaseDate: { $gte: new Date(startDate), $lte: tempEndDate}
   }).sort({ purchaseDate: 1 });
 
-  console.log("orders: ", orders)
-
   const totalAmount = orders.reduce((acc, order) => acc + order.totalAmount, 0);
   const numberOfOrders = orders.length;
   const numberOfProducts = orders.reduce((acc, order) => acc + order.products.length, 0);
@@ -64,11 +62,6 @@ const calculateProfitByDate = async (startDate, endDate) => {
     },
     { $sort: { date: 1 } }
   ]);
-
-  console.log(orders.map(order => ({
-    date: order.date,
-    profit: order.profit
-  })));
 
   return orders.map(order => ({
     date: order.date,

@@ -200,7 +200,6 @@
       var html = '<ul class="list-group">';
       if (results.length > 0) {
         results.forEach(product => {
-          console.log(product._id);
           productText = makeMatchingLettersBold(product.productName, query)
           html += `<li class="list-group-item list-group-item-action" onclick="add('${product._id}')">
                   ${productText}<br>${product.barcode}<span style="display: none;">;${product._id}</span>
@@ -397,11 +396,9 @@
               // const updatedProductCount = await response.json();
               const updatedCart = await fetch(`/cart/get`)
               const updatedProduct = await updatedCart.json()
-              console.log(updatedProduct)
 
               // Update the product in our local data array
               const index = data.findIndex(p => p.productCountId === item.productCountId);
-              console.log(index)
               if (index !== -1) {
                 data[index] = updatedProduct[index];
               }

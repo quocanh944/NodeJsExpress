@@ -43,7 +43,7 @@ export const deleteProduct = async (req, res) => {
     req.flash('status', 'Success');
     return res.redirect('/product');
   } catch (err) {
-    console.log("Delete Product Error: ", err);
+    console.error("Delete Product Error: ", err);
     req.flash('msg', `Delete product failed.`);
     req.flash('status', 'Failed');
     return res.redirect('/product');
@@ -120,7 +120,6 @@ export const edit = async (req, res) => {
         await deleteImageFromFirebase(product.thumbnailUrl);
         const result = await uploadFirebase(req.file)
         if (result.downloadURL) {
-          console.log("123", result.downloadURL);
           product.set("thumbnailUrl", result.downloadURL);
         }
       }

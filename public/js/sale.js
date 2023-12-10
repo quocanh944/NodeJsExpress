@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/logout')
           .then((response) => {
             // Xử lý phản hồi từ máy chủ (ví dụ: chuyển hướng hoặc hiển thị thông báo đăng xuất thành công)
-            console.log(response)
             location.reload()
           })
           .catch((error) => {
@@ -311,7 +310,6 @@ function displayCart(data) {
         // Attach event listener to quantity input
         const quantityInput = listItem.querySelector('input[type="number"]');
         quantityInput.addEventListener('change', (event) => {
-            console.log(item.inventory);
             if (event.target.value > item.inventory) {
                 toastr.error('Error: Not enough products', 'Error');
                 quantityInput.value = item.inventory;
@@ -446,7 +444,6 @@ async function processCheckout() {
             fullName: fullName.value,
             address: address.value,
         }
-        console.log(dataCustomer)
         const response = await fetchData('customer/add', 'POST', dataCustomer);
         newCustomer = false;
     }
@@ -467,7 +464,6 @@ async function processCheckout() {
 
         try {
             const responseData = await fetchData('order/add', 'POST', data);
-            console.log('Checkout successful:', responseData);
             clearCart();
         } catch (error) {
             console.error('Checkout error:', error);

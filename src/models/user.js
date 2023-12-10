@@ -30,7 +30,6 @@ userSchema.pre('save', async function (next) {
   const user = this;
 
   if (!user.isModified('password')) {
-    console.log('hello')
     return next();
   };
 

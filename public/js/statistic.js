@@ -3,7 +3,6 @@ var profitChart;
 
 $(function () {
   function cb(start, end) {
-    console.log(start, end)
     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     loadSalesData(start, end);
     loadProfitData(start, end);
@@ -32,7 +31,6 @@ async function loadSalesData(start, end) {
         endDate: end.format('YYYY-MM-DD')
       }
     });
-    console.log(response)
     const data = response.data;
     renderChart(data);
   } catch (error) {
@@ -43,7 +41,6 @@ async function loadSalesData(start, end) {
 function loadDashboardData() {
   axios.get('/statistic/dashboard')
     .then(function (response) {
-      console.log(response)
       const data = response.data.data;
 
       if (data) {
@@ -197,7 +194,6 @@ function loadProfitData(start = moment('2023-10-01'), end = moment('2023-12-31')
     }
   })
     .then(response => {
-      console.log(response)
       const profitData = response.data;
       renderProfitChart(profitData);
     })

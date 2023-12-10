@@ -64,7 +64,6 @@ const activateUser = async (req, res) => {
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
       // Token hết hạn, redirect đến /resend-request
-      console.log("Activation link has expired. Please request a new one.")
       req.flash('error_msg', 'Activation link has expired. Please request a new one.');
       return res.redirect(`/resend-request`); // Thay đổi ở đây
     } else if (error instanceof jwt.JsonWebTokenError) {
@@ -101,8 +100,6 @@ const blockUser = async (req, res) => {
 const setUserPassword = async (req, res) => {
   try {
     const { email, password, confirmPassword } = req.body;
-
-    console.log(req.body)
 
     if (password !== confirmPassword) {
       req.flash('msg', 'Passwords do not match.');

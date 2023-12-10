@@ -17,8 +17,6 @@ const sendActivationEmail = async (email) => {
 
     const { username, password } = createUserCredentials(email);
 
-    console.log(username, password)
-
     let transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -39,7 +37,6 @@ const sendActivationEmail = async (email) => {
     // Gửi email
     let info = await transporter.sendMail(mailOptions);
 
-    console.log('Message sent: %s', info.response);
     return true;
   } catch (error) {
     console.error('There was an error sending the email', error);

@@ -26,7 +26,6 @@ function loadUsers() {
       if (users) {
         users.forEach((user, index) => {
 
-          console.log(user)
           const showResendButton = resendActivationRequestExists.includes(user._id);
           const resendButtonClass = user.isActive ? 'btn-secondary disabled' : (showResendButton ? 'btn-info' : 'btn-secondary');
 
@@ -264,7 +263,6 @@ document.getElementById('confirmDeleteButton').addEventListener('click', functio
 function toggleBlocked(checkboxElement) {
   const userId = checkboxElement.dataset.userid;
   const isLocked = checkboxElement.checked;
-  console.log(userId, isLocked);
 
   axios.post(`/user/block/${userId}`, { isLocked }, {
     headers: {
@@ -272,7 +270,6 @@ function toggleBlocked(checkboxElement) {
     }
   })
     .then(response => {
-      console.log('Status updated:', response.data);
       loadUsers(1);
       showMessage(response.data.message || 'Trạng thái người dùng đã được cập nhật.');
     })

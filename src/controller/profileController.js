@@ -27,31 +27,6 @@ const changePassword = async (req, res) => {
     const { user } = req.session;
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
-    // try {
-    //     const user = await User.findOne({ email: username.trim() + '@gmail.com' });
-    
-    //     console.log(user)
-    
-    //     console.log(await user.isValidPassword(password))
-    
-    //     if (!user || !user.isActive || !(await user.isValidPassword(password))) {
-    //       return res.redirect('/login');
-    //     }
-    
-    //     req.session.user = user;
-    
-    //     if (user.isFirstLogin) {
-    //       return res.redirect('/user/set-password');
-    //     }
-    
-    //     return res.redirect('/');
-    //   } catch (error) {
-    //     console.error('Database query error', error);
-    //     req.flash('error_msg', 'Lỗi báo BE');
-    //     return res.redirect('/login');
-    //   }
-
-
     if (!currentPassword || !newPassword || !confirmPassword) {
         req.flash('msg', `Please enter all field.`);
         req.flash('status', 'Failed');
