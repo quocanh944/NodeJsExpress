@@ -5,9 +5,10 @@ import Order from '../models/order.js'
 import product from '../models/product.js';
 
 const getSalesData = async (startDate, endDate) => {
-  console.log(startDate, endDate)
+  let tempEndDate = new Date(endDate)
+  tempEndDate.setDate(tempEndDate.getDate() + 1)
   const orders = await order.find({
-    purchaseDate: { $gte: new Date(startDate), $lte: new Date(endDate) }
+    purchaseDate: { $gte: new Date(startDate), $lte: tempEndDate}
   }).sort({ purchaseDate: 1 });
 
   console.log("orders: ", orders)
@@ -39,10 +40,12 @@ const getDashboardData = async () => {
 };
 
 const calculateProfitByDate = async (startDate, endDate) => {
+  const tempEndDate = new Date(endDate);
+  tempEndDate.setDate(tempEndDate.getDate() + 1)
   const orders = await order.aggregate([
     {
       $match: {
-        purchaseDate: { $gte: new Date(startDate), $lte: new Date(endDate) }
+        purchaseDate: { $gte: new Date(startDate), $lte: tempEndDate }
       }
     },
     {
