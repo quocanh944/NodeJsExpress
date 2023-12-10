@@ -9,9 +9,14 @@ import configureViewEngine from './config/configureViewEngine.js';
 import config from './config/config.js';
 import session from 'express-session';
 import flash from 'connect-flash';
-
+import rateLimit from "express-rate-limit";
 
 const app = express();
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 1000
+});
 
 // Setup database
 setupDB();
@@ -28,6 +33,7 @@ configureViewEngine(app);
 
 dotenv.config();
 
+app.use(apiLimiter)
 app.use(logger('dev'));
 app.use(express.static("."))
 app.use(express.json());
