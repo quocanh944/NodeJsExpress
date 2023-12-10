@@ -59,7 +59,7 @@ function openDrawerForCreate() {
 					<input type="number" class="form-control" id="inventory" name="inventory" required>
 				</div>
 
-				<button type="submit" class="btn btn-primary">Create Product</button>
+				<button type="submit" class="btn btn-dark text-white">Create Product</button>
 			</form>
   `);
   document.body.classList.add('drawer-open');
@@ -124,13 +124,11 @@ function openEditDrawer(productId) {
             <input type="number" value="${product.inventory}" class="form-control" id="inventory" name="inventory" required>
           </div>
 
-          <button type="submit" class="btn btn-primary">Update Product</button>
+          <button type="submit" class="btn btn-dark text-white">Update Product</button>
         </form>
       `);
       document.body.classList.add('drawer-open');
 
-      // document.querySelector('.drawer-header h5').textContent = 'Edit User';
-      // document.body.classList.add('drawer-open');
     })
     .catch(error => {
       console.error('Error:', error);

@@ -17,13 +17,30 @@ accountRouter.get('/logout', (req, res) => {
 });
 
 
+import jwt from 'jsonwebtoken';
+import config from '../config/config.js';
+
 accountRouter.get('/activate/:token', (req, res) => {
-  if (req.params.token) {
-    res.render('pages/activate', { token: req.params.token, messages: req.flash() })
+  const token = req.params.token;
+
+  if (token) {
+    try {
+      jwt.verify(token, config.secret_key);
+
+      res.render('pages/activate', { token: token, messages: req.flash() });
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        res.render('pages/token-expired');
+      } else {
+        res.send('Token không hợp lệ.');
+      }
+    }
   } else {
-    res.send('Token không hợp lệ hoặc đã hết hạn.');
+    res.send('Không có token được cung cấp.');
   }
 });
+
+
 
 
 accountRouter.post('/confirm-activation', activateUser);
@@ -46,7 +63,7 @@ accountRouter.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   if (!password) {
-    req.flash('msg',"Please enter your password!")
+    req.flash('msg', "Please enter your password!")
     return res.redirect('/login');
   }
 
@@ -54,7 +71,7 @@ accountRouter.post('/login', async (req, res) => {
     const user = await User.findOne({ email: username.trim() + '@gmail.com' });
 
     if (!user || !user.isActive || !(await user.isValidPassword(password))) {
-      req.flash('msg',"Incorrect username or password!")
+      req.flash('msg', "Incorrect username or password!")
       return res.redirect('/login');
     }
 

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Token Expire</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <% include ../partials/lib.ejs %>
+
+</head>
+
+<body>
+  <div class="container mt-5">
+    <div class="alert alert-warning" role="alert">
+      <h4 class="alert-heading">Token Expired</h4>
+      <p>Your account activation token has expired. Please request a new activation link.</p>
+      <hr>
+      <p class="mb-0">Click the button below to resend the activation link.</p>
+    </div>
+    <a href="/resend-request" class="btn btn-dark text-white">Resend Activation Link</a>
+  </div>
+
+  <% include ../partials/script.ejs %>
+
+</body>
+
+</html>

@@ -1,3 +1,4 @@
+import notification from '../models/notification.js';
 import User from '../models/user.js';
 import sendActivationEmail from '../utils/sendActivationEmail.js';
 
@@ -137,10 +138,12 @@ const removeUser = async (id) => {
     // Tìm người dùng dựa trên ID và xóa
     const user = await User.findByIdAndRemove(id);
 
-
     if (!user) {
       return null;
     }
+
+    // Xóa tất cả thông báo liên quan đến người dùng
+    await notification.deleteMany({ userId: id });
 
     return user;
   } catch (error) {
