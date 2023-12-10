@@ -7,7 +7,9 @@ import { createResendRequestNotification } from '../service/notificationService.
 const getUserView = (req, res) => {
   res.render('pages/user', {
     title: "Quản lý người dùng",
-    user: req.session.user
+    user: req.session.user,
+    msg: req.flash("msg"),
+    status: req.flash("status")
   });
 }
 
@@ -32,10 +34,12 @@ const userRegister = async (req, res) => {
     const userData = req.body;
     const result = await signUp(userData);
     if (result.valid) {
-      req.flash('success_msg', result.message);
+      req.flash('status', "Success");
+      req.flash('msg', result.message);
       res.redirect('/user');
     } else {
-      req.flash('error_msg', result.message);
+      req.flash('status', "Failed");
+      req.flash('msg', result.message);
       res.redirect('/user');
     }
   } catch (error) {

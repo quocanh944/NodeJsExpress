@@ -73,13 +73,29 @@ const deleteById = async (id) => {
 
 const signUp = async (userData) => {
   try {
+    const validateEmail = (email) => {
+      return String(email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
+    
+    if (!validateEmail(userData.email)) {
+      return { valid: false, message: "Email user is wrong format." };
+    }
+
+    if (User.exists({email: userData.email})) {
+      return { valid: false, message: "Email user is already existed." };
+    }
+
     const user = new User(userData);
 
-    user.password = user.email.replace("@gmail.com", "").trim()
+    let username = user.email.trim().split("@")[0]
+    
+    user.password = username
 
     const newUser = await user.save();
-
-    let username = newUser.email.replace("@gmail.com", "")
 
     if (newUser) {
       const emailSent = await sendActivationEmail(newUser.email);

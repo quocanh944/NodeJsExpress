@@ -127,7 +127,17 @@
       </div>
     </div>
   </div>
+  <% if (status && status=='Success' ) { %>
+    <script>
+      toastr.success('<%= msg %>', 'System Status')
+    </script>
+  <% } %>
 
+  <% if (status && status=='Failed' ) { %>
+    <script>
+      toastr.warning('<%= msg %>', 'System Status')
+    </script>
+  <% } %>
   <div id="notificationContainer" class="notification-container"></div>
 
 

@@ -32,3 +32,16 @@ Sau khi đăng nhập với admin có thể tạo 1 tài khoản SALE để sử
 
 ##Video Demo
 Để có cái nhìn tổng quan về dự án, vui lòng tham khảo video demo tại [https://drive.google.com/file/d/1qM9AzimVpaZpHHnsPBcKoAiZxqfuZWzf/view?fbclid=IwAR34NWxPCpx3WXCZHSErYVLvSMzUdnVETFFeMmoPaVpSGxTGckxEDiAK-pM].
+
+##ENV - The environment example file
+SECRET_SESSION=secret
+PORT=3001
+DB_URI=mongodb+srv://nodejsfinal:RtFYY7qDDrke9WXv@nodejsfinal.9e8oasr.mongodb.net/PhoneSalePersonDatabase?retryWrites=true&w=majority
+SECRET_KEY=PHUVINH123
+HOST=http://localhost:3001/
+FIREBASE_API_KEY=AIzaSyDKljgDwERiDIMY6AAjcNkaJ79rfI7Kv3A
+AUTH_DOMAIN=phonesaleperson.firebaseapp.com
+PROJECT_ID=phonesaleperson
+STORAGE_BUCKET=phonesaleperson.appspot.com
+SENDER_ID=961386332024
+APP_ID=1:961386332024:web:11447ed3d15658549e528d
