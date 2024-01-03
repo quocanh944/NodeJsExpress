@@ -1,7 +1,7 @@
-##HỆ THỐNG BÁN ĐIỆN THOẠI 
+##CHUỖI HỆ THỐNG NHÀ SÁCH
 
 ##Mô Tả
-Dự án này là dự được build cho hệ thống bán điện thoại POS (nền tảng khảo sát dựa trên kiotviet.vn)
+Dự án này là dự được build cho hệ thống nhà sách POS (nền tảng khảo sát dựa trên kiotviet.vn)
 
 ##Yêu Cầu Cần Có
 Node.js (Nodev16)
@@ -23,15 +23,15 @@ Mở một trình duyệt web.
 
 Thông tin đăng nhập để truy cập server (nếu có):
 	+ Với chạy với localhost: Truy cập http://localhost:port để sử dụng ứng dụng.
-	+ Với link deploy: Truy cập https://finalnodejs-5b51.onrender.com/login để sử dụng ứng dụng.
+	+ Với link deploy: Truy cập https://bookstore-xbz5.onrender.com để sử dụng ứng dụng.
 Tên người dùng: 
 	+ Với admin: 
 		-> Username: admin
 		-> Password: admin
+	+ Với sale: 
+		-> Username: Duane52
+		-> Password: abc123@
 Sau khi đăng nhập với admin có thể tạo 1 tài khoản SALE để sử dụng
-
-##Video Demo
-Để có cái nhìn tổng quan về dự án, vui lòng tham khảo video demo tại [https://drive.google.com/file/d/1qM9AzimVpaZpHHnsPBcKoAiZxqfuZWzf/view?fbclid=IwAR34NWxPCpx3WXCZHSErYVLvSMzUdnVETFFeMmoPaVpSGxTGckxEDiAK-pM].
 
 ##ENV - The environment example file
 SECRET_SESSION=secret
